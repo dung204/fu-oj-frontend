@@ -1,0 +1,216 @@
+{
+  "base": {
+    "components": {
+      "ui": {
+        "DatePicker": {
+          "placeholder": "Pick a date"
+        },
+        "DateRangePicker": {
+          "placeholder": "Pick a date range"
+        },
+        "TimePicker": {
+          "placeholder": "Pick a time",
+          "setToNow": "Set to now",
+          "hours": "Hours",
+          "minutes": "Minutes",
+          "seconds": "Seconds",
+          "period": "Period"
+        },
+        "TimeRangePicker": {
+          "placeholder": "Pick a time range"
+        },
+        "DateTimePicker": {
+          "placeholder": "Pick a date and time",
+          "includeTime": "Include time"
+        },
+        "DateTimeRangePicker": {
+          "placeholder": "Pick a date and time range",
+          "fromDateAt": "From {date} at",
+          "toDateAt": "To {date} at",
+          "includeTime": "Include time"
+        },
+        "BackButton": {
+          "label": "Back"
+        }
+      }
+    },
+    "layouts": {
+      "UserActions": {
+        "register": "Register",
+        "login": "Login",
+        "logout": "Log out",
+        "updateProfile": "Update Profile",
+        "signInAs": "Sign in as",
+        "noName": "No Name",
+        "newPost": "New Post",
+        "myPosts": "My Posts"
+      }
+    }
+  },
+  "modules": {
+    "auth": {
+      "components": {
+        "LoginForm": {
+          "fields": {
+            "email": {
+              "label": "Email",
+              "placeholder": "Enter your email",
+              "errors": {
+                "too_small": "Email is required",
+                "invalid_format": "Invalid email address",
+                "email_password_incorrect": "Email or password is incorrect. Please try again."
+              }
+            },
+            "password": {
+              "label": "Password",
+              "placeholder": "Enter your password",
+              "forgotPassword": "Forgot password?",
+              "errors": {
+                "too_small": "Password is required",
+                "email_password_incorrect": "Email or password is incorrect. Please try again."
+              }
+            }
+          },
+          "submitButtonLabel": "Login"
+        },
+        "RegisterForm": {
+          "step2SubmitButtonLabel": "Complete Registration"
+        },
+        "RegisterFormStep1": {
+          "fields": {
+            "email": {
+              "label": "Email",
+              "placeholder": "Enter your email",
+              "errors": {
+                "invalid_format": "Invalid email address",
+                "email_already_registered": "This email is already registered"
+              }
+            },
+            "password": {
+              "label": "Password",
+              "placeholder": "Enter your password",
+              "errors": {
+                "too_small": "Password must be at least 6 characters"
+              }
+            }
+          },
+          "submitButtonLabel": "Continue"
+        }
+      },
+      "pages": {
+        "LoginPage": {
+          "title": "Login to your account",
+          "subtitle": "Welcome back! Please enter your details."
+        },
+        "RegisterPage": {
+          "step1": {
+            "title": "Create your account",
+            "subtitle": "Please provide your email and password to create your account."
+          },
+          "step2": {
+            "title": "Complete your profile",
+            "subtitle": "Almost there! Please complete your profile information."
+          }
+        }
+      }
+    },
+    "posts": {
+      "components": {
+        "PostCard": {
+          "deleted": "Deleted",
+          "public": "Public",
+          "private": "Private",
+          "postedBy": "Posted by",
+          "postedAt": "Posted"
+        },
+        "PostForm": {
+          "fields": {
+            "title": {
+              "label": "Title",
+              "placeholder": "Post title",
+              "errors": {
+                "too_small": "Title can not be blank"
+              }
+            },
+            "content": {
+              "label": "Content",
+              "placeholder": "Post content",
+              "errors": {
+                "too_small": "Content can not be blank"
+              }
+            },
+            "isPublic": {
+              "label": "Public",
+              "description": "If checked, this post will be visible to everyone. Otherwise, only you can see it."
+            }
+          }
+        },
+        "PostSearchBox": {
+          "placeholder": "Search posts by title..."
+        }
+      },
+      "pages": {
+        "EditPostPage": {
+          "title": "Edit Post",
+          "postFormSubmitButtonLabel": "Save Changes"
+        },
+        "NewPostPage": {
+          "title": "New Post",
+          "postFormSubmitButtonLabel": "Create Post",
+          "CanNotCreatePostDialog": {
+            "title": "You can not create posts",
+            "message": "Please go to \"Update Profile\" to fill out your first name & last name before creating a post",
+            "backToHomeButtonLabel": "Back to Home",
+            "goToUpdateProfileButtonLabel": "Go to Update Profile"
+          }
+        },
+        "MyPostsPage": {
+          "title": "Showing your posts"
+        },
+        "PostDetailsPage": {
+          "setToPublic": "Set to Public",
+          "setToPublicNotification": "Post is now public",
+          "setToPrivate": "Set to Private",
+          "setToPrivateNotification": "Post is now private",
+          "editPost": "Edit",
+          "deletePost": "Delete",
+          "deleteSuccessNotification": "Post deleted successfully",
+          "restorePost": "Restore",
+          "restoreSuccessNotification": "Post restored successfully",
+          "postedBy": "Posted by",
+          "postedAt": "Posted"
+        },
+        "PostNotFoundPage": {
+          "title": "Oops! Not Available"
+        },
+        "PublicPostsPage": {
+          "title": "Showing all public posts",
+          "matchingTitle": ", matching \"{title}\""
+        }
+      }
+    },
+    "users": {
+      "components": {
+        "UserProfileForm": {
+          "fields": {
+            "firstName": {
+              "label": "First Name",
+              "placeholder": "Enter your first name",
+              "errors": {
+                "too_small": "First name is required"
+              }
+            },
+            "lastName": {
+              "label": "Last Name",
+              "placeholder": "Enter your last name",
+              "errors": {
+                "too_small": "Last name is required"
+              }
+            }
+          },
+          "submitButtonLabel": "Save Changes"
+        }
+      }
+    }
+  }
+}

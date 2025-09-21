@@ -1,0 +1,13 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+  },
+  "editor.defaultFormatter": "biomejs.biome",
+  "tailwindCSS.classFunctions": ["cn", "clsx", "cva", "twMerge", "withCn"],
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[postcss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+}

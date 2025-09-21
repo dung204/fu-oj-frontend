@@ -1,0 +1,222 @@
+{
+  "base": {
+    "components": {
+      "ui": {
+        "DatePicker": {
+          "placeholder": "Chọn một ngày"
+        },
+        "DateRangePicker": {
+          "placeholder": "Chọn một khoảng thời gian"
+        },
+        "TimePicker": {
+          "placeholder": "Chọn một mốc thời gian",
+          "setToNow": "Đặt thành bây giờ",
+          "hours": "Giờ",
+          "minutes": "Phút",
+          "seconds": "Giây",
+          "period": "Giai đoạn"
+        },
+        "TimeRangePicker": {
+          "placeholder": "Chọn một khoảng thời gian"
+        },
+        "DateTimePicker": {
+          "placeholder": "Chọn một ngày và thời gian",
+          "includeTime": "Bao gồm thời gian"
+        },
+        "DateTimeRangePicker": {
+          "placeholder": "Chọn một khoảng thời gian",
+          "fromDateAt": "Từ ngày {date} lúc",
+          "toDateAt": "Đến ngày {date} lúc",
+          "includeTime": "Bao gồm thời gian"
+        },
+        "BackButton": {
+          "label": "Quay lại"
+        }
+      }
+    },
+    "layouts": {
+      "UserActions": {
+        "register": "Đăng ký",
+        "login": "Đăng nhập",
+        "logout": "Đăng xuất",
+        "updateProfile": "Cập nhật hồ sơ",
+        "signInAs": "Đăng nhập với tư cách",
+        "noName": "Không có tên",
+        "newPost": "Bài viết mới",
+        "myPosts": "Bài viết của tôi"
+      }
+    }
+  },
+  "modules": {
+    "auth": {
+      "components": {
+        "LoginForm": {
+          "fields": {
+            "email": {
+              "label": "Email",
+              "placeholder": "Nhập email của bạn",
+              "errors": {
+                "too_small": "Email không được để trống",
+                "invalid_format": "Địa chỉ email không hợp lệ",
+                "email_password_incorrect": "Email hoặc mật khẩu không chính xác. Vui lòng thử lại."
+              }
+            },
+            "password": {
+              "label": "Mật khẩu",
+              "placeholder": "Nhập mật khẩu của bạn",
+              "forgotPassword": "Quên mật khẩu?",
+              "errors": {
+                "too_small": "Mật khẩu không được để trống",
+                "email_password_incorrect": "Email hoặc mật khẩu không chính xác. Vui lòng thử lại."
+              }
+            }
+          },
+          "submitButtonLabel": "Đăng nhập"
+        },
+        "RegisterForm": {
+          "step2SubmitButtonLabel": "Hoàn tất đăng ký"
+        },
+        "RegisterFormStep1": {
+          "fields": {
+            "email": {
+              "label": "Email",
+              "placeholder": "Nhập email của bạn",
+              "errors": {
+                "invalid_format": "Địa chỉ email không hợp lệ",
+                "email_already_registered": "Email này đã được đăng ký"
+              }
+            },
+            "password": {
+              "label": "Mật khẩu",
+              "placeholder": "Nhập mật khẩu của bạn",
+              "errors": {
+                "too_small": "Mật khẩu phải có ít nhất 6 ký tự"
+              }
+            }
+          },
+          "submitButtonLabel": "Tiếp tục"
+        }
+      },
+      "pages": {
+        "LoginPage": {
+          "title": "Đăng nhập vào tài khoản của bạn",
+          "subtitle": "Chào mừng trở lại! Vui lòng nhập thông tin của bạn."
+        },
+        "RegisterPage": {
+          "step1": {
+            "title": "Tạo tài khoản của bạn",
+            "subtitle": "Vui lòng cung cấp email và mật khẩu của bạn để tạo tài khoản."
+          },
+          "step2": {
+            "title": "Hoàn tất hồ sơ của bạn",
+            "subtitle": "Gần xong rồi! Vui lòng hoàn tất thông tin hồ sơ của bạn."
+          }
+        }
+      }
+    },
+    "posts": {
+      "components": {
+        "PostCard": {
+          "deleted": "Đã xóa",
+          "public": "Công khai",
+          "private": "Riêng tư",
+          "postedBy": "Đăng bởi",
+          "postedAt": "Đăng vào"
+        },
+        "PostForm": {
+          "fields": {
+            "title": {
+              "label": "Tiêu đề",
+              "placeholder": "Tiêu đề bài viết",
+              "errors": {
+                "too_small": "Tiêu đề không được để trống"
+              }
+            },
+            "content": {
+              "label": "Nội dung",
+              "placeholder": "Nội dung bài viết",
+              "errors": {
+                "too_small": "Nội dung không được để trống"
+              }
+            },
+            "isPublic": {
+              "label": "Công khai?",
+              "description": "Nếu được chọn, bài viết này sẽ được hiển thị cho mọi người. Nếu không, chỉ bạn mới có thể xem nó."
+            }
+          }
+        },
+        "PostSearchBox": {
+          "placeholder": "Tìm kiếm bài viết..."
+        }
+      },
+      "pages": {
+        "EditPostPage": {
+          "title": "Chỉnh sửa bài viết",
+          "postFormSubmitButtonLabel": "Lưu thay đổi"
+        },
+        "NewPostPage": {
+          "title": "Bài viết mới",
+          "postFormSubmitButtonLabel": "Tạo bài viết",
+          "CanNotCreatePostDialog": {
+            "title": "Không thể tạo bài viết",
+            "description": "Bạn cần hoàn tất hồ sơ của mình trước khi tạo bài viết.",
+            "backToHomeButtonLabel": "Quay về trang chủ",
+            "goToUpdateProfileButtonLabel": "Đi đến cập nhật hồ sơ"
+          }
+        },
+        "MyPostsPage": {
+          "title": "Đang hiển thị bài viết của tôi"
+        },
+        "PostDetailsPage": {
+          "setToPublic": "Đặt thành công khai",
+          "setToPublicNotification": "Bài viết hiện đã công khai",
+          "setToPrivate": "Đặt thành riêng tư",
+          "setToPrivateNotification": "Bài viết hiện đã riêng tư",
+          "editPost": "Chỉnh sửa",
+          "deletePost": "Xóa",
+          "deleteSuccessNotification": "Bài viết đã xóa thành công",
+          "restorePost": "Khôi phục",
+          "restoreSuccessNotification": "Bài viết đã khôi phục thành công",
+          "postedBy": "Đăng bởi",
+          "postedAt": "Đăng vào"
+        },
+        "PostNotFoundPage": {
+          "title": "Bài viết không tìm thấy"
+        },
+        "PublicPostsPage": {
+          "title": "Đang hiển thị tất cả bài viết công khai",
+          "matchingTitle": ", khớp với \"{title}\""
+        }
+      }
+    },
+    "users": {
+      "components": {
+        "UserProfileForm": {
+          "fields": {
+            "firstName": {
+              "label": "Tên",
+              "placeholder": "Nhập tên của bạn",
+              "errors": {
+                "too_small": "Tên không được để trống"
+              }
+            },
+            "lastName": {
+              "label": "Họ",
+              "placeholder": "Nhập họ của bạn",
+              "errors": {
+                "too_small": "Họ không được để trống"
+              }
+            }
+          },
+          "submitButtonLabel": "Lưu thay đổi"
+        }
+      },
+      "pages": {
+        "UpdateUserProfilePage": {
+          "title": "Cập nhật hồ sơ của bạn",
+          "updateSuccessNotification": "Hồ sơ đã cập nhật thành công"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "formulahendry.auto-rename-tag",
+    "aaron-bond.better-comments",
+    "streetsidesoftware.code-spell-checker",
+    "EditorConfig.EditorConfig",
+    "usernamehw.errorlens",
+    "mhutchie.git-graph",
+    "oderwat.indent-rainbow",
+    "ms-vsliveshare.vsliveshare",
+    "csstools.postcss",
+    "YoavBls.pretty-ts-errors",
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "inlang.vs-code-extension"
+  ]
+}
