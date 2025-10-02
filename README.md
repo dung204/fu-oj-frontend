@@ -1,20 +1,25 @@
-# TanStack Start Starter Template
+# FPT University Online Judge (FU-OJ) Frontend
 
-A project starter template using [TanStack Start](https://tanstack.com/start) framework. This template provides a solid foundation for building SSR (Server-Side Rendering) web applications with modern tools and best practices.
+The frontend web application for FPT University Online Judge (FU-OJ) - a platform for practicing programming exercises, made for FPT University. This project is the Capstone Project for the Software Engineering program at FPT University.
 
-## 🚀 Features
+## 👥 Authors
 
-- **File-based routing** with [TanStack Router](https://tanstack.com/router)
-- **State management, data fetching, and caching** with [TanStack Query](https://tanstack.com/query)
-- Build tools powered by [Vite](https://vitejs.dev/)
-- Comprehensive linting & formatting with [Biome](https://biomejs.dev/)
-- Package management with [Bun](https://bun.sh/)
-- Internalization (i18n) support with [paraglide-js](https://inlang.com/m/gerre34r/library-inlang-paraglideJs)
+The project is developed by group 128 of the SEP490 (Capstone Project) course at FPT University. The team members are:
+
+- Hồ Anh Dũng - HE181529 - [@dung204](https://github.com/dung204)
+- Hoàng Gia Trọng - HE172557 - [@GiaTrongHocBe](https://github.com/GiaTrong2003)
+- Phạm Ngọc Tùng Lâm - HE173556 - [@lampnthe173556](https://github.com/lampnthe173556)
+- Lê Đức Đạt - HE171371 - [@LeDatFPT](https://github.com/LeDatFPT)
+- Lê Minh Chiến - HE141150 - [@MilkOCD](https://github.com/MilkOCD)
+
+## 📋 Features
+
+> Working in progress... 🚧
 
 ## 🛠️ Prerequisites
 
 - [Bun](https://bun.sh/) 1.2.0 or higher
-- Setup of an back-end starter project (for example, [spring-rest-api-starter-template](https://github.com/dung204/spring-rest-api-starter-template))
+- Setup of the back-end project ([fu-oj-backend](https://github.com/dung204/fu-oj-backend))
 - [Git](https://git-scm.com/)
 - [Visual Studio Code](https://code.visualstudio.com/) (highly recommended)
 
@@ -23,13 +28,13 @@ A project starter template using [TanStack Start](https://tanstack.com/start) fr
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/dung204/tanstack-start-starter-template.git
+git clone https://github.com/dung204/fu-oj-frontend.git
 ```
 
 2. Change directory to the project folder:
 
 ```bash
-cd tanstack-start-stater-template
+cd fu-oj-frontend
 ```
 
 3. Install dependencies:
@@ -38,9 +43,9 @@ cd tanstack-start-stater-template
 bun install --frozen-lockfile
 ```
 
-4. Setup and start the back-end server (follow the README instructions in the back-end starter project).
+4. Setup and start the back-end server (follow the [README instructions](https://github.com/dung204/fu-oj-backend/blob/main/README.md) in the back-end project).
 
-5. Configure the back-end API URL in the `.env` file, for example:
+5. Create the `.env` file in the root of the project and configure the back-end API URL, for example:
 
 ```env
 # Change this to your back-end API URL
