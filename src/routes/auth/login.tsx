@@ -6,7 +6,7 @@ export const Route = createFileRoute('/auth/login')({
   head: () => ({
     meta: [
       {
-        title: 'Login | TanStack Start Starter Template',
+        title: 'Login | FPT University Online Judge',
       },
     ],
   }),

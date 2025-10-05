@@ -10,7 +10,7 @@ export const Route = createFileRoute('/_not-auth/')({
   head: () => ({
     meta: [
       {
-        title: 'Public Posts | TanStack Start Starter Template',
+        title: 'Public Posts | FPT University Online Judge',
       },
     ],
   }),

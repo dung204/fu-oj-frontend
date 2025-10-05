@@ -28,7 +28,7 @@ export const Route = createFileRoute('/_not-auth/posts/$postId/')({
   head: ({ loaderData }) => ({
     meta: [
       {
-        title: `${loaderData?.post.title || 'Post Details'} | TanStack Start Starter Template`,
+        title: `${loaderData?.post.title || 'Post Details'} | FPT University Online Judge`,
       },
     ],
   }),
