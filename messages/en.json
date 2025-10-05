@@ -35,6 +35,13 @@
       }
     },
     "layouts": {
+      "Header": {
+        "help": "Help",
+        "exercises": "Exercises",
+        "submissions": "Submissions",
+        "leaderboard": "Leaderboard",
+        "groups": "Groups"
+      },
       "UserActions": {
         "register": "Register",
         "login": "Login",

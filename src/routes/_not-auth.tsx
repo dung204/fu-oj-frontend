@@ -65,7 +65,7 @@ function NotAuthLayout() {
   const { user } = Route.useRouteContext();
 
   return (
-    <main className='max-w-2xl mx-auto'>
+    <main>
       <Header user={user} />
       <Outlet />
     </main>

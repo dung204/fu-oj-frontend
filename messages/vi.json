@@ -35,6 +35,13 @@
       }
     },
     "layouts": {
+      "Header": {
+        "help": "Trợ giúp",
+        "exercises": "Bài tập",
+        "submissions": "Các bài nộp",
+        "leaderboard": "Bảng xếp hạng",
+        "groups": "Nhóm"
+      },
       "UserActions": {
         "register": "Đăng ký",
         "login": "Đăng nhập",

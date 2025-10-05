@@ -14,7 +14,11 @@ import { Route as NotAuthRouteImport } from './routes/_not-auth'
 import { Route as NotAuthIndexRouteImport } from './routes/_not-auth/index'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as NotAuthSubmissionsIndexRouteImport } from './routes/_not-auth/submissions.index'
 import { Route as NotAuthProfileIndexRouteImport } from './routes/_not-auth/profile.index'
+import { Route as NotAuthLeaderboardIndexRouteImport } from './routes/_not-auth/leaderboard.index'
+import { Route as NotAuthGroupsIndexRouteImport } from './routes/_not-auth/groups.index'
+import { Route as NotAuthExercisesIndexRouteImport } from './routes/_not-auth/exercises.index'
 import { Route as NotAuthPostsNewIndexRouteImport } from './routes/_not-auth/posts/new.index'
 import { Route as NotAuthPostsMeIndexRouteImport } from './routes/_not-auth/posts/me.index'
 import { Route as NotAuthPostsPostIdIndexRouteImport } from './routes/_not-auth/posts/$postId.index'
@@ -44,9 +48,29 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any)
+const NotAuthSubmissionsIndexRoute = NotAuthSubmissionsIndexRouteImport.update({
+  id: '/submissions/',
+  path: '/submissions/',
+  getParentRoute: () => NotAuthRoute,
+} as any)
 const NotAuthProfileIndexRoute = NotAuthProfileIndexRouteImport.update({
   id: '/profile/',
   path: '/profile/',
+  getParentRoute: () => NotAuthRoute,
+} as any)
+const NotAuthLeaderboardIndexRoute = NotAuthLeaderboardIndexRouteImport.update({
+  id: '/leaderboard/',
+  path: '/leaderboard/',
+  getParentRoute: () => NotAuthRoute,
+} as any)
+const NotAuthGroupsIndexRoute = NotAuthGroupsIndexRouteImport.update({
+  id: '/groups/',
+  path: '/groups/',
+  getParentRoute: () => NotAuthRoute,
+} as any)
+const NotAuthExercisesIndexRoute = NotAuthExercisesIndexRouteImport.update({
+  id: '/exercises/',
+  path: '/exercises/',
   getParentRoute: () => NotAuthRoute,
 } as any)
 const NotAuthPostsNewIndexRoute = NotAuthPostsNewIndexRouteImport.update({
@@ -75,7 +99,11 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/': typeof NotAuthIndexRoute
+  '/exercises': typeof NotAuthExercisesIndexRoute
+  '/groups': typeof NotAuthGroupsIndexRoute
+  '/leaderboard': typeof NotAuthLeaderboardIndexRoute
   '/profile': typeof NotAuthProfileIndexRoute
+  '/submissions': typeof NotAuthSubmissionsIndexRoute
   '/posts/$postId/edit': typeof NotAuthPostsPostIdEditRoute
   '/posts/$postId': typeof NotAuthPostsPostIdIndexRoute
   '/posts/me': typeof NotAuthPostsMeIndexRoute
@@ -86,7 +114,11 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/': typeof NotAuthIndexRoute
+  '/exercises': typeof NotAuthExercisesIndexRoute
+  '/groups': typeof NotAuthGroupsIndexRoute
+  '/leaderboard': typeof NotAuthLeaderboardIndexRoute
   '/profile': typeof NotAuthProfileIndexRoute
+  '/submissions': typeof NotAuthSubmissionsIndexRoute
   '/posts/$postId/edit': typeof NotAuthPostsPostIdEditRoute
   '/posts/$postId': typeof NotAuthPostsPostIdIndexRoute
   '/posts/me': typeof NotAuthPostsMeIndexRoute
@@ -99,7 +131,11 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/_not-auth/': typeof NotAuthIndexRoute
+  '/_not-auth/exercises/': typeof NotAuthExercisesIndexRoute
+  '/_not-auth/groups/': typeof NotAuthGroupsIndexRoute
+  '/_not-auth/leaderboard/': typeof NotAuthLeaderboardIndexRoute
   '/_not-auth/profile/': typeof NotAuthProfileIndexRoute
+  '/_not-auth/submissions/': typeof NotAuthSubmissionsIndexRoute
   '/_not-auth/posts/$postId/edit': typeof NotAuthPostsPostIdEditRoute
   '/_not-auth/posts/$postId/': typeof NotAuthPostsPostIdIndexRoute
   '/_not-auth/posts/me/': typeof NotAuthPostsMeIndexRoute
@@ -112,7 +148,11 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/'
+    | '/exercises'
+    | '/groups'
+    | '/leaderboard'
     | '/profile'
+    | '/submissions'
     | '/posts/$postId/edit'
     | '/posts/$postId'
     | '/posts/me'
@@ -123,7 +163,11 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/'
+    | '/exercises'
+    | '/groups'
+    | '/leaderboard'
     | '/profile'
+    | '/submissions'
     | '/posts/$postId/edit'
     | '/posts/$postId'
     | '/posts/me'
@@ -135,7 +179,11 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/_not-auth/'
+    | '/_not-auth/exercises/'
+    | '/_not-auth/groups/'
+    | '/_not-auth/leaderboard/'
     | '/_not-auth/profile/'
+    | '/_not-auth/submissions/'
     | '/_not-auth/posts/$postId/edit'
     | '/_not-auth/posts/$postId/'
     | '/_not-auth/posts/me/'
@@ -184,11 +232,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_not-auth/submissions/': {
+      id: '/_not-auth/submissions/'
+      path: '/submissions'
+      fullPath: '/submissions'
+      preLoaderRoute: typeof NotAuthSubmissionsIndexRouteImport
+      parentRoute: typeof NotAuthRoute
+    }
     '/_not-auth/profile/': {
       id: '/_not-auth/profile/'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof NotAuthProfileIndexRouteImport
+      parentRoute: typeof NotAuthRoute
+    }
+    '/_not-auth/leaderboard/': {
+      id: '/_not-auth/leaderboard/'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof NotAuthLeaderboardIndexRouteImport
+      parentRoute: typeof NotAuthRoute
+    }
+    '/_not-auth/groups/': {
+      id: '/_not-auth/groups/'
+      path: '/groups'
+      fullPath: '/groups'
+      preLoaderRoute: typeof NotAuthGroupsIndexRouteImport
+      parentRoute: typeof NotAuthRoute
+    }
+    '/_not-auth/exercises/': {
+      id: '/_not-auth/exercises/'
+      path: '/exercises'
+      fullPath: '/exercises'
+      preLoaderRoute: typeof NotAuthExercisesIndexRouteImport
       parentRoute: typeof NotAuthRoute
     }
     '/_not-auth/posts/new/': {
@@ -224,7 +300,11 @@ declare module '@tanstack/react-router' {
 
 interface NotAuthRouteChildren {
   NotAuthIndexRoute: typeof NotAuthIndexRoute
+  NotAuthExercisesIndexRoute: typeof NotAuthExercisesIndexRoute
+  NotAuthGroupsIndexRoute: typeof NotAuthGroupsIndexRoute
+  NotAuthLeaderboardIndexRoute: typeof NotAuthLeaderboardIndexRoute
   NotAuthProfileIndexRoute: typeof NotAuthProfileIndexRoute
+  NotAuthSubmissionsIndexRoute: typeof NotAuthSubmissionsIndexRoute
   NotAuthPostsPostIdEditRoute: typeof NotAuthPostsPostIdEditRoute
   NotAuthPostsPostIdIndexRoute: typeof NotAuthPostsPostIdIndexRoute
   NotAuthPostsMeIndexRoute: typeof NotAuthPostsMeIndexRoute
@@ -233,7 +313,11 @@ interface NotAuthRouteChildren {
 
 const NotAuthRouteChildren: NotAuthRouteChildren = {
   NotAuthIndexRoute: NotAuthIndexRoute,
+  NotAuthExercisesIndexRoute: NotAuthExercisesIndexRoute,
+  NotAuthGroupsIndexRoute: NotAuthGroupsIndexRoute,
+  NotAuthLeaderboardIndexRoute: NotAuthLeaderboardIndexRoute,
   NotAuthProfileIndexRoute: NotAuthProfileIndexRoute,
+  NotAuthSubmissionsIndexRoute: NotAuthSubmissionsIndexRoute,
   NotAuthPostsPostIdEditRoute: NotAuthPostsPostIdEditRoute,
   NotAuthPostsPostIdIndexRoute: NotAuthPostsPostIdIndexRoute,
   NotAuthPostsMeIndexRoute: NotAuthPostsMeIndexRoute,
