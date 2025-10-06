@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 
 import { UpdateUserProfilePage } from '@/modules/users/pages/update-user-profile.page';
 
-export const Route = createFileRoute('/_not-auth/profile/')({
+export const Route = createFileRoute('/_authed/profile/')({
   component: RouteComponent,
 });
 

@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 
 import { LeaderboardPage, LeaderboardPageSkeleton } from '@/modules/users/pages/leaderboard.page';
 
-export const Route = createFileRoute('/_not-auth/leaderboard/')({
+export const Route = createFileRoute('/_authed/leaderboard/')({
   component: RouteComponent,
 });
 

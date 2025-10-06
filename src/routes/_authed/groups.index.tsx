@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 
 import { GroupsPage, GroupsPageSkeleton } from '@/modules/groups/pages/groups.page';
 
-export const Route = createFileRoute('/_not-auth/groups/')({
+export const Route = createFileRoute('/_authed/groups/')({
   component: RouteComponent,
 });
 

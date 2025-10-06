@@ -59,6 +59,7 @@ export function ExercisesPage() {
               <p className='text-sm'>
                 {getTranslation('modules.exercises.pages.ExercisesPage.topicSearchTitle')}
               </p>
+              {/* TODO: replace the below Select with AsyncSelect when the topics API is ready */}
               <Select
                 options={[]}
                 placeholder={getTranslation(

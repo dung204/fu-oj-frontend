@@ -6,7 +6,7 @@ import {
   SubmissionsPageSkeleton,
 } from '@/modules/submissions/pages/submissions.page';
 
-export const Route = createFileRoute('/_not-auth/submissions/')({
+export const Route = createFileRoute('/_authed/submissions/')({
   component: RouteComponent,
 });
 

@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { getTranslation } from '@/base/utils';
 import { ExercisesPage, ExercisesPageSkeleton } from '@/modules/exercises/pages/exercises.page';
 
-export const Route = createFileRoute('/_not-auth/exercises/')({
+export const Route = createFileRoute('/_authed/exercises/')({
   head: () => ({
     meta: [
       {

@@ -29,4 +29,4 @@ In this starter template:
   - It simplifies the code by removing the need to handle loading and error states manually.
   - It provides a better user experience by allowing you to show a fallback UI while the data is being fetched.
   - It works seamlessly with React's concurrent features, such as `React.Suspense` and `React.lazy`.
-- Prefetching is implemented in every routes, using the `loader` function of TanStack Router. For example, in the [`/posts/me`](http://localhost:5173/posts/me) route, the prefetching logic is in [`src/routes/_not-auth/posts/me.index.tsx`](../src/routes/_not-auth/posts/me.index.tsx#L21-L23).
+- Prefetching is implemented in every routes, using the `loader` function of TanStack Router. For example, in the [`/posts/me`](http://localhost:5173/posts/me) route, the prefetching logic is in [`src/routes/_authed/posts/me.index.tsx`](../src/routes/_authed/posts/me.index.tsx#L21-L23).

@@ -30,16 +30,16 @@ In the `src/routes` folder, you will see the following folders & files:
 ```
 src
 └── routes
-    ├── _not-auth/
+    ├── _authed/
     ├── auth/
-    ├── _not-auth.tsx
+    ├── _authed.tsx
     └── auth.tsx
 ```
 
 There are 2 layouts here:
 
-- `auth` layout: this layout is used for auth-related pages, such as login, register, forgot password. The file `_not-auth.tsx` is to configure the logic for this layout.
-- `_not-auth` layout: this layout is used for all other pages that are not auth-related pages. Any pages, no matter their content, will be wrapped in this layout. The file `auth.tsx` is to configure the logic for this layout.
+- `auth` layout: this layout is used for auth-related pages, such as login, register, forgot password. The file `_authed.tsx` is to configure the logic for this layout.
+- `_authed` layout: this layout is used for all other pages that are not auth-related pages. Any pages, no matter their content, will be wrapped in this layout. The file `auth.tsx` is to configure the logic for this layout.
 
 ## Authentication flow
 
@@ -56,7 +56,7 @@ The authentication flow is as follows:
      - The tokens and user profile retrieved from the cookies will be checked.
      - If the tokens and user profile are valid, the user will be redirected to the home page (or any other page set as default page).
      - Or else, the user will be allowed to access the requested page.
-   - For every request to a route in the `_not-auth` layout (e.g., `/`, `/posts/me`) - see the [`beforeLoad` function in `src/routes/_not-auth.tsx`](../src/routes/_not-auth.tsx):
+   - For every request to a route in the `_authed` layout (e.g., `/`, `/posts/me`) - see the [`beforeLoad` function in `src/routes/_authed.tsx`](../src/routes/_authed.tsx):
      - The tokens and user profile retrieved from the cookies will be checked.
      - If the tokens and user profile are valid, the user will be allowed to access the requested page.
      - Or else, the user will be redirected to the login page (or any other page set as default page).
@@ -68,7 +68,7 @@ The authentication flow is as follows:
 
 ## Specifying the private routes
 
-When defining a new route for the `_not-auth` layout, you need to specify whether the route is private or not. Currently, this template only supports public routes (accessible by anyone) and private routes (accessible only by authenticated users).
+When defining a new route for the `_authed` layout, you need to specify whether the route is private or not. Currently, this template only supports public routes (accessible by anyone) and private routes (accessible only by authenticated users).
 
 Go to the [`src/base/utils/route.utils.ts`](../src/base/utils/route.utils.ts) file, you will see the following code:
 
@@ -102,7 +102,7 @@ export function checkIsAdminOnlyRoute(route: string) {
 }
 ```
 
-Then you can use the `checkIsAdminOnlyRoute` function in the [`beforeLoad` function of the `_not-auth` layout](../src/routes/_not-auth.tsx) to check if the route is an admin-only route, and redirect the user to an appropriate page if they are not an admin.
+Then you can use the `checkIsAdminOnlyRoute` function in the [`beforeLoad` function of the `_authed` layout](../src/routes/_authed.tsx) to check if the route is an admin-only route, and redirect the user to an appropriate page if they are not an admin.
 
 ## Specifying the private API endpoints
 

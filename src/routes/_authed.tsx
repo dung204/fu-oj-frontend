@@ -9,7 +9,7 @@ import { RefreshSuccessResponse } from '@/modules/auth/types';
 import { deleteTokensInCookie } from '@/modules/auth/utils/delete-tokens-in-cookie.util';
 import { setTokensToCookie } from '@/modules/auth/utils/set-tokens-to-cookie.util';
 
-export const Route = createFileRoute('/_not-auth')({
+export const Route = createFileRoute('/_authed')({
   beforeLoad: async ({ context, location }) => {
     const { accessToken, refreshToken, user } = context;
     const isPrivateRoute = checkIsPrivateRoute(location.pathname);
