@@ -2,6 +2,7 @@ import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 import axios from 'axios';
 import { decodeJwt } from 'jose';
 
+import { ScrollArea } from '@/base/components/ui/scroll-area';
 import { Header } from '@/base/layouts/header';
 import { checkIsPrivateRoute } from '@/base/utils';
 import { RefreshSuccessResponse } from '@/modules/auth/types';
@@ -65,9 +66,13 @@ function NotAuthLayout() {
   const { user } = Route.useRouteContext();
 
   return (
-    <main>
+    <>
       <Header user={user} />
-      <Outlet />
-    </main>
+      <ScrollArea className='w-full h-[calc(100vh-66px)]'>
+        <main className='container mx-auto py-10'>
+          <Outlet />
+        </main>
+      </ScrollArea>
+    </>
   );
 }

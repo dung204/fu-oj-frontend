@@ -196,6 +196,34 @@
         }
       }
     },
+    "exercises": {
+      "components": {
+        "ExercisesTable": {
+          "code": "Mã bài tập",
+          "title": "Tiêu đề",
+          "topics": "Chủ đề",
+          "difficulty": "Độ khó",
+          "acceptRate": "Tỉ lệ hoàn thành",
+          "noData": "Không tìm thấy bài tập nào."
+        }
+      },
+      "pages": {
+        "ExercisesPage": {
+          "title": "Danh sách bài tập",
+          "exerciseSearch": "Tìm kiếm bài tập",
+          "exerciseSearchPlaceholder": "Tìm kiếm bài tập...",
+          "topicSearchTitle": "Chủ đề",
+          "topicSearchPlaceholder": "Chọn chủ đề...",
+          "clearSearch": "Xóa tìm kiếm",
+          "applySearch": "Áp dụng",
+          "leaderboard": "Bảng xếp hạng",
+          "leaderboardViewMore": "Xem thêm...",
+          "leaderboardOrdinalNumberColumn": "STT",
+          "leaderboardStudentColumn": "Sinh viên",
+          "leaderboardAcceptedColumn": "Đã hoàn thành"
+        }
+      }
+    },
     "users": {
       "components": {
         "UserProfileForm": {

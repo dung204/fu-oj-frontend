@@ -2,6 +2,7 @@ import { CheckIcon, ChevronsUpDown } from 'lucide-react';
 import * as React from 'react';
 import { useId, useState } from 'react';
 
+import { Button } from '@/base/components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -144,8 +145,8 @@ export function Select({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <button
-          // eslint-disable-next-line jsx-a11y/role-has-required-aria-props
+        <Button
+          variant={'outline'}
           type='button'
           role='combobox'
           aria-expanded={open}
@@ -190,7 +191,7 @@ export function Select({
               );
           })()}
           <ChevronsUpDown className='opacity-50' />
-        </button>
+        </Button>
       </PopoverTrigger>
       <PopoverContent
         className={cn('w-(--radix-popover-trigger-width) rounded-2xl p-0', className)}

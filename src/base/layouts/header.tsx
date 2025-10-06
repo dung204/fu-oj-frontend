@@ -25,13 +25,11 @@ export function Header(_: HeaderProps) {
   });
 
   return (
-    <header className='py-3 border-b-2 border-primary'>
+    <header className='py-3 border-b-2 border-primary bg-white z-50'>
       <nav className='container mx-auto flex items-center w-full'>
-        <img
-          src='/favicon.svg'
-          alt='FPT University Online Judge'
-          className='h-10 w-auto shrink-0'
-        />
+        <Link to='/exercises' className='shrink-0'>
+          <img src='/favicon.svg' alt='FPT University Online Judge' className='h-10 w-auto' />
+        </Link>
         <div className='flex items-center justify-between grow mx-auto max-w-3xl'>
           <Link to='/exercises'>
             <Button

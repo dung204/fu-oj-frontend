@@ -6,7 +6,6 @@ import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanst
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { ReactNode } from 'react';
 
-import { ScrollArea } from '@/base/components/ui/scroll-area';
 import { Toaster } from '@/base/components/ui/toaster';
 import appCss from '@/base/styles/globals.css?url';
 import { getTokensFromCookie } from '@/modules/auth/utils/get-tokens-from-cookie.util';
@@ -82,8 +81,8 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
-      <body>
-        <ScrollArea className='w-full h-screen'>{children}</ScrollArea>
+      <body className='overflow-y-hidden'>
+        {children}
         <Toaster richColors position='top-right' />
         <TanStackRouterDevtools position='bottom-left' />
         <ReactQueryDevtools initialIsOpen={false} />

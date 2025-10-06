@@ -1,9 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Suspense } from 'react';
 
+import { getTranslation } from '@/base/utils';
 import { ExercisesPage, ExercisesPageSkeleton } from '@/modules/exercises/pages/exercises.page';
 
 export const Route = createFileRoute('/_not-auth/exercises/')({
+  head: () => ({
+    meta: [
+      {
+        title: `${getTranslation('modules.exercises.pages.ExercisesPage.title')} | FPT University Online Judge`,
+      },
+    ],
+  }),
   component: RouteComponent,
 });
 

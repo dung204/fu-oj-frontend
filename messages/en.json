@@ -196,6 +196,34 @@
         }
       }
     },
+    "exercises": {
+      "components": {
+        "ExercisesTable": {
+          "code": "Code",
+          "title": "Title",
+          "topics": "Topics",
+          "difficulty": "Difficulty",
+          "acceptRate": "Accept Rate",
+          "noData": "No exercises found."
+        }
+      },
+      "pages": {
+        "ExercisesPage": {
+          "title": "Exercises",
+          "exerciseSearch": "Exercise Search",
+          "exerciseSearchPlaceholder": "Search exercises...",
+          "topicSearchTitle": "Topic",
+          "topicSearchPlaceholder": "Select topics...",
+          "clearSearch": "Clear search",
+          "applySearch": "Apply",
+          "leaderboard": "Leaderboard",
+          "leaderboardViewMore": "View more...",
+          "leaderboardOrdinalNumberColumn": "#",
+          "leaderboardStudentColumn": "Student",
+          "leaderboardAcceptedColumn": "Accepted"
+        }
+      }
+    },
     "users": {
       "components": {
         "UserProfileForm": {
