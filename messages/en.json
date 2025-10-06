@@ -224,6 +224,45 @@
         }
       }
     },
+    "submissions": {
+      "components": {
+        "SubmissionsTable": {
+          "id": "ID",
+          "submissionTime": "Submission Time",
+          "student": "Student",
+          "result": "Result",
+          "exercise": "Exercise",
+          "time": "Time",
+          "memory": "Memory",
+          "language": "Language",
+          "noData": "No submissions found."
+        },
+        "SubmissionsChart": {
+          "label": "Submissions"
+        }
+      },
+      "pages": {
+        "SubmissionsPage": {
+          "title": "Submissions",
+          "submissionsFilter": "Submissions Filter",
+          "submissionsResultFilterTitle": "Result",
+          "submissionsResultFilterPlaceholder": "Select results...",
+          "submissionsLanguageFilterTitle": "Language",
+          "submissionsLanguageFilterPlaceholder": "Select languages...",
+          "clearFilter": "Clear filter",
+          "applyFilter": "Apply",
+          "explanationOfResults": "Explanation of Results",
+          "accepted": "Accepted",
+          "wrongAnswer": "Wrong Answer",
+          "timeLimitExceeded": "Time Limit Exceeded",
+          "memoryLimitExceeded": "Memory Limit Exceeded",
+          "runtimeError": "Runtime Error",
+          "invalidReturn": "Invalid Return",
+          "compilationError": "Compilation Error",
+          "statistics": "Statistics"
+        }
+      }
+    },
     "users": {
       "components": {
         "UserProfileForm": {

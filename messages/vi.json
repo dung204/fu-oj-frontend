@@ -224,6 +224,45 @@
         }
       }
     },
+    "submissions": {
+      "components": {
+        "SubmissionsTable": {
+          "id": "ID",
+          "submissionTime": "Thời gian nộp",
+          "student": "Sinh viên",
+          "result": "Kết quả",
+          "exercise": "Bài tập",
+          "time": "Thời gian",
+          "memory": "Bộ nhớ",
+          "language": "Ngôn ngữ",
+          "noData": "Không tìm thấy bài nộp nào."
+        },
+        "SubmissionsChart": {
+          "label": "Lượt nộp bài"
+        }
+      },
+      "pages": {
+        "SubmissionsPage": {
+          "title": "Các bài nộp",
+          "submissionsFilter": "Bộ lọc bài nộp",
+          "submissionsResultFilterTitle": "Kết quả",
+          "submissionsResultFilterPlaceholder": "Chọn kết quả...",
+          "submissionsLanguageFilterTitle": "Ngôn ngữ",
+          "submissionsLanguageFilterPlaceholder": "Chọn ngôn ngữ...",
+          "clearFilter": "Xóa bộ lọc",
+          "applyFilter": "Áp dụng",
+          "explanationOfResults": "Giải thích kết quả",
+          "accepted": "Accepted - Kết quả đúng",
+          "wrongAnswer": "Wrong Answer - Kết quả sai",
+          "timeLimitExceeded": "Time Limit Exceeded - Quá giới hạn thời gian",
+          "memoryLimitExceeded": "Memory Limit Exceeded - Quá giới hạn bộ nhớ",
+          "runtimeError": "Runtime Error - Lỗi thực thi",
+          "invalidReturn": "Invalid Return - Giá trị trả về không hợp lệ",
+          "compilationError": "Compilation Error - Lỗi biên dịch",
+          "statistics": "Thống kê"
+        }
+      }
+    },
     "users": {
       "components": {
         "UserProfileForm": {
