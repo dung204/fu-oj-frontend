@@ -265,6 +265,14 @@
     },
     "users": {
       "components": {
+        "LeaderboardTable": {
+          "rank": "Rank",
+          "student": "Student",
+          "rollNumber": "Roll Number",
+          "accepted": "Accepted",
+          "submitted": "Submitted",
+          "noData": "Leaderboard is currently empty."
+        },
         "UserProfileForm": {
           "fields": {
             "firstName": {
@@ -283,6 +291,18 @@
             }
           },
           "submitButtonLabel": "Save Changes"
+        }
+      },
+      "pages": {
+        "LeaderboardPage": {
+          "title": "Leaderboard",
+          "LeaderboardSearchBox": {
+            "placeholder": "Search students..."
+          },
+          "pillars": {
+            "accepted": "Accepted",
+            "submitted": "Submitted"
+          }
         }
       }
     }

@@ -265,6 +265,14 @@
     },
     "users": {
       "components": {
+        "LeaderboardTable": {
+          "rank": "Xếp hạng",
+          "student": "Sinh viên",
+          "rollNumber": "Mã số sinh viên",
+          "accepted": "Làm đúng",
+          "submitted": "Đã nộp",
+          "noData": "Bảng xếp hạng hiện đang trống."
+        },
         "UserProfileForm": {
           "fields": {
             "firstName": {
@@ -286,9 +294,15 @@
         }
       },
       "pages": {
-        "UpdateUserProfilePage": {
-          "title": "Cập nhật hồ sơ của bạn",
-          "updateSuccessNotification": "Hồ sơ đã cập nhật thành công"
+        "LeaderboardPage": {
+          "title": "Bảng xếp hạng",
+          "LeaderboardSearchBox": {
+            "placeholder": "Tìm kiếm sinh viên..."
+          },
+          "pillars": {
+            "accepted": "Làm đúng",
+            "submitted": "Đã nộp"
+          }
         }
       }
     }

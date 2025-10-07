@@ -2,9 +2,9 @@ import { Eye, EyeOff } from 'lucide-react';
 import { ComponentProps, useState } from 'react';
 
 import { Button } from '@/base/components/ui/button';
-import { Input } from '@/base/components/ui/input';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/base/components/ui/input-group';
 
-interface PasswordInputProps extends Omit<ComponentProps<typeof Input>, 'type'> {
+interface PasswordInputProps extends Omit<ComponentProps<typeof InputGroupInput>, 'type'> {
   defaultShowPassword?: boolean;
 }
 
@@ -19,9 +19,9 @@ export function PasswordInput({
   const Icon = showPassword ? EyeOff : Eye;
 
   return (
-    <Input
-      type={showPassword ? 'text' : 'password'}
-      postfix={
+    <InputGroup>
+      <InputGroupInput type={showPassword ? 'text' : 'password'} {...props} />
+      <InputGroupAddon>
         <Button
           type='button'
           variant='ghost'
@@ -31,9 +31,7 @@ export function PasswordInput({
         >
           <Icon className='size-4' />
         </Button>
-      }
-      disabled={disabled}
-      {...props}
-    />
+      </InputGroupAddon>
+    </InputGroup>
   );
 }
