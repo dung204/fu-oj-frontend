@@ -224,6 +224,31 @@
         }
       }
     },
+    "groups": {
+      "components": {
+        "GroupCard": {
+          "members": "{count} thành viên"
+        }
+      },
+      "pages": {
+        "GroupsPage": {
+          "title": "Nhóm",
+          "groupSearch": "Tìm kiếm nhóm",
+          "groupSearchPlaceholder": "Tìm kiếm nhóm...",
+          "clearSearch": "Xóa tìm kiếm",
+          "applySearch": "Áp dụng",
+          "noData": "Không tìm thấy nhóm nào.",
+          "myGroups": "Nhóm của tôi",
+          "publicGroups": "Nhóm công khai",
+          "JoinGroupByCodeDialog": {
+            "buttonLabel": "Tham gia nhóm bằng mã",
+            "title": "Tham gia nhóm bằng mã",
+            "description": "Nhập mã nhóm do giảng viên cung cấp để tham gia nhóm.",
+            "submitButtonLabel": "Tham gia nhóm"
+          }
+        }
+      }
+    },
     "submissions": {
       "components": {
         "SubmissionsTable": {

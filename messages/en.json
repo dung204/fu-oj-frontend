@@ -224,6 +224,40 @@
         }
       }
     },
+    "groups": {
+      "components": {
+        "GroupCard": {
+          "members": [
+            {
+              "declarations": ["input count", "local countPlural = count: plural"],
+              "selectors": ["countPlural"],
+              "match": {
+                "countPlural=one": "{count} member",
+                "countPlural=other": "{count} members"
+              }
+            }
+          ]
+        }
+      },
+      "pages": {
+        "GroupsPage": {
+          "title": "Groups",
+          "groupSearch": "Group Search",
+          "groupSearchPlaceholder": "Search groups...",
+          "clearSearch": "Clear search",
+          "applySearch": "Apply",
+          "noData": "No groups found.",
+          "myGroups": "My Groups",
+          "publicGroups": "Public Groups",
+          "JoinGroupByCodeDialog": {
+            "buttonLabel": "Join Group by Code",
+            "title": "Join Group by Code",
+            "description": "Enter the group code provided by your instructor to join the group.",
+            "submitButtonLabel": "Tham gia nhóm"
+          }
+        }
+      }
+    },
     "submissions": {
       "components": {
         "SubmissionsTable": {
