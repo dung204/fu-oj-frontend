@@ -29,7 +29,7 @@ export function UserAvatar({ user, src, className }: UserAvatarProps) {
 
 export function UserAvatarSkeleton({ className }: Pick<UserAvatarProps, 'className'>) {
   return (
-    <div className={cn('size-8 rounded-full overflow-none', className)}>
+    <div className={cn('size-8 rounded-full overflow-hidden', className)}>
       <Skeleton className='size-full' />
     </div>
   );

@@ -35,6 +35,13 @@
       }
     },
     "layouts": {
+      "Header": {
+        "help": "Help",
+        "exercises": "Exercises",
+        "submissions": "Submissions",
+        "leaderboard": "Leaderboard",
+        "groups": "Groups"
+      },
       "UserActions": {
         "register": "Register",
         "login": "Login",
@@ -189,8 +196,117 @@
         }
       }
     },
+    "exercises": {
+      "components": {
+        "ExercisesTable": {
+          "code": "Code",
+          "title": "Title",
+          "topics": "Topics",
+          "difficulty": "Difficulty",
+          "acceptRate": "Accept Rate",
+          "noData": "No exercises found."
+        }
+      },
+      "pages": {
+        "ExercisesPage": {
+          "title": "Exercises",
+          "exerciseSearch": "Exercise Search",
+          "exerciseSearchPlaceholder": "Search exercises...",
+          "topicSearchTitle": "Topic",
+          "topicSearchPlaceholder": "Select topics...",
+          "clearSearch": "Clear search",
+          "applySearch": "Apply",
+          "leaderboard": "Leaderboard",
+          "leaderboardViewMore": "View more...",
+          "leaderboardOrdinalNumberColumn": "#",
+          "leaderboardStudentColumn": "Student",
+          "leaderboardAcceptedColumn": "Accepted"
+        }
+      }
+    },
+    "groups": {
+      "components": {
+        "GroupCard": {
+          "members": [
+            {
+              "declarations": ["input count", "local countPlural = count: plural"],
+              "selectors": ["countPlural"],
+              "match": {
+                "countPlural=one": "{count} member",
+                "countPlural=other": "{count} members"
+              }
+            }
+          ]
+        }
+      },
+      "pages": {
+        "GroupsPage": {
+          "title": "Groups",
+          "groupSearch": "Group Search",
+          "groupSearchPlaceholder": "Search groups...",
+          "clearSearch": "Clear search",
+          "applySearch": "Apply",
+          "noData": "No groups found.",
+          "myGroups": "My Groups",
+          "publicGroups": "Public Groups",
+          "JoinGroupByCodeDialog": {
+            "buttonLabel": "Join Group by Code",
+            "title": "Join Group by Code",
+            "description": "Enter the group code provided by your instructor to join the group.",
+            "submitButtonLabel": "Tham gia nhóm"
+          }
+        }
+      }
+    },
+    "submissions": {
+      "components": {
+        "SubmissionsTable": {
+          "id": "ID",
+          "submissionTime": "Submission Time",
+          "student": "Student",
+          "result": "Result",
+          "exercise": "Exercise",
+          "time": "Time",
+          "memory": "Memory",
+          "language": "Language",
+          "noData": "No submissions found."
+        },
+        "SubmissionsChart": {
+          "label": "Submissions"
+        }
+      },
+      "pages": {
+        "SubmissionsPage": {
+          "title": "Submissions",
+          "submissionsFilter": "Submissions Filter",
+          "submissionsResultFilterTitle": "Result",
+          "submissionsResultFilterPlaceholder": "Select results...",
+          "submissionsLanguageFilterTitle": "Language",
+          "submissionsLanguageFilterPlaceholder": "Select languages...",
+          "clearFilter": "Clear filter",
+          "applyFilter": "Apply",
+          "explanationOfResults": "Explanation of Results",
+          "accepted": "Accepted",
+          "wrongAnswer": "Wrong Answer",
+          "timeLimitExceeded": "Time Limit Exceeded",
+          "memoryLimitExceeded": "Memory Limit Exceeded",
+          "runtimeError": "Runtime Error",
+          "invalidReturn": "Invalid Return",
+          "compilationError": "Compilation Error",
+          "statistics": "Statistics"
+        }
+      }
+    },
     "users": {
       "components": {
+        "LeaderboardTable": {
+          "rank": "Rank",
+          "student": "Student",
+          "rollNumber": "Roll Number",
+          "accepted": "Accepted",
+          "submitted": "Submitted",
+          "noData": "Leaderboard is currently empty."
+        },
         "UserProfileForm": {
           "fields": {
             "firstName": {
@@ -209,6 +325,18 @@
             }
           },
           "submitButtonLabel": "Save Changes"
+        }
+      },
+      "pages": {
+        "LeaderboardPage": {
+          "title": "Leaderboard",
+          "LeaderboardSearchBox": {
+            "placeholder": "Search students..."
+          },
+          "pillars": {
+            "accepted": "Accepted",
+            "submitted": "Submitted"
+          }
         }
       }
     }

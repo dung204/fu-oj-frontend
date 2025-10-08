@@ -6,7 +6,6 @@ import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanst
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { ReactNode } from 'react';
 
-import { ScrollArea } from '@/base/components/ui/scroll-area';
 import { Toaster } from '@/base/components/ui/toaster';
 import appCss from '@/base/styles/globals.css?url';
 import { getTokensFromCookie } from '@/modules/auth/utils/get-tokens-from-cookie.util';
@@ -24,13 +23,41 @@ export const Route = createRootRouteWithContext<{
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter Template',
+        title: 'FPT University Online Judge',
+      },
+      {
+        name: 'apple-mobile-web-app-title',
+        content: 'FU-OJ',
       },
     ],
     links: [
       {
         rel: 'stylesheet',
         href: appCss,
+      },
+      {
+        rel: 'icon',
+        type: 'image/svg+xml',
+        href: '/favicon.svg',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '96x96',
+        href: '/favicon-96x96.png',
+      },
+      {
+        rel: 'shortcut icon',
+        href: '/favicon.ico',
+      },
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: '/apple-touch-icon.png',
+      },
+      {
+        rel: 'manifest',
+        href: '/site.webmanifest',
       },
     ],
   }),
@@ -54,8 +81,8 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
-      <body>
-        <ScrollArea className='w-full h-screen'>{children}</ScrollArea>
+      <body className='overflow-y-hidden'>
+        {children}
         <Toaster richColors position='top-right' />
         <TanStackRouterDevtools position='bottom-left' />
         <ReactQueryDevtools initialIsOpen={false} />

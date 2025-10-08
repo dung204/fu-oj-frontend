@@ -35,6 +35,13 @@
       }
     },
     "layouts": {
+      "Header": {
+        "help": "Trợ giúp",
+        "exercises": "Bài tập",
+        "submissions": "Các bài nộp",
+        "leaderboard": "Bảng xếp hạng",
+        "groups": "Nhóm"
+      },
       "UserActions": {
         "register": "Đăng ký",
         "login": "Đăng nhập",
@@ -189,8 +196,108 @@
         }
       }
     },
+    "exercises": {
+      "components": {
+        "ExercisesTable": {
+          "code": "Mã bài tập",
+          "title": "Tiêu đề",
+          "topics": "Chủ đề",
+          "difficulty": "Độ khó",
+          "acceptRate": "Tỉ lệ hoàn thành",
+          "noData": "Không tìm thấy bài tập nào."
+        }
+      },
+      "pages": {
+        "ExercisesPage": {
+          "title": "Danh sách bài tập",
+          "exerciseSearch": "Tìm kiếm bài tập",
+          "exerciseSearchPlaceholder": "Tìm kiếm bài tập...",
+          "topicSearchTitle": "Chủ đề",
+          "topicSearchPlaceholder": "Chọn chủ đề...",
+          "clearSearch": "Xóa tìm kiếm",
+          "applySearch": "Áp dụng",
+          "leaderboard": "Bảng xếp hạng",
+          "leaderboardViewMore": "Xem thêm...",
+          "leaderboardOrdinalNumberColumn": "STT",
+          "leaderboardStudentColumn": "Sinh viên",
+          "leaderboardAcceptedColumn": "Đã hoàn thành"
+        }
+      }
+    },
+    "groups": {
+      "components": {
+        "GroupCard": {
+          "members": "{count} thành viên"
+        }
+      },
+      "pages": {
+        "GroupsPage": {
+          "title": "Nhóm",
+          "groupSearch": "Tìm kiếm nhóm",
+          "groupSearchPlaceholder": "Tìm kiếm nhóm...",
+          "clearSearch": "Xóa tìm kiếm",
+          "applySearch": "Áp dụng",
+          "noData": "Không tìm thấy nhóm nào.",
+          "myGroups": "Nhóm của tôi",
+          "publicGroups": "Nhóm công khai",
+          "JoinGroupByCodeDialog": {
+            "buttonLabel": "Tham gia nhóm bằng mã",
+            "title": "Tham gia nhóm bằng mã",
+            "description": "Nhập mã nhóm do giảng viên cung cấp để tham gia nhóm.",
+            "submitButtonLabel": "Tham gia nhóm"
+          }
+        }
+      }
+    },
+    "submissions": {
+      "components": {
+        "SubmissionsTable": {
+          "id": "ID",
+          "submissionTime": "Thời gian nộp",
+          "student": "Sinh viên",
+          "result": "Kết quả",
+          "exercise": "Bài tập",
+          "time": "Thời gian",
+          "memory": "Bộ nhớ",
+          "language": "Ngôn ngữ",
+          "noData": "Không tìm thấy bài nộp nào."
+        },
+        "SubmissionsChart": {
+          "label": "Lượt nộp bài"
+        }
+      },
+      "pages": {
+        "SubmissionsPage": {
+          "title": "Các bài nộp",
+          "submissionsFilter": "Bộ lọc bài nộp",
+          "submissionsResultFilterTitle": "Kết quả",
+          "submissionsResultFilterPlaceholder": "Chọn kết quả...",
+          "submissionsLanguageFilterTitle": "Ngôn ngữ",
+          "submissionsLanguageFilterPlaceholder": "Chọn ngôn ngữ...",
+          "clearFilter": "Xóa bộ lọc",
+          "applyFilter": "Áp dụng",
+          "explanationOfResults": "Giải thích kết quả",
+          "accepted": "Accepted - Kết quả đúng",
+          "wrongAnswer": "Wrong Answer - Kết quả sai",
+          "timeLimitExceeded": "Time Limit Exceeded - Quá giới hạn thời gian",
+          "memoryLimitExceeded": "Memory Limit Exceeded - Quá giới hạn bộ nhớ",
+          "runtimeError": "Runtime Error - Lỗi thực thi",
+          "invalidReturn": "Invalid Return - Giá trị trả về không hợp lệ",
+          "compilationError": "Compilation Error - Lỗi biên dịch",
+          "statistics": "Thống kê"
+        }
+      }
+    },
     "users": {
       "components": {
+        "LeaderboardTable": {
+          "rank": "Xếp hạng",
+          "student": "Sinh viên",
+          "rollNumber": "Mã số sinh viên",
+          "accepted": "Làm đúng",
+          "submitted": "Đã nộp",
+          "noData": "Bảng xếp hạng hiện đang trống."
+        },
         "UserProfileForm": {
           "fields": {
             "firstName": {
@@ -212,9 +319,15 @@
         }
       },
       "pages": {
-        "UpdateUserProfilePage": {
-          "title": "Cập nhật hồ sơ của bạn",
-          "updateSuccessNotification": "Hồ sơ đã cập nhật thành công"
+        "LeaderboardPage": {
+          "title": "Bảng xếp hạng",
+          "LeaderboardSearchBox": {
+            "placeholder": "Tìm kiếm sinh viên..."
+          },
+          "pillars": {
+            "accepted": "Làm đúng",
+            "submitted": "Đã nộp"
+          }
         }
       }
     }
