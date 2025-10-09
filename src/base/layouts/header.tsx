@@ -13,6 +13,7 @@ import { cn } from '@/base/lib';
 import { getTranslation } from '@/base/utils';
 import { UserAvatarSkeleton } from '@/modules/users/components/user-avatar';
 import { User } from '@/modules/users/types';
+import authentication from '@/modules/LR/authentication';
 
 interface HeaderProps {
   user: User | undefined;
@@ -89,7 +90,7 @@ export function Header(_: HeaderProps) {
           </Link>
         </div>
         <div className='flex gap-4 items-center shrink-0'>
-          <Button variant='outline'>
+          <Button variant='outline' onClick={() => authentication.logout()}>
             <CircleQuestionMarkIcon />
             {getTranslation('base.layouts.Header.help')}
           </Button>
