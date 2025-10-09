@@ -8,7 +8,7 @@ export const Route = createFileRoute('/_authed/exercises/')({
   head: () => ({
     meta: [
       {
-        title: `${getTranslation('modules.exercises.pages.ExercisesPage.title')} | FPT University Online Judge`,
+        title: `${getTranslation(`modules.exercises.pages.ExercisesPage.title`)} | FPT University Online Judge`,
       },
     ],
   }),
