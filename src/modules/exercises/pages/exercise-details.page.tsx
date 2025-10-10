@@ -1,3 +1,4 @@
+import CodeEditor from '@monaco-editor/react';
 import {
   CircleQuestionMarkIcon,
   ClockIcon,
@@ -8,11 +9,13 @@ import {
   LayoutGridIcon,
   ListChecks,
   MicrochipIcon,
+  PlayIcon,
   SendIcon,
   TriangleAlertIcon,
   Trophy,
   UserIcon,
 } from 'lucide-react';
+import { useState } from 'react';
 
 import {
   Accordion,
@@ -22,7 +25,11 @@ import {
 } from '@/base/components/ui/accordion';
 import { Badge } from '@/base/components/ui/badge';
 import { Button } from '@/base/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/base/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/base/components/ui/card';
+import {
+  ProgrammingLanguageSelect,
+  programmingLanguages,
+} from '@/base/components/ui/programming-language-select';
 import { UserAvatarSkeleton } from '@/modules/users/components/user-avatar';
 
 interface ExerciseDetailsPageProps {
@@ -137,6 +144,7 @@ export function ExerciseDetailsPage(_: ExerciseDetailsPageProps) {
             </Card>
           </CardContent>
         </Card>
+        <ExerciseSubmission />
       </section>
       <section className='col-span-1 flex flex-col gap-4'>
         <ExercisesExtraInfo />
@@ -204,6 +212,35 @@ function ExercisesExtraInfo() {
           <span className='font-medium'>64MB</span>
         </div>
       </CardContent>
+    </Card>
+  );
+}
+
+function ExerciseSubmission() {
+  const [selectedLang, setSelectedLang] = useState(programmingLanguages[0]);
+
+  return (
+    <Card className='pt-0 overflow-hidden'>
+      <CodeEditor
+        height='80vh'
+        language={selectedLang.editorValue}
+        theme='vs-dark'
+        defaultValue={'// code here\n'}
+      />
+      <CardFooter className='flex justify-end gap-2'>
+        <ProgrammingLanguageSelect
+          triggerClassName='w-60'
+          value={selectedLang}
+          onChange={(lang) => setSelectedLang(lang)}
+        />
+        <Button variant='outline'>
+          <PlayIcon /> Run code
+        </Button>
+        <Button variant='success'>
+          <SendIcon />
+          Submit code
+        </Button>
+      </CardFooter>
     </Card>
   );
 }

@@ -930,7 +930,6 @@ function SelectFormControl({
   const { error, i18nNamespace } = useFormField();
 
   return (
-    // @ts-expect-error multiple is indeed optional in Select
     <Select
       {...formField}
       value={form.getValues(formField.name)}
