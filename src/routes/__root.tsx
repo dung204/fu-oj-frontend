@@ -4,11 +4,24 @@ import { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 import { Toaster } from '@/base/components/ui/toaster';
+import { setupAxiosInterceptors } from '@/base/lib/httpRequest';
 import appCss from '@/base/styles/globals.css?url';
 import { getTokensFromCookie } from '@/modules/auth/utils/get-tokens-from-cookie.util';
+import 'antd/dist/reset.css';
+
+import { GlobalComponent } from '@/base/components/global/GlobalComponent';
+import * as http from '@/base/lib/httpRequest';
+import authentication from '@/modules/LR/authentication';
+
+setupAxiosInterceptors(() => {
+  console.log('Token expired');
+  localStorage.removeItem('authenticationToken');
+  sessionStorage.removeItem('authenticationToken');
+  window.location.href = '/';
+});
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -76,6 +89,15 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
+  useEffect(() => {
+    authentication.getAccount();
+
+    http.post('/api/v1/auth/register', {
+      email: 'admin@gmail.com',
+      password: '123456',
+    });
+  }, []);
+
   return (
     <html lang='en'>
       <head>
@@ -83,6 +105,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       </head>
       <body className='overflow-y-hidden'>
         {children}
+        <GlobalComponent />
         <Toaster richColors position='top-right' />
         <TanStackRouterDevtools position='bottom-left' />
         <ReactQueryDevtools initialIsOpen={false} />
