@@ -106,8 +106,9 @@
       },
       "pages": {
         "LoginPage": {
-          "title": "Login to your account",
-          "subtitle": "Welcome back! Please enter your details."
+          "title": "Login to FU-OJ",
+          "subtitle": "Welcome back! Please enter your details.",
+          "loginWithGoogle": "Login with Google"
         },
         "RegisterPage": {
           "step1": {

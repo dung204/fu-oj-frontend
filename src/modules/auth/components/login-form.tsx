@@ -35,7 +35,7 @@ export function LoginForm() {
     <Form
       ref={formRef}
       i18nNamespace='modules.auth.components.LoginForm'
-      className='flex flex-col gap-6'
+      className='flex flex-col gap-4'
       loading={isLoggingIn}
       schema={loginSchema}
       fields={[

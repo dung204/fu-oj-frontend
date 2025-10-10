@@ -1,13 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
-import {
-  LogInIcon,
-  LogOutIcon,
-  NotebookPenIcon,
-  PlusIcon,
-  UserCogIcon,
-  UserPlusIcon,
-} from 'lucide-react';
+import { LogInIcon, LogOutIcon, UserCogIcon, UserPlusIcon } from 'lucide-react';
 
 import { authService } from '@/modules/auth/services/auth.service';
 import { UserAvatar } from '@/modules/users/components/user-avatar';
@@ -23,22 +16,17 @@ import {
   DropdownMenuTrigger,
 } from '../components/ui/dropdown-menu';
 import { LanguageSwitcher } from '../components/ui/language-switcher';
-import { checkIsPrivateRoute, getTranslation } from '../utils';
+import { getTranslation } from '../utils';
 
 interface UserActionsProps {
-  user: User | undefined;
+  user: User;
 }
 
 export function UserActions({ user }: UserActionsProps) {
   const { mutate: triggerLogout } = useMutation({
     mutationFn: () => authService.logout(),
     onSuccess: () => {
-      if (checkIsPrivateRoute(window.location.pathname)) {
-        window.location.pathname = '/';
-        return;
-      }
-
-      window.location.reload();
+      window.location.pathname = '/auth/login';
     },
   });
 
@@ -63,50 +51,31 @@ export function UserActions({ user }: UserActionsProps) {
   }
 
   return (
-    <>
-      <Link to='/posts/new'>
-        <Button>
-          <PlusIcon />
-          {getTranslation('base.layouts.UserActions.newPost')}
-        </Button>
-      </Link>
-      <Link to='/posts/me'>
-        <Button variant='outline'>
-          <NotebookPenIcon />
-          {getTranslation('base.layouts.UserActions.myPosts')}
-        </Button>
-      </Link>
-      <DropdownMenu>
-        <DropdownMenuTrigger>
-          <UserAvatar user={user} className='size-10 cursor-pointer' />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align='end'>
-          <DropdownMenuLabel>
-            <span className='font-normal'>
-              {getTranslation('base.layouts.UserActions.signInAs')}
-            </span>{' '}
-            {!user.firstName || !user.lastName ? (
-              <span className='text-error'>
-                {getTranslation('base.layouts.UserActions.noName')}
-              </span>
-            ) : (
-              <span className='font-medium'>{`${user.firstName} ${user.lastName}`}</span>
-            )}
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <Link to='/profile'>
-            <DropdownMenuItem>
-              <UserCogIcon />
-              {getTranslation('base.layouts.UserActions.updateProfile')}
-            </DropdownMenuItem>
-          </Link>
-          <DropdownMenuItem variant='error' onClick={() => triggerLogout()}>
-            <LogOutIcon />
-            {getTranslation('base.layouts.UserActions.logout')}
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <UserAvatar user={user} className='size-10 cursor-pointer' />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align='end'>
+        <DropdownMenuLabel>
+          <span className='font-normal'>{getTranslation('base.layouts.UserActions.signInAs')}</span>{' '}
+          {!user.firstName || !user.lastName ? (
+            <span className='text-error'>{getTranslation('base.layouts.UserActions.noName')}</span>
+          ) : (
+            <span className='font-medium'>{`${user.firstName} ${user.lastName}`}</span>
+          )}
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <Link to='/profile'>
+          <DropdownMenuItem>
+            <UserCogIcon />
+            {getTranslation('base.layouts.UserActions.updateProfile')}
           </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <LanguageSwitcher />
-    </>
+        </Link>
+        <DropdownMenuItem variant='error' onClick={() => triggerLogout()}>
+          <LogOutIcon />
+          {getTranslation('base.layouts.UserActions.logout')}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
