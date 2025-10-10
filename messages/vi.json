@@ -36,7 +36,8 @@
     },
     "layouts": {
       "Header": {
-        "help": "Trợ giúp",
+        "login": "Đăng nhập",
+        "logout": "Đăng xuất",
         "exercises": "Bài tập",
         "submissions": "Các bài nộp",
         "leaderboard": "Bảng xếp hạng",

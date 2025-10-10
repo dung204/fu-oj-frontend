@@ -92,7 +92,9 @@ export function Header(_: HeaderProps) {
         <div className='flex gap-4 items-center shrink-0'>
           <Button variant='outline' onClick={() => authentication.logout()}>
             <CircleQuestionMarkIcon />
-            {getTranslation('base.layouts.Header.help')}
+            {
+              authentication.isAuthenticated ? getTranslation('base.layouts.Header.logout') : getTranslation('base.layouts.Header.login')
+            }
           </Button>
           <LanguageSwitcher />
           {/* TODO: replace this with UserActions */}
