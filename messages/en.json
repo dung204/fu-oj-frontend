@@ -214,13 +214,26 @@
           "exerciseSearchPlaceholder": "Search exercises...",
           "topicSearchTitle": "Topic",
           "topicSearchPlaceholder": "Select topics...",
-          "clearSearch": "Clear search",
-          "applySearch": "Apply",
           "leaderboard": "Leaderboard",
           "leaderboardViewMore": "View more...",
           "leaderboardOrdinalNumberColumn": "#",
           "leaderboardStudentColumn": "Student",
-          "leaderboardAcceptedColumn": "Accepted"
+          "leaderboardAcceptedColumn": "Accepted",
+          "ExercisesPageFilter": {
+            "clearSearch": "Clear search",
+            "Form": {
+              "fields": {
+                "title": {
+                  "placeholder": "Search exercises..."
+                },
+                "topicId": {
+                  "label": "Topic",
+                  "placeholder": "Select topic..."
+                }
+              },
+              "submitButtonLabel": "Apply"
+            }
+          }
         }
       }
     },

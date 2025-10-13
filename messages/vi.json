@@ -214,13 +214,26 @@
           "exerciseSearchPlaceholder": "Tìm kiếm bài tập...",
           "topicSearchTitle": "Chủ đề",
           "topicSearchPlaceholder": "Chọn chủ đề...",
-          "clearSearch": "Xóa tìm kiếm",
-          "applySearch": "Áp dụng",
           "leaderboard": "Bảng xếp hạng",
           "leaderboardViewMore": "Xem thêm...",
           "leaderboardOrdinalNumberColumn": "STT",
           "leaderboardStudentColumn": "Sinh viên",
-          "leaderboardAcceptedColumn": "Đã hoàn thành"
+          "leaderboardAcceptedColumn": "Đã hoàn thành",
+          "ExercisesPageFilter": {
+            "clearSearch": "Xóa tìm kiếm",
+            "Form": {
+              "fields": {
+                "title": {
+                  "placeholder": "Tìm kiếm bài tập..."
+                },
+                "topicId": {
+                  "label": "Chủ đề",
+                  "placeholder": "Chọn chủ đề..."
+                }
+              },
+              "submitButtonLabel": "Áp dụng"
+            }
+          }
         }
       }
     },

@@ -1,6 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
-import { CheckIcon, ChevronsUpDownIcon, LoaderIcon } from 'lucide-react';
+import { InfiniteData, UseInfiniteQueryOptions, useInfiniteQuery } from '@tanstack/react-query';
+import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import { Button } from '@/base/components/ui/button';
 import {
@@ -16,31 +17,27 @@ import { useDebounce } from '@/base/hooks';
 import { cn } from '@/base/lib';
 import type { SuccessResponse } from '@/base/types';
 
-export interface Option {
-  value: string;
-  label: string;
-  disabled?: boolean;
-  description?: string;
-  icon?: React.ReactNode;
-}
+import { LoadingIndicator } from './loading-indicator';
 
 export type AsyncSelectProps<T> = {
   /** Query key for Tanstack Query, the search term is appended to this key */
   queryKey: (searchTerm: string) => unknown[];
   /** Async function to fetch options */
-  queryFn: (query?: string) => Promise<SuccessResponse<T[]>>;
+  queryFn: (searchTerm: string, page: number) => Promise<SuccessResponse<T[]>>;
   /** Function to render each option */
   renderOption: (option: T) => React.ReactNode;
   /** Function to get the value from an option */
   getOptionValue: (option: T) => string;
   /** Function to get the display value for the selected option */
   getDisplayValue: (option: T) => React.ReactNode;
+  /** Function to get an option from the value */
+  getOptionFromValue: (value: string) => T;
   /** Custom not found message */
   notFound?: React.ReactNode;
   /** Custom loading skeleton */
   loadingSkeleton?: React.ReactNode;
   /** Label for the select field */
-  label: string;
+  label?: string;
   /** Placeholder text when no selection */
   placeholder?: string;
   /** Disable the entire select */
@@ -53,24 +50,39 @@ export type AsyncSelectProps<T> = {
   noResultsMessage?: string;
   /** Allow clearing the selection */
   clearable?: boolean;
-} & (
-  | {
-      /** Allow the select to select multiple values */
-      multiple?: false;
-      /** Currently selected value */
-      value?: string;
-      /** Callback when selection changes */
-      onChange: (value: string) => void;
-    }
-  | {
-      /** Allow the select to select multiple values */
-      multiple: true;
-      /** Currently selected values */
-      value?: string[];
-      /** Callback when selection changes */
-      onChange: (value: string[]) => void;
-    }
-);
+} & Omit<
+  UseInfiniteQueryOptions<
+    SuccessResponse<T[]>,
+    Error,
+    InfiniteData<SuccessResponse<T[]>>,
+    unknown[],
+    number
+  >,
+  | 'queryKey'
+  | 'queryFn'
+  | 'initialPageParam'
+  | 'getNextPageParam'
+  | 'getPreviousPageParam'
+  | 'initialData'
+> &
+  (
+    | {
+        /** Allow the select to select multiple values */
+        multiple?: false;
+        /** Currently selected value */
+        value?: string;
+        /** Callback when selection changes */
+        onChange?: (value: string) => void;
+      }
+    | {
+        /** Allow the select to select multiple values */
+        multiple: true;
+        /** Currently selected values */
+        value?: string[];
+        /** Callback when selection changes */
+        onChange?: (value: string[]) => void;
+      }
+  );
 
 export function AsyncSelect<T>({
   queryKey,
@@ -78,9 +90,10 @@ export function AsyncSelect<T>({
   renderOption,
   getOptionValue,
   getDisplayValue,
+  getOptionFromValue,
   notFound,
   loadingSkeleton,
-  label,
+  label = 'item',
   placeholder = 'Select...',
   disabled = false,
   className,
@@ -90,24 +103,53 @@ export function AsyncSelect<T>({
   multiple,
   value,
   onChange,
+  enabled,
+  ...useInfiniteQueryOptions
 }: AsyncSelectProps<T>) {
-  const [mounted, setMounted] = useState(false);
+  const { inView, ref } = useInView();
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<T[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, __] = useState<string | null>(null);
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  const {
+    data: res,
+    isFetchingNextPage,
+    isPending,
+    isFetching,
+    error,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: queryKey(debouncedSearchTerm),
+    queryFn: ({ pageParam }) => queryFn(debouncedSearchTerm, pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: SuccessResponse<T[]>) =>
+      lastPage.metadata.pagination.hasNextPage
+        ? lastPage.metadata.pagination.currentPage + 1
+        : undefined,
+    getPreviousPageParam: (firstPage: SuccessResponse<T[]>) =>
+      firstPage.metadata.pagination.hasPreviousPage
+        ? firstPage.metadata.pagination.currentPage - 1
+        : undefined,
+    ...useInfiniteQueryOptions,
+  });
+
+  const options: T[] = res?.pages.flatMap((p) => p.data) || [];
+
   const [selectedValue, setSelectedValue] = useState(() => {
     if (value && !multiple) {
       return value as string;
     }
     return null;
   });
+
   const [selectedValues, setSelectedValues] = useState(() => {
     if (value && multiple) {
       return value as string[];
     }
     return [];
   });
+
   const [selectedOption, setSelectedOption] = useState<T | null>(() => {
     if (value && !multiple) {
       const selected = options.find((opt) => getOptionValue(opt) === value);
@@ -116,6 +158,7 @@ export function AsyncSelect<T>({
 
     return null;
   });
+
   const [selectedOptions, setSelectedOptions] = useState<T[]>(() => {
     if (value && multiple) {
       const selected = options.filter((opt) => (value as string[]).includes(getOptionValue(opt)));
@@ -123,32 +166,19 @@ export function AsyncSelect<T>({
     }
     return [];
   });
-  const [searchTerm, setSearchTerm] = useState('');
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
-
-  const { data: res, isLoading: isLoadingQuery } = useQuery({
-    queryKey: queryKey(debouncedSearchTerm),
-    queryFn: () => queryFn(debouncedSearchTerm),
-    enabled: !mounted || (mounted && open),
-  });
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isLoadingQuery) {
-      setLoading(false);
-      setOptions(res?.data || []);
+    if (inView && !isFetchingNextPage) {
+      fetchNextPage();
     }
-  }, [res, isLoadingQuery]);
+  }, [inView, isFetchingNextPage, fetchNextPage]);
 
   const handleSelect = (currentValue: string) => {
     if (!multiple) {
       const newValue = clearable && currentValue === selectedValue ? '' : currentValue;
       setSelectedValue(newValue);
       setSelectedOption(options.find((option) => getOptionValue(option) === newValue) || null);
-      onChange(newValue);
+      onChange?.(newValue);
       setOpen(false);
       return;
     }
@@ -165,7 +195,7 @@ export function AsyncSelect<T>({
         : [...selectedOptions, options.find((opt) => getOptionValue(opt) === currentValue)!]
     );
 
-    onChange(newValues);
+    onChange?.(newValues);
   };
 
   return (
@@ -182,67 +212,42 @@ export function AsyncSelect<T>({
           )}
           disabled={disabled}
         >
-          {(() => {
-            if (multiple) return <></>;
-
-            if (selectedOption) return getDisplayValue(selectedOption);
-
-            return placeholder;
-          })()}
-          {(() => {
-            if (!multiple) return <></>;
-            if (selectedOptions.length === 0) return placeholder;
-
-            if (selectedOptions.length === 1)
-              return <span>{getDisplayValue(selectedOptions[0])}</span>;
-
-            if (selectedOptions.length === 2)
-              return (
-                <span>
-                  {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}
-                </span>
-              );
-
-            if (selectedOptions.length > 2)
-              return (
-                <span>
-                  {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}, and{' '}
-                  {selectedOptions.length - 2} more...
-                </span>
-              );
-          })()}
-          <ChevronsUpDownIcon className='opacity-50' size={10} />
+          <AsyncSelectTriggerContent<T>
+            multiple={!!multiple}
+            getDisplayValue={getDisplayValue}
+            placeholder={placeholder}
+            selectedOption={selectedOption}
+            selectedOptions={selectedOptions}
+          />
+          <ChevronsUpDown className='opacity-50' size={10} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={cn('w-[--radix-popover-trigger-width] p-0', className)}>
+      <PopoverContent className={cn('w-(--radix-popover-trigger-width) p-0', className)}>
         <Command shouldFilter={false}>
           <div className='relative w-full border-b'>
             <CommandInput
-              placeholder={`Search ${label.toLowerCase()}...`}
+              placeholder={`Tìm kiếm ${label.toLowerCase()}...`}
               value={searchTerm}
-              onValueChange={(value) => {
-                setSearchTerm(value);
-                setLoading(true);
-              }}
+              onValueChange={setSearchTerm}
             />
-            {loading && (
+            {isFetching && (
               <div className='absolute top-1/2 right-2 flex -translate-y-1/2 transform items-center'>
-                <LoaderIcon className='h-4 w-4 animate-spin' />
+                <Loader2 className='h-4 w-4 animate-spin' />
               </div>
             )}
           </div>
           <CommandList>
-            {error && <div className='text-destructive p-4 text-center'>{error}</div>}
-            {loading && (loadingSkeleton || <DefaultLoadingSkeleton />)}
-            {!loading &&
+            {error && <div className='text-destructive p-4 text-center'>{error.message}</div>}
+            {isPending && (loadingSkeleton || <DefaultLoadingSkeleton />)}
+            {!isPending &&
               !error &&
               options.length === 0 &&
               (notFound || (
                 <CommandEmpty>
-                  {noResultsMessage ?? `No ${label.toLowerCase()} found.`}
+                  {noResultsMessage ?? `Không tìm thấy ${label.toLowerCase()}`}
                 </CommandEmpty>
               ))}
-            {!loading && (
+            {!isPending && (
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem
@@ -251,7 +256,7 @@ export function AsyncSelect<T>({
                     onSelect={handleSelect}
                   >
                     {renderOption(option)}
-                    <CheckIcon
+                    <Check
                       className={cn('ml-auto h-3 w-3 opacity-0', {
                         'opacity-100':
                           (!multiple && selectedValue === getOptionValue(option)) ||
@@ -262,10 +267,47 @@ export function AsyncSelect<T>({
                 ))}
               </CommandGroup>
             )}
+            <div ref={ref} className='flex w-full justify-center'>
+              {isFetchingNextPage && <LoadingIndicator className='size-4' />}
+            </div>
           </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
+  );
+}
+
+interface AsyncSelectTriggerContentProps<T>
+  extends Pick<AsyncSelectProps<T>, 'multiple' | 'getDisplayValue' | 'placeholder'> {
+  selectedOption: T | null;
+  selectedOptions: T[];
+}
+
+function AsyncSelectTriggerContent<T>({
+  multiple,
+  getDisplayValue,
+  placeholder,
+  selectedOption,
+  selectedOptions,
+}: AsyncSelectTriggerContentProps<T>) {
+  if (!multiple) return selectedOption ? getDisplayValue(selectedOption) : placeholder;
+
+  if (selectedOptions.length === 0) return placeholder;
+
+  if (selectedOptions.length === 1) return <span>{getDisplayValue(selectedOptions[0])}</span>;
+
+  if (selectedOptions.length === 2)
+    return (
+      <span>
+        {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}
+      </span>
+    );
+
+  return (
+    <span>
+      {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}, and{' '}
+      {selectedOptions.length - 2} more...
+    </span>
   );
 }
 

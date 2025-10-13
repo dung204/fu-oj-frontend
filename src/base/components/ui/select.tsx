@@ -237,7 +237,7 @@ export function Select({
   );
 }
 
-interface SelectTriggerContent
+interface SelectTriggerContentProps
   extends Required<Pick<SelectProps, 'multiple' | 'getDisplayValue' | 'placeholder'>> {
   selectedOption: SelectOption | undefined;
   selectedOptions: SelectOption[];
@@ -249,7 +249,7 @@ function SelectTriggerContent({
   placeholder,
   selectedOption,
   selectedOptions,
-}: SelectTriggerContent) {
+}: SelectTriggerContentProps) {
   if (!multiple) return selectedOption ? getDisplayValue(selectedOption) : placeholder;
 
   if (selectedOptions.length === 0) return placeholder;
