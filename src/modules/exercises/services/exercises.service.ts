@@ -6,6 +6,13 @@ class ExercisesService extends HttpClient {
   public getAllExercises(params: ExercisesSearchParams) {
     return this.get<SuccessResponse<Exercise[]>>('/exercises', {
       params,
+      isPrivateRoute: true,
+    });
+  }
+
+  public getExerciseById(id: string) {
+    return this.get<SuccessResponse<Exercise>>(`/exercises/${id}`, {
+      isPrivateRoute: true,
     });
   }
 }

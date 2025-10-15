@@ -237,6 +237,26 @@
             }
           }
         }
+      },
+      "ExerciseDetailsPage": {
+        "notFoundTitle": "Không tìm thấy Bài tập",
+        "report": "Báo cáo",
+        "runCode": "Chạy thử code",
+        "submitCode": "Nộp code",
+        "author": "Tác giả",
+        "topics": "Chủ đề",
+        "timeLimit": "Giới hạn thời gian",
+        "memoryLimit": "Giới hạn bộ nhớ",
+        "allSubmissions": "Tất cả bài nộp",
+        "bestSubmissions": "Các bài nộp tốt nhất",
+        "inputRequirements": "Yêu cầu đầu vào",
+        "outputRequirements": "Yêu cầu đầu ra",
+        "examples": "Ví dụ"
+      },
+      "ExerciseNotFoundPage": {
+        "pageTitle": "Không tìm thấy Bài tập",
+        "title": "Oops! Bài tập bạn đang tìm kiếm hiện không có",
+        "backToExercisesPage": "Về trang Danh sách bài tập"
       }
     },
     "groups": {
@@ -300,6 +320,15 @@
           "invalidReturn": "Invalid Return - Giá trị trả về không hợp lệ",
           "compilationError": "Compilation Error - Lỗi biên dịch",
           "statistics": "Thống kê"
+        }
+      }
+    },
+    "test-case": {
+      "components": {
+        "ExampleTestCaseCard": {
+          "input": "Đầu vào",
+          "output": "Đầu ra",
+          "note": "Ghi chú"
         }
       }
     },

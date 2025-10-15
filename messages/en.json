@@ -236,6 +236,26 @@
             }
           }
         }
+      },
+      "ExerciseDetailsPage": {
+        "notFoundTitle": "Exercise Not Found",
+        "report": "Report",
+        "runCode": "Run code",
+        "submitCode": "Submit code",
+        "author": "Author",
+        "topics": "Topics",
+        "timeLimit": "Time limit",
+        "memoryLimit": "Memory limit",
+        "allSubmissions": "All submissions",
+        "bestSubmissions": "Best submissions",
+        "inputRequirements": "Input requirements",
+        "outputRequirements": "Output requirements",
+        "examples": "Examples"
+      },
+      "ExerciseNotFoundPage": {
+        "pageTitle": "Exercise Not Found",
+        "title": "Oops! The exercise you are looking for is not available",
+        "backToExercisesPage": "Back to Exercises page"
       }
     },
     "groups": {
@@ -308,6 +328,15 @@
           "invalidReturn": "Invalid Return",
           "compilationError": "Compilation Error",
           "statistics": "Statistics"
+        }
+      }
+    },
+    "test-case": {
+      "components": {
+        "ExampleTestCaseCard": {
+          "input": "Input",
+          "output": "Output",
+          "note": "Note"
         }
       }
     },

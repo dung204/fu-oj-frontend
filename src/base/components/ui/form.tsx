@@ -7,6 +7,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { InfoIcon } from 'lucide-react';
 import * as React from 'react';
 import {
+  DeepPartial,
   type DefaultValues,
   type FieldPath,
   type FieldValues,
@@ -434,6 +435,8 @@ export interface FormProps<TFieldValues extends FieldValues, TTransformedValues>
   >;
   loading?: boolean;
 }
+
+export type FormRef<Schema> = React.ComponentRef<typeof Form<DeepPartial<Schema>, Schema>>;
 
 /**
  * A generic form component for handling form state, validation, and submission using React Hook Form and Zod schema validation.

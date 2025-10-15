@@ -6,6 +6,7 @@ class TopicsService extends HttpClient {
   public getAllTopics(params: TopicsSearchParams) {
     return this.get<SuccessResponse<Topic[]>>('/topics', {
       params,
+      isPrivateRoute: true,
     });
   }
 }
