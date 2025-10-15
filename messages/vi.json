@@ -36,7 +36,8 @@
     },
     "layouts": {
       "Header": {
-        "help": "Trợ giúp",
+        "login": "Đăng nhập",
+        "logout": "Đăng xuất",
         "exercises": "Bài tập",
         "submissions": "Các bài nộp",
         "leaderboard": "Bảng xếp hạng",
@@ -106,8 +107,9 @@
       },
       "pages": {
         "LoginPage": {
-          "title": "Đăng nhập vào tài khoản của bạn",
-          "subtitle": "Chào mừng trở lại! Vui lòng nhập thông tin của bạn."
+          "title": "Đăng nhập vào FU-OJ",
+          "subtitle": "Chào mừng trở lại! Vui lòng nhập thông tin",
+          "loginWithGoogle": "Đăng nhập với Google"
         },
         "RegisterPage": {
           "step1": {

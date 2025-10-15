@@ -1,25 +1,18 @@
 import { Link, useRouterState } from '@tanstack/react-router';
-import {
-  CircleQuestionMarkIcon,
-  GripIcon,
-  ListChecksIcon,
-  MedalIcon,
-  UsersIcon,
-} from 'lucide-react';
+import { GripIcon, ListChecksIcon, MedalIcon, UsersIcon } from 'lucide-react';
 
 import { Button } from '@/base/components/ui/button';
 import { LanguageSwitcher } from '@/base/components/ui/language-switcher';
+import { UserActions } from '@/base/layouts/user-actions';
 import { cn } from '@/base/lib';
 import { getTranslation } from '@/base/utils';
-import { UserAvatarSkeleton } from '@/modules/users/components/user-avatar';
 import { User } from '@/modules/users/types';
 
 interface HeaderProps {
-  user: User | undefined;
+  user: User;
 }
 
-// TODO: receive user prop and show user avatar and dropdown menu
-export function Header(_: HeaderProps) {
+export function Header({ user }: HeaderProps) {
   const currentPathname = useRouterState({
     select: (state) => state.location.pathname,
   });
@@ -73,7 +66,7 @@ export function Header(_: HeaderProps) {
               {getTranslation('base.layouts.Header.leaderboard')}
             </Button>
           </Link>
-          <Link to='/groups'>
+          <Link to='/groups' search={{ tab: 'mine' }}>
             <Button
               variant='ghost'
               className={cn(
@@ -89,13 +82,8 @@ export function Header(_: HeaderProps) {
           </Link>
         </div>
         <div className='flex gap-4 items-center shrink-0'>
-          <Button variant='outline'>
-            <CircleQuestionMarkIcon />
-            {getTranslation('base.layouts.Header.help')}
-          </Button>
           <LanguageSwitcher />
-          {/* TODO: replace this with UserActions */}
-          <UserAvatarSkeleton />
+          <UserActions user={user} />
         </div>
       </nav>
     </header>

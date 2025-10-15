@@ -21,7 +21,7 @@ export function UserAvatar({ user, src, className }: UserAvatarProps) {
         className='object-cover object-center'
       />
       <AvatarFallback>
-        <UserIcon />
+        <UserIcon className='size-1/2' />
       </AvatarFallback>
     </Avatar>
   );
