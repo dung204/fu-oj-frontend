@@ -1,8 +1,10 @@
-import { Link } from '@tanstack/react-router';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { CircleXIcon, MedalIcon, SearchIcon } from 'lucide-react';
 
 import { Button } from '@/base/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/base/components/ui/card';
+import { Form } from '@/base/components/ui/form';
 import { Input } from '@/base/components/ui/input';
 import { Select } from '@/base/components/ui/select';
 import { Skeleton } from '@/base/components/ui/skeleton';
@@ -14,16 +16,28 @@ import {
   TableHeader,
   TableRow,
 } from '@/base/components/ui/table';
-import { PaginationSkeleton } from '@/base/layouts/pagination';
+import { Pagination, PaginationSkeleton } from '@/base/layouts/pagination';
 import { getTranslation } from '@/base/utils';
 import {
   ExercisesTable,
   ExercisesTableSkeleton,
 } from '@/modules/exercises/components/exercises-table';
+import { ExercisesSearchParams, exercisesSearchParamsSchema } from '@/modules/exercises/types';
+import { exercisesQueryOptions } from '@/modules/exercises/utils/exercises-query-options.util';
+import { getTopicsAsyncSelectOptions } from '@/modules/topics/utils/topics-async-select-options.util';
 import { UserAvatarSkeleton } from '@/modules/users/components/user-avatar';
 
-export function ExercisesPage() {
-  // TODO: Fetch data, implement search and filtering
+interface ExercisesPageProps {
+  searchParams: Pick<ExercisesSearchParams, 'page' | 'title' | 'topicId'>;
+}
+
+export function ExercisesPage({ searchParams }: ExercisesPageProps) {
+  const {
+    data: {
+      data: exercises,
+      metadata: { pagination },
+    },
+  } = useSuspenseQuery(exercisesQueryOptions(searchParams));
 
   return (
     <div className='grid gap-4 grid-cols-4'>
@@ -34,50 +48,15 @@ export function ExercisesPage() {
         <hr className='border-b border-border' />
         <Card>
           <CardContent>
-            <ExercisesTable />
+            <ExercisesTable exercises={exercises} />
           </CardContent>
           <CardFooter>
-            <PaginationSkeleton />
+            <Pagination pagination={pagination} />
           </CardFooter>
         </Card>
       </section>
       <section className='col-span-1 flex flex-col gap-4'>
-        <Card>
-          <CardHeader>
-            <CardTitle className='flex items-center gap-2'>
-              <SearchIcon className='size-4' />{' '}
-              {getTranslation('modules.exercises.pages.ExercisesPage.exerciseSearch')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className='flex flex-col gap-4'>
-            <Input
-              placeholder={getTranslation(
-                'modules.exercises.pages.ExercisesPage.exerciseSearchPlaceholder'
-              )}
-            />
-            <div className='flex flex-col gap-1'>
-              <p className='text-sm'>
-                {getTranslation('modules.exercises.pages.ExercisesPage.topicSearchTitle')}
-              </p>
-              {/* TODO: replace the below Select with AsyncSelect when the topics API is ready */}
-              <Select
-                options={[]}
-                placeholder={getTranslation(
-                  'modules.exercises.pages.ExercisesPage.topicSearchPlaceholder'
-                )}
-              />
-            </div>
-          </CardContent>
-          <CardFooter className='justify-end gap-2'>
-            <Button type='button' variant='outline'>
-              <CircleXIcon />
-              {getTranslation('modules.exercises.pages.ExercisesPage.clearSearch')}
-            </Button>
-            <Button type='button'>
-              <SearchIcon /> {getTranslation('modules.exercises.pages.ExercisesPage.applySearch')}
-            </Button>
-          </CardFooter>
-        </Card>
+        <ExercisesPageFilter searchParams={searchParams} />
         <Card>
           <CardHeader>
             <CardTitle className='flex items-center gap-2'>
@@ -138,7 +117,84 @@ export function ExercisesPage() {
   );
 }
 
-export function ExercisesPageSkeleton() {
+function ExercisesPageFilter({ searchParams }: ExercisesPageProps) {
+  const navigate = useNavigate();
+
+  const applySearchParams = ({
+    title,
+    topicId,
+  }: Pick<ExercisesSearchParams, 'title' | 'topicId'>) => {
+    navigate({
+      to: '.',
+      search: {
+        title,
+        topicId,
+      },
+    });
+  };
+
+  const clearSearchParams = () => {
+    navigate({
+      to: '.',
+      search: {},
+    });
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className='flex items-center gap-2'>
+          <SearchIcon className='size-4' />{' '}
+          {getTranslation('modules.exercises.pages.ExercisesPage.exerciseSearch')}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className='flex flex-col gap-4'>
+        <Form
+          key={JSON.stringify(searchParams)}
+          schema={exercisesSearchParamsSchema}
+          i18nNamespace='modules.exercises.pages.ExercisesPage.ExercisesPageFilter.Form'
+          fields={[
+            {
+              name: 'title',
+              type: 'text',
+              render: ({ Control }) => <Control />,
+            },
+            {
+              name: 'topicId',
+              type: 'select',
+              async: true,
+              ...getTopicsAsyncSelectOptions('name'),
+            },
+          ]}
+          defaultValues={{
+            title: searchParams.title,
+            topicId: searchParams.topicId,
+          }}
+          renderSubmitButton={(SubmitButton) => (
+            <div className='flex justify-end gap-2 w-full'>
+              <Button type='button' variant='outline' onClick={() => clearSearchParams()}>
+                <CircleXIcon />
+                {getTranslation(
+                  'modules.exercises.pages.ExercisesPage.ExercisesPageFilter.clearSearch'
+                )}
+              </Button>
+              <SubmitButton>
+                <SearchIcon />{' '}
+                {getTranslation(
+                  'modules.exercises.pages.ExercisesPage.ExercisesPageFilter.Form.submitButtonLabel'
+                )}
+              </SubmitButton>
+            </div>
+          )}
+          onSuccessSubmit={({ title, topicId }) => applySearchParams({ title, topicId })}
+          onErrorSubmit={console.log}
+        />
+      </CardContent>
+    </Card>
+  );
+}
+
+export function ExercisesPageSkeleton({ searchParams }: ExercisesPageProps) {
   return (
     <div className='grid gap-4 grid-cols-4'>
       <section className='col-span-3 flex flex-col gap-4'>
@@ -168,16 +224,15 @@ export function ExercisesPageSkeleton() {
               placeholder={getTranslation(
                 'modules.exercises.pages.ExercisesPage.exerciseSearchPlaceholder'
               )}
+              value={searchParams.title}
               disabled
             />
             <div className='flex flex-col gap-1'>
-              <p className='text-sm'>
-                {getTranslation('modules.exercises.pages.ExercisesPage.topicSearchTitle')}
-              </p>
+              <p className='text-sm'>{getTranslation('')}</p>
               <Select
                 options={[]}
                 placeholder={getTranslation(
-                  'modules.exercises.pages.ExercisesPage.topicSearchPlaceholder'
+                  'modules.exercises.pages.ExercisesPage.ExercisesPageFilter.Form.fields.topicId.placeholder'
                 )}
                 disabled
               />
@@ -186,10 +241,15 @@ export function ExercisesPageSkeleton() {
           <CardFooter className='justify-end gap-2'>
             <Button type='button' variant='outline' disabled>
               <CircleXIcon />
-              {getTranslation('modules.exercises.pages.ExercisesPage.clearSearch')}
+              {getTranslation(
+                'modules.exercises.pages.ExercisesPage.ExercisesPageFilter.clearSearch'
+              )}
             </Button>
             <Button type='button' disabled>
-              <SearchIcon /> {getTranslation('modules.exercises.pages.ExercisesPage.applySearch')}
+              <SearchIcon />{' '}
+              {getTranslation(
+                'modules.exercises.pages.ExercisesPage.ExercisesPageFilter.Form.submitButtonLabel'
+              )}
             </Button>
           </CardFooter>
         </Card>

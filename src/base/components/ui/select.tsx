@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: any is needed for the option's value */
 import { CheckIcon, ChevronsUpDown } from 'lucide-react';
 import * as React from 'react';
 import { useId, useState } from 'react';
@@ -15,7 +16,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/base/components/ui/po
 import { cn } from '@/base/lib';
 
 export type SelectOption = {
-  value: string;
+  value: any;
   label: string;
   disabled?: boolean;
   description?: string;
@@ -50,17 +51,17 @@ type SelectProps = {
       /** Allow the select to select multiple values */
       multiple?: false;
       /** Currently selected value */
-      value?: string;
+      value?: any;
       /** Callback when selection changes */
-      onChange?: (value: string | undefined) => void;
+      onChange?: (value: any | undefined) => void;
     }
   | {
       /** Allow the select to select multiple values */
       multiple: true;
       /** Currently selected values */
-      value?: string[];
+      value?: any[];
       /** Callback when selection changes */
-      onChange?: (value: string[]) => void;
+      onChange?: (value: any[]) => void;
     }
 );
 
@@ -83,25 +84,29 @@ export function Select({
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(() => {
     if (value && !multiple) {
-      return value as string;
+      return value;
     }
     return undefined;
   });
   const [selectedValues, setSelectedValues] = useState(() => {
     if (value && multiple) {
-      return value as string[];
+      return value as any[];
     }
     return [];
   });
   const [selectedOption, setSelectedOption] = useState<SelectOption | undefined>(() => {
     if (value && !multiple) {
-      const selected = options.find((option) => option.value === value);
+      const selected = options.find(
+        (option) => JSON.stringify(option.value) === JSON.stringify(value)
+      );
       return selected;
     }
   });
   const [selectedOptions, setSelectedOptions] = useState<SelectOption[]>(() => {
     if (value && multiple) {
-      const selected = options.filter((option) => (value as string[]).includes(option.value));
+      const selected = options.filter((option) =>
+        (value as any[]).map((val) => JSON.stringify(val)).includes(JSON.stringify(option.value))
+      );
       return selected;
     }
 
@@ -113,32 +118,39 @@ export function Select({
 
   const handleSelect = (currentValue: string) => {
     if (!multiple) {
-      const newValue = clearable && currentValue === selectedValue ? undefined : currentValue;
+      const newValue =
+        clearable && currentValue === JSON.stringify(selectedValue)
+          ? undefined
+          : JSON.parse(currentValue);
       setSelectedValue(newValue);
-      setSelectedOption(options.find((option) => option.value === newValue));
+      setSelectedOption(
+        options.find((option) => JSON.stringify(option.value) === JSON.stringify(newValue))
+      );
+      setSearchTerm('');
       onChange?.(newValue);
       setOpen(false);
       return;
     }
 
     const newValues =
-      clearable && selectedValues.includes(currentValue)
+      clearable && selectedValues.map((val) => JSON.stringify(val)).includes(currentValue)
         ? selectedValues.filter((val) => val !== currentValue)
-        : [...selectedValues, currentValue];
+        : [...selectedValues, JSON.parse(currentValue)];
     setSelectedValues(newValues);
 
     setSelectedOptions(
-      clearable && selectedOptions.some((opt) => opt.value === currentValue)
-        ? selectedOptions.filter((opt) => opt.value !== currentValue)
+      clearable && selectedOptions.some((opt) => JSON.stringify(opt.value) === currentValue)
+        ? selectedOptions.filter((opt) => JSON.stringify(opt.value) !== currentValue)
         : [
             ...selectedOptions,
-            options.find((opt) => opt.value === currentValue) ?? {
-              value: currentValue,
+            options.find((opt) => JSON.stringify(opt.value) === currentValue) ?? {
+              value: JSON.parse(currentValue),
               label: currentValue,
             },
           ]
     );
 
+    setSearchTerm('');
     onChange?.(newValues);
   };
 
@@ -161,35 +173,13 @@ export function Select({
           )}
           disabled={disabled}
         >
-          {(() => {
-            if (multiple) return null;
-
-            if (selectedOption) return getDisplayValue(selectedOption);
-
-            return placeholder;
-          })()}
-          {(() => {
-            if (!multiple) return null;
-            if (selectedOptions.length === 0) return placeholder;
-
-            if (selectedOptions.length === 1)
-              return <span>{getDisplayValue(selectedOptions[0])}</span>;
-
-            if (selectedOptions.length === 2)
-              return (
-                <span>
-                  {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}
-                </span>
-              );
-
-            if (selectedOptions.length > 2)
-              return (
-                <span>
-                  {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}, and{' '}
-                  {selectedOptions.length - 2} more...
-                </span>
-              );
-          })()}
+          <SelectTriggerContent
+            getDisplayValue={getDisplayValue}
+            multiple={!!multiple}
+            placeholder={placeholder}
+            selectedOption={selectedOption}
+            selectedOptions={selectedOptions}
+          />
           <ChevronsUpDown className='opacity-50' />
         </Button>
       </PopoverTrigger>
@@ -221,7 +211,7 @@ export function Select({
                 .map((option) => (
                   <CommandItem
                     key={`${id}-option-${option.value}`}
-                    value={option.value}
+                    value={JSON.stringify(option.value)}
                     onSelect={handleSelect}
                     className='rounded-xl'
                   >
@@ -229,8 +219,12 @@ export function Select({
                     <CheckIcon
                       className={cn('ml-auto h-3 w-3 opacity-0', {
                         'opacity-100':
-                          (!multiple && selectedValue === option.value) ||
-                          (multiple && selectedValues.includes(option.value)),
+                          (!multiple &&
+                            JSON.stringify(selectedValue) === JSON.stringify(option.value)) ||
+                          (multiple &&
+                            selectedValues
+                              .map((val) => JSON.stringify(val))
+                              .includes(JSON.stringify(option.value))),
                       })}
                     />
                   </CommandItem>
@@ -240,5 +234,39 @@ export function Select({
         </Command>
       </PopoverContent>
     </Popover>
+  );
+}
+
+interface SelectTriggerContentProps
+  extends Required<Pick<SelectProps, 'multiple' | 'getDisplayValue' | 'placeholder'>> {
+  selectedOption: SelectOption | undefined;
+  selectedOptions: SelectOption[];
+}
+
+function SelectTriggerContent({
+  multiple,
+  getDisplayValue,
+  placeholder,
+  selectedOption,
+  selectedOptions,
+}: SelectTriggerContentProps) {
+  if (!multiple) return selectedOption ? getDisplayValue(selectedOption) : placeholder;
+
+  if (selectedOptions.length === 0) return placeholder;
+
+  if (selectedOptions.length === 1) return <span>{getDisplayValue(selectedOptions[0])}</span>;
+
+  if (selectedOptions.length === 2)
+    return (
+      <span>
+        {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}
+      </span>
+    );
+
+  return (
+    <span>
+      {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}, and{' '}
+      {selectedOptions.length - 2} more...
+    </span>
   );
 }

@@ -7,6 +7,7 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios';
 
+import { env } from '@/base/lib';
 import { getTokensFromCookie } from '@/modules/auth/utils/get-tokens-from-cookie.util';
 
 export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
@@ -43,7 +44,7 @@ export class HttpClient {
         'Content-Type': 'application/json',
         ...headers,
       },
-      baseURL: import.meta.env.VITE_API_URL,
+      baseURL: env.VITE_API_URL,
       timeout: 10000,
       ...otherAxiosConfig,
     });

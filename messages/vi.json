@@ -216,14 +216,47 @@
           "exerciseSearchPlaceholder": "Tìm kiếm bài tập...",
           "topicSearchTitle": "Chủ đề",
           "topicSearchPlaceholder": "Chọn chủ đề...",
-          "clearSearch": "Xóa tìm kiếm",
-          "applySearch": "Áp dụng",
           "leaderboard": "Bảng xếp hạng",
           "leaderboardViewMore": "Xem thêm...",
           "leaderboardOrdinalNumberColumn": "STT",
           "leaderboardStudentColumn": "Sinh viên",
-          "leaderboardAcceptedColumn": "Đã hoàn thành"
+          "leaderboardAcceptedColumn": "Đã hoàn thành",
+          "ExercisesPageFilter": {
+            "clearSearch": "Xóa tìm kiếm",
+            "Form": {
+              "fields": {
+                "title": {
+                  "placeholder": "Tìm kiếm bài tập..."
+                },
+                "topicId": {
+                  "label": "Chủ đề",
+                  "placeholder": "Chọn chủ đề..."
+                }
+              },
+              "submitButtonLabel": "Áp dụng"
+            }
+          }
         }
+      },
+      "ExerciseDetailsPage": {
+        "notFoundTitle": "Không tìm thấy Bài tập",
+        "report": "Báo cáo",
+        "runCode": "Chạy thử code",
+        "submitCode": "Nộp code",
+        "author": "Tác giả",
+        "topics": "Chủ đề",
+        "timeLimit": "Giới hạn thời gian",
+        "memoryLimit": "Giới hạn bộ nhớ",
+        "allSubmissions": "Tất cả bài nộp",
+        "bestSubmissions": "Các bài nộp tốt nhất",
+        "inputRequirements": "Yêu cầu đầu vào",
+        "outputRequirements": "Yêu cầu đầu ra",
+        "examples": "Ví dụ"
+      },
+      "ExerciseNotFoundPage": {
+        "pageTitle": "Không tìm thấy Bài tập",
+        "title": "Oops! Bài tập bạn đang tìm kiếm hiện không có",
+        "backToExercisesPage": "Về trang Danh sách bài tập"
       }
     },
     "groups": {
@@ -266,6 +299,33 @@
         },
         "SubmissionsChart": {
           "label": "Lượt nộp bài"
+        },
+        "RunCodeResultCard": {
+          "successTitle": "Xin chúc mừng!",
+          "successDescription": "Bạn đã vượt qua tất cả các test case. Nhấn nút Nộp code để chạy code với tất cả các test case.",
+          "failedTitle": "Rất tiếc! Một số test case đã thất bại.",
+          "failedDescription": "{passedTestCases}/{totalTestCases} test case đã vượt qua.",
+          "result": "Kết quả",
+          "compilerMessage": "Thông báo biên dịch",
+          "stderr": "Lỗi (stderr)",
+          "input": "Đầu vào (stdin)",
+          "yourOutput": "Đầu ra của bạn",
+          "expectedOutput": "Đầu ra mong đợi"
+        },
+        "SubmissionResultCard": {
+          "gradingTitle": "Đang chấm điểm...",
+          "gradingDescription": "Code của bạn đã được nộp thành công và đang trong quá trình chấm điểm. Vui lòng chờ trong giây lát!",
+          "successTitle": "Xin chúc mừng!",
+          "successDescription": "Bạn đã hoàn thành bài tập này!",
+          "failedTitle": "Rất tiếc! Một số test case đã không vượt qua!",
+          "failedDescription": "{passedTestCases}/{totalTestCases} test case đã vượt qua. Vui lòng kiểm tra lại code của bạn và thử lại.",
+          "graded": "Đã chấm {gradedTestCases}/{totalTestCases}",
+          "result": "Kết quả",
+          "compilerMessage": "Thông báo biên dịch",
+          "stderr": "Lỗi (stderr)",
+          "input": "Đầu vào (stdin)",
+          "yourOutput": "Đầu ra của bạn",
+          "hiddenTestCase": "Test case ẩn"
         }
       },
       "pages": {
@@ -287,6 +347,15 @@
           "invalidReturn": "Invalid Return - Giá trị trả về không hợp lệ",
           "compilationError": "Compilation Error - Lỗi biên dịch",
           "statistics": "Thống kê"
+        }
+      }
+    },
+    "test-case": {
+      "components": {
+        "ExampleTestCaseCard": {
+          "input": "Đầu vào",
+          "output": "Đầu ra",
+          "note": "Ghi chú"
         }
       }
     },
