@@ -299,6 +299,33 @@
         },
         "SubmissionsChart": {
           "label": "Lượt nộp bài"
+        },
+        "RunCodeResultCard": {
+          "successTitle": "Xin chúc mừng!",
+          "successDescription": "Bạn đã vượt qua tất cả các test case. Nhấn nút Nộp code để chạy code với tất cả các test case.",
+          "failedTitle": "Rất tiếc! Một số test case đã thất bại.",
+          "failedDescription": "{passedTestCases}/{totalTestCases} test case đã vượt qua.",
+          "result": "Kết quả",
+          "compilerMessage": "Thông báo biên dịch",
+          "stderr": "Lỗi (stderr)",
+          "input": "Đầu vào (stdin)",
+          "yourOutput": "Đầu ra của bạn",
+          "expectedOutput": "Đầu ra mong đợi"
+        },
+        "SubmissionResultCard": {
+          "gradingTitle": "Đang chấm điểm...",
+          "gradingDescription": "Code của bạn đã được nộp thành công và đang trong quá trình chấm điểm. Vui lòng chờ trong giây lát!",
+          "successTitle": "Xin chúc mừng!",
+          "successDescription": "Bạn đã hoàn thành bài tập này!",
+          "failedTitle": "Rất tiếc! Một số test case đã không vượt qua!",
+          "failedDescription": "{passedTestCases}/{totalTestCases} test case đã vượt qua. Vui lòng kiểm tra lại code của bạn và thử lại.",
+          "graded": "Đã chấm {gradedTestCases}/{totalTestCases}",
+          "result": "Kết quả",
+          "compilerMessage": "Thông báo biên dịch",
+          "stderr": "Lỗi (stderr)",
+          "input": "Đầu vào (stdin)",
+          "yourOutput": "Đầu ra của bạn",
+          "hiddenTestCase": "Test case ẩn"
         }
       },
       "pages": {

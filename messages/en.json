@@ -307,6 +307,34 @@
         },
         "SubmissionsChart": {
           "label": "Submissions"
+        },
+        "RunCodeResultCard": {
+          "successTitle": "Congratulations!",
+          "successDescription": "You have passed the sample test cases. Click the Submit Code button to run your code against all the test cases.",
+          "failedTitle": "Sorry! Some test cases did not pass!",
+          "failedDescription": "{passedTestCases}/{totalTestCases} test cases passed.",
+          "result": "Result",
+          "compilerMessage": "Compiler Message",
+          "stderr": "Error (stderr)",
+          "input": "Input (stdin)",
+          "yourOutput": "Your Output",
+          "expectedOutput": "Expected Output"
+        },
+        "SubmissionResultCard": {
+          "gradingTitle": "Grading in progress...",
+          "gradingDescription": "Your code has been submitted successfully and is currently being graded. Please wait!",
+          "successTitle": "Congratulations!",
+          "successDescription": "You have finished this exercise!",
+          "failedTitle": "Sorry! Some test cases did not pass!",
+          "failedDescription": "{passedTestCases}/{totalTestCases} test cases passed. Please check your code and try again.",
+          "graded": "{gradedTestCases}/{totalTestCases} graded.",
+          "result": "Result",
+          "compilerMessage": "Compiler Message",
+          "stderr": "Error (stderr)",
+          "input": "Input (stdin)",
+          "yourOutput": "Your Output",
+          "expectedOutput": "Expected Output",
+          "hiddenTestCase": "This test case is hidden"
         }
       },
       "pages": {
