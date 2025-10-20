@@ -1,5 +1,6 @@
 import CodeEditor from '@monaco-editor/react';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError, HttpStatusCode } from 'axios';
 import { MoonIcon, PlayIcon, SendIcon, SunIcon } from 'lucide-react';
 import { RefObject, useRef, useState } from 'react';
 
@@ -19,8 +20,9 @@ import { submissionsService } from '@/modules/submissions/services/submissions.s
 import {
   CreateSubmissionPayload,
   createSubmissionSchema,
+  RunCodePayload,
   RunCodeResult,
-  SubmissionResult,
+  Submission,
 } from '@/modules/submissions/types';
 
 interface ExerciseSubmissionProps {
@@ -36,13 +38,10 @@ export function ExerciseSubmission({ ref, exercise }: ExerciseSubmissionProps) {
   const [theme, setTheme] = useLocalStorage<'light' | 'vs-dark'>('MONACO_EDITOR_THEME', 'light');
   const [selectedLang, setSelectedLang] = useState(programmingLanguages[0]);
   const [runCodeResult, setRunCodeResult] = useState<RunCodeResult>();
-  const [submissionResult, setSubmissionResult] = useState<SubmissionResult>();
-
-  const [runCodeResultCardVersion, setRunCodeResultCardVersion] = useState(0);
-  const [submissionResultCardVersion, setSubmissionResultCardVersion] = useState(0);
+  const [submission, setSubmission] = useState<Submission>();
 
   const { mutate: triggerRunCode, isPending: isRunningCode } = useMutation({
-    mutationFn: (payload: Omit<CreateSubmissionPayload, 'exerciseId'>) =>
+    mutationFn: (payload: Omit<RunCodePayload, 'exerciseId'>) =>
       submissionsService.runCode({
         exerciseId: exercise.id,
         ...payload,
@@ -53,6 +52,15 @@ export function ExerciseSubmission({ ref, exercise }: ExerciseSubmissionProps) {
         runCodeResultRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
     },
+    onError: (error) => {
+      if (error instanceof AxiosError && error.status === HttpStatusCode.Forbidden) {
+        submissionFormRef.current?.setError('turnstileToken', {
+          message: getTranslation(
+            'modules.submissions.components.ExerciseSubmission.Form.fields.turnstileToken.errors.too_small'
+          ),
+        });
+      }
+    },
   });
 
   const { mutate: triggerSubmitCode, isPending: isSubmittingCode } = useMutation({
@@ -62,28 +70,35 @@ export function ExerciseSubmission({ ref, exercise }: ExerciseSubmissionProps) {
         ...payload,
       }),
     onSuccess: ({ data }) => {
-      setSubmissionResult(data);
+      setSubmission(data);
       setTimeout(() => {
         submissionResultRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
     },
+    onError: (error) => {
+      if (error instanceof AxiosError && error.status === HttpStatusCode.Forbidden) {
+        submissionFormRef.current?.setError('turnstileToken', {
+          message: getTranslation(
+            'modules.submissions.components.ExerciseSubmission.Form.fields.turnstileToken.errors.too_small'
+          ),
+        });
+      }
+    },
   });
 
   const handleRunCode = async () => {
-    setRunCodeResultCardVersion((prev) => prev + 1);
-    setSubmissionResult(undefined);
+    setSubmission(undefined);
     setRunCodeResult(undefined);
-    await submissionFormRef.current?.submit();
-    const payload = submissionFormRef.current?.getValues() as Required<
-      Omit<CreateSubmissionPayload, 'exerciseId'>
+    await submissionFormRef.current?.trigger(['sourceCode', 'languageCode']);
+    const { sourceCode, languageCode } = submissionFormRef.current?.getValues() as Required<
+      Omit<RunCodePayload, 'exerciseId'>
     >;
-    triggerRunCode(payload);
+    triggerRunCode({ sourceCode, languageCode });
   };
 
   const handleSubmitCode = async () => {
-    setSubmissionResultCardVersion((prev) => prev + 1);
     setRunCodeResult(undefined);
-    setSubmissionResult(undefined);
+    setSubmission(undefined);
     await submissionFormRef.current?.submit();
     const payload = submissionFormRef.current?.getValues() as Required<
       Omit<CreateSubmissionPayload, 'exerciseId'>
@@ -95,6 +110,7 @@ export function ExerciseSubmission({ ref, exercise }: ExerciseSubmissionProps) {
     <>
       <Card className='exercise-submission pt-0 overflow-hidden' ref={ref}>
         <Form
+          className='gap-0'
           ref={submissionFormRef}
           schema={createSubmissionSchema.omit({ exerciseId: true })}
           fields={[
@@ -113,9 +129,14 @@ export function ExerciseSubmission({ ref, exercise }: ExerciseSubmissionProps) {
               render: ({ Control, Message }) => (
                 <>
                   <Control />
-                  <Message />
+                  <Message className='px-6' />
                 </>
               ),
+            },
+            {
+              name: 'turnstileToken',
+              type: 'turnstile',
+              className: 'px-6',
             },
           ]}
           defaultValues={{
@@ -151,7 +172,7 @@ export function ExerciseSubmission({ ref, exercise }: ExerciseSubmissionProps) {
             onClick={handleRunCode}
           >
             <PlayIcon />
-            {getTranslation('modules.exercises.ExerciseDetailsPage.runCode')}
+            {getTranslation('modules.submissions.components.ExerciseSubmission.runCode')}
           </Button>
           <Button
             variant='success'
@@ -160,22 +181,15 @@ export function ExerciseSubmission({ ref, exercise }: ExerciseSubmissionProps) {
             onClick={handleSubmitCode}
           >
             <SendIcon />
-            {getTranslation('modules.exercises.ExerciseDetailsPage.submitCode')}
+            {getTranslation('modules.submissions.components.ExerciseSubmission.submitCode')}
           </Button>
         </CardFooter>
       </Card>
-      {runCodeResult && (
-        <RunCodeResultCard
-          key={runCodeResultCardVersion}
-          runCodeResult={runCodeResult}
-          ref={runCodeResultRef}
-        />
-      )}
-      {submissionResult && (
+      {runCodeResult && <RunCodeResultCard runCodeResult={runCodeResult} ref={runCodeResultRef} />}
+      {submission && (
         <SubmissionResultCard
-          key={submissionResultCardVersion}
           exerciseId={exercise.id}
-          submissionResult={submissionResult}
+          submission={submission}
           ref={submissionResultRef}
         />
       )}

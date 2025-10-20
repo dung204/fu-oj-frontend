@@ -4,6 +4,7 @@ import { z } from 'zod';
 const raw = {
   VITE_API_URL: import.meta.env.VITE_API_URL,
   VITE_WS_URL: import.meta.env.VITE_WS_URL,
+  VITE_TURNSTILE_SITE_KEY: import.meta.env.VITE_TURNSTILE_SITE_KEY,
 };
 
 const envSchema = z.object({
@@ -11,6 +12,7 @@ const envSchema = z.object({
   VITE_WS_URL: z
     .string()
     .refine((v) => /^wss?:\/\//.test(v), { message: 'Invalid WS URL (expected ws:// or wss://)' }),
+  VITE_TURNSTILE_SITE_KEY: z.string().nonempty(),
 });
 
 const parsed = envSchema.safeParse(raw);

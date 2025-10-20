@@ -38,6 +38,7 @@ import { Switch } from '@/base/components/ui/switch';
 import { Textarea } from '@/base/components/ui/textarea';
 import { TimePicker } from '@/base/components/ui/time-picker';
 import { TimeRangePicker } from '@/base/components/ui/time-range-picker';
+import { Turnstile } from '@/base/components/ui/turnstile';
 import { cn } from '@/base/lib';
 import { getTranslation, hasTranslationKey, withProps } from '@/base/utils';
 
@@ -389,6 +390,11 @@ type FormFieldSpec<TFieldValues extends FieldValues = FieldValues> = {
       render?: FormFieldRenderFn<{}>;
     } & Omit<React.ComponentProps<typeof ImageUploader>, 'images' | 'onImagesChange' | 'render'>)
   | {
+      type: 'turnstile';
+      /** Error message to display when turnstile automatic verification fails */
+      errorMessage?: string;
+    }
+  | {
       type: 'custom';
       controlRender: (
         props: UseControllerReturn & {
@@ -491,6 +497,17 @@ function Form<TFieldValues extends FieldValues, TTransformedValues>({
               ? getTranslation(`${i18nNamespace}.fields.${formField.name}.description`)
               : null;
 
+          if (formField.type === 'turnstile') {
+            return (
+              <FormField key={formField.name} name={formField.name}>
+                <FormItem i18nNamespace={i18nNamespace} className={formField.className}>
+                  <Control formField={formField} disabled={loading || formField.disabled} />
+                  <Message />
+                </FormItem>
+              </FormField>
+            );
+          }
+
           return (
             <FormField key={formField.name} name={formField.name}>
               <FormItem i18nNamespace={i18nNamespace} className={formField.className}>
@@ -591,6 +608,9 @@ function getFormControl(formField: FormFieldSpec) {
 
     case 'image':
       return ImageFormControl;
+
+    case 'turnstile':
+      return TurnstileFormControl;
 
     case 'custom':
       return CustomFormControl;
@@ -1075,6 +1095,26 @@ function ImageFormControl({ formField }: { formField: Extract<FormFieldSpec, { t
         onImagesChange={onChange}
         render={formField.controlRender}
       />
+    </FormControl>
+  );
+}
+
+function TurnstileFormControl({
+  formField,
+}: {
+  formField: Extract<FormFieldSpec, { type: 'turnstile' }>;
+}) {
+  const form = useFormContext();
+  const {
+    field: { onChange },
+  } = useController({
+    name: formField.name,
+    control: form.control,
+  });
+
+  return (
+    <FormControl>
+      <Turnstile onSuccess={onChange} />
     </FormControl>
   );
 }

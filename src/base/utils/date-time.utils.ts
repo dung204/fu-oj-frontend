@@ -1,3 +1,5 @@
+import { getLocale } from '@/i18n/runtime';
+
 const ONE_SECOND_IN_MS = 1000;
 const ONE_MINUTE_IN_MS = 60000;
 const ONE_HOUR_IN_MS = 3.6e6;
@@ -48,4 +50,10 @@ export function formatRelativeTime(date: Date, locales?: Intl.LocalesArgument) {
   }
 
   return new Intl.RelativeTimeFormat(locales, { style: 'long' }).format(smallestRelativeTime, unit);
+}
+
+export function formatDateTimeOfCurrentLocale(date: Date, options?: Intl.DateTimeFormatOptions) {
+  const locale = getLocale();
+
+  return Intl.DateTimeFormat(locale, options).format(date);
 }

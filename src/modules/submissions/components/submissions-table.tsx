@@ -10,22 +10,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/base/components/ui/table';
-import { getTranslation } from '@/base/utils';
+import { formatDateTimeOfCurrentLocale, getTranslation } from '@/base/utils';
+import { Submission } from '@/modules/submissions/types';
 
-// biome-ignore lint/suspicious/noEmptyInterface: the exercises props will be added later
 interface SubmissionsTableProps {
-  // TODO: uncomment when Submission type is defined
-  // submissions: Submission[];
+  submissions: Submission[];
 }
 
-export function SubmissionsTable(_: SubmissionsTableProps) {
+export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
   return (
     <Table className='overflow-hidden rounded-lg'>
       <TableHeader>
         <TableRow className='bg-primary/20 hover:bg-primary/30 transition-colors'>
-          <TableHead>
-            {getTranslation('modules.submissions.components.SubmissionsTable.id')}
-          </TableHead>
           <TableHead>
             {getTranslation('modules.submissions.components.SubmissionsTable.submissionTime')}
           </TableHead>
@@ -51,11 +47,27 @@ export function SubmissionsTable(_: SubmissionsTableProps) {
       </TableHeader>
       <TableBody>
         {/* TODO: Render the submissions data */}
-        <TableRow>
-          <TableCell colSpan={8}>
-            <SubmissionsTableEmpty />
-          </TableCell>
-        </TableRow>
+        {submissions.length === 0 ? (
+          <TableRow>
+            <TableCell colSpan={7}>
+              <SubmissionsTableEmpty />
+            </TableCell>
+          </TableRow>
+        ) : (
+          submissions.map((submission) => (
+            <TableRow key={submission.id}>
+              <TableCell>{formatDateTimeOfCurrentLocale(submission.createdTimestamp)}</TableCell>
+              <TableCell>
+                {submission.user.firstName} {submission.user.lastName}
+              </TableCell>
+              <TableCell>{submission.verdict}</TableCell>
+              <TableCell>{submission.exercise.title}</TableCell>
+              <TableCell>{submission.time}</TableCell>
+              <TableCell>{submission.memory}</TableCell>
+              <TableCell>{submission.language}</TableCell>
+            </TableRow>
+          ))
+        )}
       </TableBody>
     </Table>
   );
@@ -81,9 +93,6 @@ export function SubmissionsTableSkeleton() {
     <Table className='overflow-hidden rounded-lg'>
       <TableHeader>
         <TableRow className='bg-primary/20 hover:bg-primary/30 transition-colors'>
-          <TableHead>
-            {getTranslation('modules.submissions.components.SubmissionsTable.id')}
-          </TableHead>
           <TableHead>
             {getTranslation('modules.submissions.components.SubmissionsTable.submissionTime')}
           </TableHead>
@@ -111,9 +120,6 @@ export function SubmissionsTableSkeleton() {
         {Array.from({ length: 20 }).map((_, index) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: index is fine here, it's static list
           <TableRow key={`exercise-skeleton-${index}`}>
-            <TableCell>
-              <Skeleton className='h-[1lh] w-[5ch]' />
-            </TableCell>
             <TableCell>
               <Skeleton className='h-[1lh] w-[10ch]' />
             </TableCell>

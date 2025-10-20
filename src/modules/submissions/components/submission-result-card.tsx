@@ -18,26 +18,23 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/base/components/ui/t
 import { cn, stompClient } from '@/base/lib';
 import { getTranslation } from '@/base/utils';
 import { formatMemory, formatNumberToCurrentLocale } from '@/base/utils/number.utils';
-import { SubmissionResult } from '@/modules/submissions/types';
+import { Submission } from '@/modules/submissions/types';
 import { TestCaseResult, testCaseResultSchema } from '@/modules/test-cases/types';
 
 interface SubmissionResultCardProps {
   exerciseId: string;
-  submissionResult: SubmissionResult;
+  submission: Submission;
   ref?: Ref<HTMLDivElement>;
 }
 
-export function SubmissionResultCard({
-  submissionResult: initialSubmissionResult,
-  ref,
-}: SubmissionResultCardProps) {
+export function SubmissionResultCard({ submission, ref }: SubmissionResultCardProps) {
   const { user } = useRouteContext({
     from: '/_authed/exercises/$exerciseId/',
   });
   const [submissionResult, setSubmissionResult] = useState<
-    SubmissionResult & { testCaseResults: Record<string, TestCaseResult> }
+    Submission & { testCaseResults: Record<string, TestCaseResult> }
   >({
-    ...initialSubmissionResult,
+    ...submission,
     testCaseResults: {},
   });
 
@@ -264,7 +261,9 @@ export function SubmissionResultCard({
 }
 
 function getTitle(
-  submissionResult: SubmissionResult & { testCaseResults: Record<string, TestCaseResult> }
+  submissionResult: Submission & {
+    testCaseResults: Record<string, TestCaseResult>;
+  }
 ) {
   if (Object.keys(submissionResult.testCaseResults).length !== submissionResult.totalTestCases) {
     return getTranslation('modules.submissions.components.SubmissionResultCard.gradingTitle');
@@ -278,7 +277,9 @@ function getTitle(
 }
 
 function getDescription(
-  submissionResult: SubmissionResult & { testCaseResults: Record<string, TestCaseResult> }
+  submissionResult: Submission & {
+    testCaseResults: Record<string, TestCaseResult>;
+  }
 ) {
   if (Object.keys(submissionResult.testCaseResults).length !== submissionResult.totalTestCases) {
     return getTranslation('modules.submissions.components.SubmissionResultCard.gradingDescription');

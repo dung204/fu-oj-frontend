@@ -286,6 +286,19 @@
     },
     "submissions": {
       "components": {
+        "ExerciseSubmission": {
+          "runCode": "Chạy thử code",
+          "submitCode": "Nộp code",
+          "Form": {
+            "fields": {
+              "turnstileToken": {
+                "errors": {
+                  "too_small": "Xin lỗi! Bạn không phải là con người, bạn không thể chạy thử/nộp code."
+                }
+              }
+            }
+          }
+        },
         "SubmissionsTable": {
           "id": "ID",
           "submissionTime": "Thời gian nộp",

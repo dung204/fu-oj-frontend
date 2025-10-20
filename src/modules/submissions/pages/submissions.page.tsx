@@ -1,17 +1,31 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { ChartPieIcon, CircleXIcon, CodeXmlIcon, FilterIcon } from 'lucide-react';
 
 import { Button } from '@/base/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/base/components/ui/card';
 import { Select } from '@/base/components/ui/select';
-import { PaginationSkeleton } from '@/base/layouts/pagination';
+import { Pagination, PaginationSkeleton } from '@/base/layouts/pagination';
 import { getTranslation } from '@/base/utils';
 import { SubmissionsChart } from '@/modules/submissions/components/submissions-chart';
 import {
   SubmissionsTable,
   SubmissionsTableSkeleton,
 } from '@/modules/submissions/components/submissions-table';
+import { SubmissionsSearchParams } from '@/modules/submissions/types';
+import { submissionsQueryOptions } from '@/modules/submissions/utils/submissions-query-options.util';
 
-export function SubmissionsPage() {
+interface SubmissionsPageProps {
+  searchParams: SubmissionsSearchParams;
+}
+
+export function SubmissionsPage({ searchParams }: SubmissionsPageProps) {
+  const {
+    data: {
+      data: submissions,
+      metadata: { pagination },
+    },
+  } = useSuspenseQuery(submissionsQueryOptions(searchParams));
+
   return (
     <div className='grid gap-4 grid-cols-4'>
       <section className='col-span-3 flex flex-col gap-4'>
@@ -21,10 +35,10 @@ export function SubmissionsPage() {
         <hr className='border-b border-border' />
         <Card>
           <CardContent>
-            <SubmissionsTable />
+            <SubmissionsTable submissions={submissions} />
           </CardContent>
           <CardFooter>
-            <PaginationSkeleton />
+            <Pagination pagination={pagination} />
           </CardFooter>
         </Card>
       </section>

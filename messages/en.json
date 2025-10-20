@@ -294,6 +294,19 @@
     },
     "submissions": {
       "components": {
+        "ExerciseSubmission": {
+          "runCode": "Run code",
+          "submitCode": "Submit code",
+          "Form": {
+            "fields": {
+              "turnstileToken": {
+                "errors": {
+                  "too_small": "Sorry! You are not a human, you can not run/submit your code."
+                }
+              }
+            }
+          }
+        },
         "SubmissionsTable": {
           "id": "ID",
           "submissionTime": "Submission Time",
