@@ -54,7 +54,12 @@ export const del = async (path: string, options: object = {}) => {
 };
 
 export const deleteById = async (path: string, id: number) => {
-  const res = await httpRequest.delete(`${path}?id=${id}`, { data: { id } });
+  const res = await httpRequest.delete(`${path}/${id}`, { data: { id } });
+  return res.data;
+};
+
+export const patch = async (path: string, data: object, options: object = {}) => {
+  const res = await httpRequest.patch(path, data, options);
   return res.data;
 };
 

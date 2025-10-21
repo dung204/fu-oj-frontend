@@ -14,6 +14,7 @@ import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthedTopicsIndexRouteImport } from './routes/_authed/topics.index'
 import { Route as AuthedSubmissionsIndexRouteImport } from './routes/_authed/submissions.index'
 import { Route as AuthedProfileIndexRouteImport } from './routes/_authed/profile.index'
 import { Route as AuthedLeaderboardIndexRouteImport } from './routes/_authed/leaderboard.index'
@@ -43,6 +44,11 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AuthRoute,
+} as any)
+const AuthedTopicsIndexRoute = AuthedTopicsIndexRouteImport.update({
+  id: '/topics/',
+  path: '/topics/',
+  getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedSubmissionsIndexRoute = AuthedSubmissionsIndexRouteImport.update({
   id: '/submissions/',
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/leaderboard': typeof AuthedLeaderboardIndexRoute
   '/profile': typeof AuthedProfileIndexRoute
   '/submissions': typeof AuthedSubmissionsIndexRoute
+  '/topics': typeof AuthedTopicsIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/leaderboard': typeof AuthedLeaderboardIndexRoute
   '/profile': typeof AuthedProfileIndexRoute
   '/submissions': typeof AuthedSubmissionsIndexRoute
+  '/topics': typeof AuthedTopicsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/_authed/leaderboard/': typeof AuthedLeaderboardIndexRoute
   '/_authed/profile/': typeof AuthedProfileIndexRoute
   '/_authed/submissions/': typeof AuthedSubmissionsIndexRoute
+  '/_authed/topics/': typeof AuthedTopicsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/leaderboard'
     | '/profile'
     | '/submissions'
+    | '/topics'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/leaderboard'
     | '/profile'
     | '/submissions'
+    | '/topics'
   id:
     | '__root__'
     | '/_authed'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/_authed/leaderboard/'
     | '/_authed/profile/'
     | '/_authed/submissions/'
+    | '/_authed/topics/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -183,6 +195,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
+    }
+    '/_authed/topics/': {
+      id: '/_authed/topics/'
+      path: '/topics'
+      fullPath: '/topics'
+      preLoaderRoute: typeof AuthedTopicsIndexRouteImport
+      parentRoute: typeof AuthedRoute
     }
     '/_authed/submissions/': {
       id: '/_authed/submissions/'
@@ -229,6 +248,7 @@ interface AuthedRouteChildren {
   AuthedLeaderboardIndexRoute: typeof AuthedLeaderboardIndexRoute
   AuthedProfileIndexRoute: typeof AuthedProfileIndexRoute
   AuthedSubmissionsIndexRoute: typeof AuthedSubmissionsIndexRoute
+  AuthedTopicsIndexRoute: typeof AuthedTopicsIndexRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
@@ -238,6 +258,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedLeaderboardIndexRoute: AuthedLeaderboardIndexRoute,
   AuthedProfileIndexRoute: AuthedProfileIndexRoute,
   AuthedSubmissionsIndexRoute: AuthedSubmissionsIndexRoute,
+  AuthedTopicsIndexRoute: AuthedTopicsIndexRoute,
 }
 
 const AuthedRouteWithChildren =

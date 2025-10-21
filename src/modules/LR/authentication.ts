@@ -6,6 +6,8 @@ import { toast } from 'sonner';
 
 import { globalStore } from '@/base/components/global/globalStore';
 
+import { setTokensToCookie } from '../auth/utils/set-tokens-to-cookie.util';
+
 const AUTH_TOKEN_KEY = 'authenticationToken';
 
 class Authentication {
@@ -38,7 +40,7 @@ class Authentication {
     this.loading = true;
     this.loginError = false;
     try {
-      const res: AxiosResponse = await axios.post('/api/v1/auth/login', {
+      const res: AxiosResponse = await axios.post('/auth/login', {
         email,
         password,
         // rememberMe
@@ -55,10 +57,12 @@ class Authentication {
       }
 
       await this.getAccount(); // lấy thông tin người dùng
+      await setTokensToCookie(res.data);
       runInAction(() => {
         this.loginSuccess = true;
         this.isAuthenticated = true;
         toast.success('Đăng nhập thành công');
+        window.location.href = '/';
         globalStore.setLROpen(false);
       });
     } catch (error: any) {
@@ -79,7 +83,7 @@ class Authentication {
   async getAccount() {
     this.loading = true;
     try {
-      const res = await axios.get('/api/v1/me/profile');
+      const res = await axios.get('/me/profile');
       runInAction(() => {
         this.account = res.data;
         this.isAuthenticated = !!res.data?.activated;
@@ -98,8 +102,8 @@ class Authentication {
     }
   }
 
-  logout() {
-    globalStore.setLROpen(true);
+  logout(openLR?: boolean) {
+    if (openLR) globalStore.setLROpen(true);
     localStorage.removeItem(AUTH_TOKEN_KEY);
     sessionStorage.removeItem(AUTH_TOKEN_KEY);
     delete axios.defaults.headers.common.Authorization;

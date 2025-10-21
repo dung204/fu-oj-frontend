@@ -50,6 +50,7 @@ const LRComponent = observer(() => {
       <Modal
         className='lr-modal'
         closable={{ 'aria-label': 'Custom Close Button' }}
+        // open={!authentication.isAuthenticated ? true : globalStore.isLROpen}
         open={globalStore.isLROpen}
         onOk={() => {}}
         onCancel={() => globalStore.setLROpen(false)}

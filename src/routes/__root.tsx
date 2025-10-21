@@ -14,7 +14,8 @@ import 'antd/dist/reset.css';
 
 import { GlobalComponent } from '@/base/components/global/GlobalComponent';
 import * as http from '@/base/lib/httpRequest';
-import authentication from '@/modules/LR/authentication';
+// import authentication from '@/modules/LR/authentication';
+import { authentication } from '@/modules/LR/authentication';
 
 setupAxiosInterceptors(() => {
   console.log('Token expired');
@@ -92,7 +93,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   useEffect(() => {
     authentication.getAccount();
 
-    http.post('/api/v1/auth/register', {
+    http.post('/auth/register', {
       email: 'admin@gmail.com',
       password: '123456',
     });
