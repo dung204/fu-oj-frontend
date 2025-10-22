@@ -50,7 +50,7 @@ import {
 import * as http from '@/base/lib/httpRequest';
 import { utils } from '@/base/lib/utils';
 
-export function Topic() {
+export function TopicManagementPage() {
   const [isDialogOpen, setOpenDialog] = React.useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [deleteTarget, setDeleteTarget] = React.useState<any>(null);

@@ -14,12 +14,13 @@ import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
-import { Route as AuthedTopicsIndexRouteImport } from './routes/_authed/topics.index'
+import { Route as AuthedAdminRouteImport } from './routes/_authed/_admin'
 import { Route as AuthedSubmissionsIndexRouteImport } from './routes/_authed/submissions.index'
 import { Route as AuthedProfileIndexRouteImport } from './routes/_authed/profile.index'
 import { Route as AuthedLeaderboardIndexRouteImport } from './routes/_authed/leaderboard.index'
 import { Route as AuthedGroupsIndexRouteImport } from './routes/_authed/groups.index'
 import { Route as AuthedExercisesIndexRouteImport } from './routes/_authed/exercises.index'
+import { Route as AuthedAdminTopicsIndexRouteImport } from './routes/_authed/_admin/topics.index'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -45,9 +46,8 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any)
-const AuthedTopicsIndexRoute = AuthedTopicsIndexRouteImport.update({
-  id: '/topics/',
-  path: '/topics/',
+const AuthedAdminRoute = AuthedAdminRouteImport.update({
+  id: '/_admin',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedSubmissionsIndexRoute = AuthedSubmissionsIndexRouteImport.update({
@@ -75,6 +75,11 @@ const AuthedExercisesIndexRoute = AuthedExercisesIndexRouteImport.update({
   path: '/exercises/',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedAdminTopicsIndexRoute = AuthedAdminTopicsIndexRouteImport.update({
+  id: '/topics/',
+  path: '/topics/',
+  getParentRoute: () => AuthedAdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
@@ -86,7 +91,7 @@ export interface FileRoutesByFullPath {
   '/leaderboard': typeof AuthedLeaderboardIndexRoute
   '/profile': typeof AuthedProfileIndexRoute
   '/submissions': typeof AuthedSubmissionsIndexRoute
-  '/topics': typeof AuthedTopicsIndexRoute
+  '/topics': typeof AuthedAdminTopicsIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
@@ -98,12 +103,13 @@ export interface FileRoutesByTo {
   '/leaderboard': typeof AuthedLeaderboardIndexRoute
   '/profile': typeof AuthedProfileIndexRoute
   '/submissions': typeof AuthedSubmissionsIndexRoute
-  '/topics': typeof AuthedTopicsIndexRoute
+  '/topics': typeof AuthedAdminTopicsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authed': typeof AuthedRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/_authed/_admin': typeof AuthedAdminRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/_authed/': typeof AuthedIndexRoute
@@ -112,7 +118,7 @@ export interface FileRoutesById {
   '/_authed/leaderboard/': typeof AuthedLeaderboardIndexRoute
   '/_authed/profile/': typeof AuthedProfileIndexRoute
   '/_authed/submissions/': typeof AuthedSubmissionsIndexRoute
-  '/_authed/topics/': typeof AuthedTopicsIndexRoute
+  '/_authed/_admin/topics/': typeof AuthedAdminTopicsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -143,6 +149,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authed'
     | '/auth'
+    | '/_authed/_admin'
     | '/auth/login'
     | '/auth/register'
     | '/_authed/'
@@ -151,7 +158,7 @@ export interface FileRouteTypes {
     | '/_authed/leaderboard/'
     | '/_authed/profile/'
     | '/_authed/submissions/'
-    | '/_authed/topics/'
+    | '/_authed/_admin/topics/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -196,11 +203,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_authed/topics/': {
-      id: '/_authed/topics/'
-      path: '/topics'
-      fullPath: '/topics'
-      preLoaderRoute: typeof AuthedTopicsIndexRouteImport
+    '/_authed/_admin': {
+      id: '/_authed/_admin'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthedAdminRouteImport
       parentRoute: typeof AuthedRoute
     }
     '/_authed/submissions/': {
@@ -238,27 +245,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedExercisesIndexRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/_admin/topics/': {
+      id: '/_authed/_admin/topics/'
+      path: '/topics'
+      fullPath: '/topics'
+      preLoaderRoute: typeof AuthedAdminTopicsIndexRouteImport
+      parentRoute: typeof AuthedAdminRoute
+    }
   }
 }
 
+interface AuthedAdminRouteChildren {
+  AuthedAdminTopicsIndexRoute: typeof AuthedAdminTopicsIndexRoute
+}
+
+const AuthedAdminRouteChildren: AuthedAdminRouteChildren = {
+  AuthedAdminTopicsIndexRoute: AuthedAdminTopicsIndexRoute,
+}
+
+const AuthedAdminRouteWithChildren = AuthedAdminRoute._addFileChildren(
+  AuthedAdminRouteChildren,
+)
+
 interface AuthedRouteChildren {
+  AuthedAdminRoute: typeof AuthedAdminRouteWithChildren
   AuthedIndexRoute: typeof AuthedIndexRoute
   AuthedExercisesIndexRoute: typeof AuthedExercisesIndexRoute
   AuthedGroupsIndexRoute: typeof AuthedGroupsIndexRoute
   AuthedLeaderboardIndexRoute: typeof AuthedLeaderboardIndexRoute
   AuthedProfileIndexRoute: typeof AuthedProfileIndexRoute
   AuthedSubmissionsIndexRoute: typeof AuthedSubmissionsIndexRoute
-  AuthedTopicsIndexRoute: typeof AuthedTopicsIndexRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedAdminRoute: AuthedAdminRouteWithChildren,
   AuthedIndexRoute: AuthedIndexRoute,
   AuthedExercisesIndexRoute: AuthedExercisesIndexRoute,
   AuthedGroupsIndexRoute: AuthedGroupsIndexRoute,
   AuthedLeaderboardIndexRoute: AuthedLeaderboardIndexRoute,
   AuthedProfileIndexRoute: AuthedProfileIndexRoute,
   AuthedSubmissionsIndexRoute: AuthedSubmissionsIndexRoute,
-  AuthedTopicsIndexRoute: AuthedTopicsIndexRoute,
 }
 
 const AuthedRouteWithChildren =
