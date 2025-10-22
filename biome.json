@@ -28,6 +28,7 @@
       "style": {
         "useImportType": "off",
         "noNestedTernary": "error",
+        "noNonNullAssertion": "off",
         "noRestrictedImports": {
           "level": "error",
           "options": {

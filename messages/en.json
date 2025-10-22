@@ -215,14 +215,47 @@
           "exerciseSearchPlaceholder": "Search exercises...",
           "topicSearchTitle": "Topic",
           "topicSearchPlaceholder": "Select topics...",
-          "clearSearch": "Clear search",
-          "applySearch": "Apply",
           "leaderboard": "Leaderboard",
           "leaderboardViewMore": "View more...",
           "leaderboardOrdinalNumberColumn": "#",
           "leaderboardStudentColumn": "Student",
-          "leaderboardAcceptedColumn": "Accepted"
+          "leaderboardAcceptedColumn": "Accepted",
+          "ExercisesPageFilter": {
+            "clearSearch": "Clear search",
+            "Form": {
+              "fields": {
+                "title": {
+                  "placeholder": "Search exercises..."
+                },
+                "topicId": {
+                  "label": "Topic",
+                  "placeholder": "Select topic..."
+                }
+              },
+              "submitButtonLabel": "Apply"
+            }
+          }
         }
+      },
+      "ExerciseDetailsPage": {
+        "notFoundTitle": "Exercise Not Found",
+        "report": "Report",
+        "runCode": "Run code",
+        "submitCode": "Submit code",
+        "author": "Author",
+        "topics": "Topics",
+        "timeLimit": "Time limit",
+        "memoryLimit": "Memory limit",
+        "allSubmissions": "All submissions",
+        "bestSubmissions": "Best submissions",
+        "inputRequirements": "Input requirements",
+        "outputRequirements": "Output requirements",
+        "examples": "Examples"
+      },
+      "ExerciseNotFoundPage": {
+        "pageTitle": "Exercise Not Found",
+        "title": "Oops! The exercise you are looking for is not available",
+        "backToExercisesPage": "Back to Exercises page"
       }
     },
     "groups": {
@@ -274,6 +307,34 @@
         },
         "SubmissionsChart": {
           "label": "Submissions"
+        },
+        "RunCodeResultCard": {
+          "successTitle": "Congratulations!",
+          "successDescription": "You have passed the sample test cases. Click the Submit Code button to run your code against all the test cases.",
+          "failedTitle": "Sorry! Some test cases did not pass!",
+          "failedDescription": "{passedTestCases}/{totalTestCases} test cases passed.",
+          "result": "Result",
+          "compilerMessage": "Compiler Message",
+          "stderr": "Error (stderr)",
+          "input": "Input (stdin)",
+          "yourOutput": "Your Output",
+          "expectedOutput": "Expected Output"
+        },
+        "SubmissionResultCard": {
+          "gradingTitle": "Grading in progress...",
+          "gradingDescription": "Your code has been submitted successfully and is currently being graded. Please wait!",
+          "successTitle": "Congratulations!",
+          "successDescription": "You have finished this exercise!",
+          "failedTitle": "Sorry! Some test cases did not pass!",
+          "failedDescription": "{passedTestCases}/{totalTestCases} test cases passed. Please check your code and try again.",
+          "graded": "{gradedTestCases}/{totalTestCases} graded.",
+          "result": "Result",
+          "compilerMessage": "Compiler Message",
+          "stderr": "Error (stderr)",
+          "input": "Input (stdin)",
+          "yourOutput": "Your Output",
+          "expectedOutput": "Expected Output",
+          "hiddenTestCase": "This test case is hidden"
         }
       },
       "pages": {
@@ -295,6 +356,15 @@
           "invalidReturn": "Invalid Return",
           "compilationError": "Compilation Error",
           "statistics": "Statistics"
+        }
+      }
+    },
+    "test-case": {
+      "components": {
+        "ExampleTestCaseCard": {
+          "input": "Input",
+          "output": "Output",
+          "note": "Note"
         }
       }
     },

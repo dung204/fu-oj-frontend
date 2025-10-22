@@ -4,13 +4,15 @@ import { decodeJwt } from 'jose';
 
 import { ScrollArea } from '@/base/components/ui/scroll-area';
 import { Header } from '@/base/layouts/header';
+import { checkIsPrivateRoute } from '@/base/utils';
 import { RefreshSuccessResponse } from '@/modules/auth/types';
 import { deleteTokensInCookie } from '@/modules/auth/utils/delete-tokens-in-cookie.util';
 import { setTokensToCookie } from '@/modules/auth/utils/set-tokens-to-cookie.util';
 
 export const Route = createFileRoute('/_authed')({
-  beforeLoad: async ({ context }) => {
+  beforeLoad: async ({ context, location }) => {
     const { accessToken, refreshToken, user } = context;
+    const isPrivateRoute = checkIsPrivateRoute(location.pathname);
 
     try {
       const { exp, sub } = decodeJwt(accessToken ?? '');
@@ -49,9 +51,11 @@ export const Route = createFileRoute('/_authed')({
       } catch (_refreshTokenError) {
         await deleteTokensInCookie();
 
-        throw redirect({
-          to: '/auth/login',
-        });
+        if (isPrivateRoute) {
+          throw redirect({
+            to: '/auth/login',
+          });
+        }
       }
     }
   },
@@ -63,7 +67,7 @@ function NotAuthLayout() {
 
   return (
     <>
-      <Header user={user} />
+      <Header user={user!} />
       <ScrollArea className='w-full h-[calc(100vh-66px)]'>
         <main className='container mx-auto py-10'>
           <Outlet />
