@@ -5,6 +5,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { toast } from 'sonner';
 
 import { globalStore } from '@/base/components/global/globalStore';
+import { env } from '@/base/lib';
 
 import { setTokensToCookie } from '../auth/utils/set-tokens-to-cookie.util';
 
@@ -23,7 +24,7 @@ class Authentication {
     makeAutoObservable(this);
 
     // Chỉ định backend
-    axios.defaults.baseURL = import.meta.env.VITE_REACT_APP_BASE_URL;
+    axios.defaults.baseURL = env.VITE_API_URL;
 
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem(AUTH_TOKEN_KEY) || sessionStorage.getItem(AUTH_TOKEN_KEY);
