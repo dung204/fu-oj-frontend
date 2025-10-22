@@ -22,7 +22,7 @@ export const Route = createFileRoute('/_authed/')({
       case Role.ADMIN:
         throw redirect({
           // TODO: replace the below route with the default route of admin
-          to: '/exercises',
+          to: '/topics',
         });
 
       default:

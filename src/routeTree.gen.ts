@@ -14,12 +14,14 @@ import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthedAdminRouteImport } from './routes/_authed/_admin'
 import { Route as AuthedSubmissionsIndexRouteImport } from './routes/_authed/submissions.index'
 import { Route as AuthedProfileIndexRouteImport } from './routes/_authed/profile.index'
 import { Route as AuthedLeaderboardIndexRouteImport } from './routes/_authed/leaderboard.index'
 import { Route as AuthedGroupsIndexRouteImport } from './routes/_authed/groups.index'
 import { Route as AuthedExercisesIndexRouteImport } from './routes/_authed/exercises/index'
 import { Route as AuthedExercisesExerciseIdIndexRouteImport } from './routes/_authed/exercises/$exerciseId.index'
+import { Route as AuthedAdminTopicsIndexRouteImport } from './routes/_authed/_admin/topics.index'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -44,6 +46,10 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AuthRoute,
+} as any)
+const AuthedAdminRoute = AuthedAdminRouteImport.update({
+  id: '/_admin',
+  getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedSubmissionsIndexRoute = AuthedSubmissionsIndexRouteImport.update({
   id: '/submissions/',
@@ -76,6 +82,11 @@ const AuthedExercisesExerciseIdIndexRoute =
     path: '/exercises/$exerciseId/',
     getParentRoute: () => AuthedRoute,
   } as any)
+const AuthedAdminTopicsIndexRoute = AuthedAdminTopicsIndexRouteImport.update({
+  id: '/topics/',
+  path: '/topics/',
+  getParentRoute: () => AuthedAdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
@@ -87,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/leaderboard': typeof AuthedLeaderboardIndexRoute
   '/profile': typeof AuthedProfileIndexRoute
   '/submissions': typeof AuthedSubmissionsIndexRoute
+  '/topics': typeof AuthedAdminTopicsIndexRoute
   '/exercises/$exerciseId': typeof AuthedExercisesExerciseIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -99,12 +111,14 @@ export interface FileRoutesByTo {
   '/leaderboard': typeof AuthedLeaderboardIndexRoute
   '/profile': typeof AuthedProfileIndexRoute
   '/submissions': typeof AuthedSubmissionsIndexRoute
+  '/topics': typeof AuthedAdminTopicsIndexRoute
   '/exercises/$exerciseId': typeof AuthedExercisesExerciseIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authed': typeof AuthedRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/_authed/_admin': typeof AuthedAdminRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/_authed/': typeof AuthedIndexRoute
@@ -113,6 +127,7 @@ export interface FileRoutesById {
   '/_authed/leaderboard/': typeof AuthedLeaderboardIndexRoute
   '/_authed/profile/': typeof AuthedProfileIndexRoute
   '/_authed/submissions/': typeof AuthedSubmissionsIndexRoute
+  '/_authed/_admin/topics/': typeof AuthedAdminTopicsIndexRoute
   '/_authed/exercises/$exerciseId/': typeof AuthedExercisesExerciseIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -127,6 +142,7 @@ export interface FileRouteTypes {
     | '/leaderboard'
     | '/profile'
     | '/submissions'
+    | '/topics'
     | '/exercises/$exerciseId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -139,11 +155,13 @@ export interface FileRouteTypes {
     | '/leaderboard'
     | '/profile'
     | '/submissions'
+    | '/topics'
     | '/exercises/$exerciseId'
   id:
     | '__root__'
     | '/_authed'
     | '/auth'
+    | '/_authed/_admin'
     | '/auth/login'
     | '/auth/register'
     | '/_authed/'
@@ -152,6 +170,7 @@ export interface FileRouteTypes {
     | '/_authed/leaderboard/'
     | '/_authed/profile/'
     | '/_authed/submissions/'
+    | '/_authed/_admin/topics/'
     | '/_authed/exercises/$exerciseId/'
   fileRoutesById: FileRoutesById
 }
@@ -197,6 +216,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_authed/_admin': {
+      id: '/_authed/_admin'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthedAdminRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/submissions/': {
       id: '/_authed/submissions/'
       path: '/submissions'
@@ -239,10 +265,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedExercisesExerciseIdIndexRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/_admin/topics/': {
+      id: '/_authed/_admin/topics/'
+      path: '/topics'
+      fullPath: '/topics'
+      preLoaderRoute: typeof AuthedAdminTopicsIndexRouteImport
+      parentRoute: typeof AuthedAdminRoute
+    }
   }
 }
 
+interface AuthedAdminRouteChildren {
+  AuthedAdminTopicsIndexRoute: typeof AuthedAdminTopicsIndexRoute
+}
+
+const AuthedAdminRouteChildren: AuthedAdminRouteChildren = {
+  AuthedAdminTopicsIndexRoute: AuthedAdminTopicsIndexRoute,
+}
+
+const AuthedAdminRouteWithChildren = AuthedAdminRoute._addFileChildren(
+  AuthedAdminRouteChildren,
+)
+
 interface AuthedRouteChildren {
+  AuthedAdminRoute: typeof AuthedAdminRouteWithChildren
   AuthedIndexRoute: typeof AuthedIndexRoute
   AuthedExercisesIndexRoute: typeof AuthedExercisesIndexRoute
   AuthedGroupsIndexRoute: typeof AuthedGroupsIndexRoute
@@ -253,6 +299,7 @@ interface AuthedRouteChildren {
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedAdminRoute: AuthedAdminRouteWithChildren,
   AuthedIndexRoute: AuthedIndexRoute,
   AuthedExercisesIndexRoute: AuthedExercisesIndexRoute,
   AuthedGroupsIndexRoute: AuthedGroupsIndexRoute,

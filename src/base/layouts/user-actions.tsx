@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router';
 import { LogInIcon, LogOutIcon, UserCogIcon, UserPlusIcon } from 'lucide-react';
 
 import { authService } from '@/modules/auth/services/auth.service';
+import { authentication } from '@/modules/LR/authentication';
 import { UserAvatar } from '@/modules/users/components/user-avatar';
 import { User } from '@/modules/users/types';
 
@@ -26,6 +27,7 @@ export function UserActions({ user }: UserActionsProps) {
   const { mutate: triggerLogout } = useMutation({
     mutationFn: () => authService.logout(),
     onSuccess: () => {
+      authentication.logout();
       window.location.pathname = '/auth/login';
     },
   });
