@@ -6,7 +6,7 @@ export const Route = createFileRoute('/_authed/_admin')({
   beforeLoad: async ({ context }) => {
     const { user } = context;
 
-    if (user.role !== 'ADMIN') {
+    if (user?.role !== 'ADMIN') {
       switch (user?.role) {
         case Role.STUDENT:
           throw redirect({
