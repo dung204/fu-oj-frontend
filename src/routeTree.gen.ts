@@ -17,8 +17,9 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthedSubmissionsIndexRouteImport } from './routes/_authed/submissions.index'
 import { Route as AuthedProfileIndexRouteImport } from './routes/_authed/profile.index'
 import { Route as AuthedLeaderboardIndexRouteImport } from './routes/_authed/leaderboard.index'
-import { Route as AuthedGroupsIndexRouteImport } from './routes/_authed/groups.index'
+import { Route as AuthedGroupsIndexRouteImport } from './routes/_authed/groups/index'
 import { Route as AuthedExercisesIndexRouteImport } from './routes/_authed/exercises/index'
+import { Route as AuthedGroupsGroupIdIndexRouteImport } from './routes/_authed/groups/$groupId.index'
 import { Route as AuthedExercisesExerciseIdIndexRouteImport } from './routes/_authed/exercises/$exerciseId.index'
 
 const AuthRoute = AuthRouteImport.update({
@@ -70,6 +71,12 @@ const AuthedExercisesIndexRoute = AuthedExercisesIndexRouteImport.update({
   path: '/exercises/',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedGroupsGroupIdIndexRoute =
+  AuthedGroupsGroupIdIndexRouteImport.update({
+    id: '/groups/$groupId/',
+    path: '/groups/$groupId/',
+    getParentRoute: () => AuthedRoute,
+  } as any)
 const AuthedExercisesExerciseIdIndexRoute =
   AuthedExercisesExerciseIdIndexRouteImport.update({
     id: '/exercises/$exerciseId/',
@@ -88,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthedProfileIndexRoute
   '/submissions': typeof AuthedSubmissionsIndexRoute
   '/exercises/$exerciseId': typeof AuthedExercisesExerciseIdIndexRoute
+  '/groups/$groupId': typeof AuthedGroupsGroupIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
@@ -100,6 +108,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthedProfileIndexRoute
   '/submissions': typeof AuthedSubmissionsIndexRoute
   '/exercises/$exerciseId': typeof AuthedExercisesExerciseIdIndexRoute
+  '/groups/$groupId': typeof AuthedGroupsGroupIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -114,6 +123,7 @@ export interface FileRoutesById {
   '/_authed/profile/': typeof AuthedProfileIndexRoute
   '/_authed/submissions/': typeof AuthedSubmissionsIndexRoute
   '/_authed/exercises/$exerciseId/': typeof AuthedExercisesExerciseIdIndexRoute
+  '/_authed/groups/$groupId/': typeof AuthedGroupsGroupIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/submissions'
     | '/exercises/$exerciseId'
+    | '/groups/$groupId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/submissions'
     | '/exercises/$exerciseId'
+    | '/groups/$groupId'
   id:
     | '__root__'
     | '/_authed'
@@ -153,6 +165,7 @@ export interface FileRouteTypes {
     | '/_authed/profile/'
     | '/_authed/submissions/'
     | '/_authed/exercises/$exerciseId/'
+    | '/_authed/groups/$groupId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -232,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedExercisesIndexRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/groups/$groupId/': {
+      id: '/_authed/groups/$groupId/'
+      path: '/groups/$groupId'
+      fullPath: '/groups/$groupId'
+      preLoaderRoute: typeof AuthedGroupsGroupIdIndexRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/exercises/$exerciseId/': {
       id: '/_authed/exercises/$exerciseId/'
       path: '/exercises/$exerciseId'
@@ -250,6 +270,7 @@ interface AuthedRouteChildren {
   AuthedProfileIndexRoute: typeof AuthedProfileIndexRoute
   AuthedSubmissionsIndexRoute: typeof AuthedSubmissionsIndexRoute
   AuthedExercisesExerciseIdIndexRoute: typeof AuthedExercisesExerciseIdIndexRoute
+  AuthedGroupsGroupIdIndexRoute: typeof AuthedGroupsGroupIdIndexRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
@@ -260,6 +281,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedProfileIndexRoute: AuthedProfileIndexRoute,
   AuthedSubmissionsIndexRoute: AuthedSubmissionsIndexRoute,
   AuthedExercisesExerciseIdIndexRoute: AuthedExercisesExerciseIdIndexRoute,
+  AuthedGroupsGroupIdIndexRoute: AuthedGroupsGroupIdIndexRoute,
 }
 
 const AuthedRouteWithChildren =

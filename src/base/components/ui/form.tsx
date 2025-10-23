@@ -362,7 +362,7 @@ type FormFieldSpec<TFieldValues extends FieldValues = FieldValues> = {
        * ```
        */
       render?: FormFieldRenderFn<{
-        inputProps?: Omit<React.ComponentProps<typeof InputOTP>, 'render' | 'maxLength'>;
+        inputProps?: Omit<React.ComponentProps<typeof InputOTP>, 'render'>;
         groupProps?: React.ComponentProps<typeof InputOTPGroup>;
         slotProps?: Omit<React.ComponentProps<typeof InputOTPSlot>, 'index'>;
       }>;
@@ -548,7 +548,13 @@ function Form<TFieldValues extends FieldValues, TTransformedValues>({
             {getTranslation(`${i18nNamespace}.submitButtonLabel`)}
           </SubmitButton>
         ) : (
-          renderSubmitButton(withProps(SubmitButton, { type: 'submit', loading }))
+          renderSubmitButton(
+            withProps(SubmitButton, {
+              type: 'submit',
+              loading,
+              children: getTranslation(`${i18nNamespace}.submitButtonLabel`),
+            })
+          )
         )}
       </form>
     </FormProvider>
@@ -1026,53 +1032,50 @@ function SwitchFormControl({
 
 function OtpFormControl({
   formField,
-  inputProps = {},
+  inputProps = { maxLength: 6 },
   groupProps = {},
   slotProps = {},
 }: {
-  inputProps?: Omit<React.ComponentProps<typeof InputOTP>, 'render' | 'maxLength'>;
+  inputProps?: Omit<React.ComponentProps<typeof InputOTP>, 'render'>;
   groupProps?: React.ComponentProps<typeof InputOTPGroup>;
   slotProps?: Omit<React.ComponentProps<typeof InputOTPSlot>, 'index'>;
   formField: Extract<FormFieldSpec, { type: 'otp' }>;
 }) {
   const form = useFormContext();
-  const { className: inputClassName, ...otherInputProps } = inputProps;
+  const {
+    field: { value, onChange },
+  } = useController({
+    name: formField.name,
+    control: form.control,
+  });
+  const { id } = useFormField();
+  const { className: inputClassName, maxLength, ...otherInputProps } = inputProps;
   const { className: groupClassName, ...otherGroupProps } = groupProps;
   const { className: slotClassName, ...otherSlotProps } = slotProps;
 
   return (
     <FormControl>
       <InputOTP
-        {...form.register(formField.name)}
-        onChange={(value) =>
-          form.setValue(formField.name, value, {
-            shouldDirty: true,
-            shouldTouch: true,
-            shouldValidate: true,
-          })
-        }
-        maxLength={6}
+        value={value}
+        onChange={onChange}
+        maxLength={maxLength}
         className={inputClassName}
         {...otherInputProps}
       >
-        <InputOTPGroup className={cn('aspect-square grow', groupClassName)} {...otherGroupProps}>
-          <InputOTPSlot index={0} className={cn('size-full', slotClassName)} {...otherSlotProps} />
-        </InputOTPGroup>
-        <InputOTPGroup className={cn('aspect-square grow', groupClassName)} {...otherGroupProps}>
-          <InputOTPSlot index={1} className={cn('size-full', slotClassName)} {...otherSlotProps} />
-        </InputOTPGroup>
-        <InputOTPGroup className={cn('aspect-square grow', groupClassName)} {...otherGroupProps}>
-          <InputOTPSlot index={2} className={cn('size-full', slotClassName)} {...otherSlotProps} />
-        </InputOTPGroup>
-        <InputOTPGroup className={cn('aspect-square grow', groupClassName)} {...otherGroupProps}>
-          <InputOTPSlot index={3} className={cn('size-full', slotClassName)} {...otherSlotProps} />
-        </InputOTPGroup>
-        <InputOTPGroup className={cn('aspect-square grow', groupClassName)} {...otherGroupProps}>
-          <InputOTPSlot index={4} className={cn('size-full', slotClassName)} {...otherSlotProps} />
-        </InputOTPGroup>
-        <InputOTPGroup className={cn('aspect-square grow', groupClassName)} {...otherGroupProps}>
-          <InputOTPSlot index={5} className={cn('size-full', slotClassName)} {...otherSlotProps} />
-        </InputOTPGroup>
+        {Array.from({ length: maxLength }).map((_, index) => (
+          <InputOTPGroup
+            // biome-ignore lint/suspicious/noArrayIndexKey: static array for OTP slots
+            key={`otp-${id}-slot-${index}`}
+            className={cn('aspect-square grow', groupClassName)}
+            {...otherGroupProps}
+          >
+            <InputOTPSlot
+              index={index}
+              className={cn('size-full', slotClassName)}
+              {...otherSlotProps}
+            />
+          </InputOTPGroup>
+        ))}
       </InputOTP>
     </FormControl>
   );

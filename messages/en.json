@@ -270,7 +270,11 @@
                 "countPlural=other": "{count} members"
               }
             }
-          ]
+          ],
+          "createdBy": "Created by",
+          "viewGroup": "View group",
+          "joinGroup": "Join group",
+          "joinSuccess": "Successfully joined the group!"
         }
       },
       "pages": {
@@ -287,8 +291,27 @@
             "buttonLabel": "Join Group by Code",
             "title": "Join Group by Code",
             "description": "Enter the group code provided by your instructor to join the group.",
-            "submitButtonLabel": "Tham gia nhóm"
+            "Form": {
+              "fields": {
+                "code": {
+                  "errors": {
+                    "too_small": "Group code is required.",
+                    "invalid_format": "Invalid group code.",
+                    "not_found": "Group not found. Please check the code and try again.",
+                    "already_joined": "You have already joined this group.",
+                    "unknown": "An unknown error occurred. Please try again later."
+                  }
+                }
+              },
+              "submitButtonLabel": "Join Group"
+            }
           }
+        },
+        "GroupNotFoundPage": {
+          "pageTitle": "Group Not Found",
+          "title": "Oops! Group Not Found",
+          "description": "The group you are looking for does not exist or you do not have permission to access it.",
+          "backToGroupsPage": "Back to Groups page"
         }
       }
     },

@@ -262,7 +262,11 @@
     "groups": {
       "components": {
         "GroupCard": {
-          "members": "{count} thành viên"
+          "members": "{count} thành viên",
+          "createdBy": "Tạo bởi",
+          "viewGroup": "Xem nhóm",
+          "joinGroup": "Tham gia nhóm",
+          "joinSuccess": "Tham gia nhóm thành công!"
         }
       },
       "pages": {
@@ -279,8 +283,27 @@
             "buttonLabel": "Tham gia nhóm bằng mã",
             "title": "Tham gia nhóm bằng mã",
             "description": "Nhập mã nhóm do giảng viên cung cấp để tham gia nhóm.",
-            "submitButtonLabel": "Tham gia nhóm"
+            "Form": {
+              "fields": {
+                "code": {
+                  "errors": {
+                    "too_small": "Mã nhóm không được để trống.",
+                    "invalid_format": "Mã nhóm không hợp lệ.",
+                    "not_found": "Không tìm thấy nhóm với mã đã cung cấp.",
+                    "already_joined": "Bạn đã tham gia nhóm này.",
+                    "unknown": "Đã xảy ra lỗi không xác định. Vui lòng thử lại sau."
+                  }
+                }
+              },
+              "submitButtonLabel": "Join Group"
+            }
           }
+        },
+        "GroupNotFoundPage": {
+          "pageTitle": "Không tìm thấy Nhóm",
+          "title": "Oops! Không tìm thấy nhóm",
+          "description": "Nhóm bạn đang tìm kiếm không tồn tại hoặc bạn không có quyền truy cập.",
+          "backToGroupsPage": "Quay về trang Nhóm"
         }
       }
     },
