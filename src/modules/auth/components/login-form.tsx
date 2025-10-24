@@ -17,13 +17,13 @@ export function LoginForm() {
   const navigate = useNavigate();
   const { mutate: triggerLogin, isPending: isLoggingIn } = useMutation({
     mutationFn: async (data: LoginSchema) => {
-      authService.login(data);
-      authentication.login(data.email, data.password);
+      await Promise.all([authService.login(data), authentication.login(data.email, data.password)]);
     },
     onSuccess: () => {
       navigate({ to: '/' });
     },
     onError: (error) => {
+      console.log(error);
       if (error instanceof AxiosError && error.status === HttpStatusCode.Unauthorized) {
         formRef.current?.setError('email', {
           type: 'email_password_incorrect',

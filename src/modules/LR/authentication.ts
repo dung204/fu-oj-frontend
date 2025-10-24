@@ -2,7 +2,6 @@
 import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
-import { toast } from 'sonner';
 
 import { env } from '@/base/lib';
 
@@ -61,12 +60,8 @@ class Authentication {
       runInAction(() => {
         this.loginSuccess = true;
         this.isAuthenticated = true;
-        toast.success('Đăng nhập thành công');
-        window.location.href = '/';
       });
     } catch (error: any) {
-      toast.error('Lỗi rồi này!');
-
       runInAction(() => {
         this.loginError = true;
         this.errorMessage = error.message;
