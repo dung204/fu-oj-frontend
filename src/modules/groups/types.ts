@@ -31,3 +31,9 @@ export const joinGroupPayloadSchema = z.object({
 });
 
 export type JoinGroupPayload = z.infer<typeof joinGroupPayloadSchema>;
+
+export const groupDetailsPageSearchParamsSchema = z.object({
+  tab: z.enum(['dashboard', 'students']).catch('dashboard'),
+});
+
+export type GroupDetailsPageSearchParams = z.infer<typeof groupDetailsPageSearchParamsSchema>;

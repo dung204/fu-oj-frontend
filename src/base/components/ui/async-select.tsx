@@ -30,8 +30,6 @@ export type AsyncSelectProps<T> = {
   getOptionValue: (option: T) => string;
   /** Function to get the display value for the selected option */
   getDisplayValue: (option: T) => React.ReactNode;
-  /** Function to get an option from the value */
-  getOptionFromValue: (value: string) => T;
   /** Custom not found message */
   notFound?: React.ReactNode;
   /** Custom loading skeleton */
@@ -90,7 +88,6 @@ export function AsyncSelect<T>({
   renderOption,
   getOptionValue,
   getDisplayValue,
-  getOptionFromValue,
   notFound,
   loadingSkeleton,
   label = 'item',

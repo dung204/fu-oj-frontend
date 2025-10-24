@@ -1,8 +1,9 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { LayoutDashboard, UsersIcon } from 'lucide-react';
+import { Link, Outlet } from '@tanstack/react-router';
+import { GripIcon, HomeIcon, UsersIcon } from 'lucide-react';
 
 import { Card, CardContent } from '@/base/components/ui/card';
-import { cn } from '@/base/lib';
+import { getTranslation } from '@/base/utils';
 import { groupsService } from '@/modules/groups/services/groups.service';
 
 interface GroupDetailsPageProps {
@@ -25,33 +26,44 @@ export function GroupDetailsPage({ groupId }: GroupDetailsPageProps) {
         <section>
           <div className='flex justify-between'>
             <nav className='flex'>
-              <div
-                className={cn(
-                  'flex items-center gap-2 px-4 py-3 rounded-t-xl border border-b-0 shadow-sm z-10 relative font-medium cursor-pointer',
-                  {
-                    'bg-primary text-white border-primary': false, // TODO: change this
-                  }
-                )}
+              <Link
+                to='/groups/$groupId/dashboard'
+                params={{ groupId }}
+                className='flex items-center gap-2 px-4 py-3 rounded-t-xl border border-b-0 shadow-sm z-10 relative font-medium cursor-pointer'
+                activeProps={{
+                  className: 'bg-primary text-white border-primary',
+                }}
               >
-                <LayoutDashboard />
-                Dashboard
-              </div>
-              <div
-                className={cn(
-                  'flex items-center gap-2 px-4 py-3 rounded-t-xl border border-b-0 shadow-sm z-10 relative font-medium cursor-pointer',
-                  {
-                    'bg-primary text-white border-primary': false, // TODO: change this
-                  }
-                )}
+                <HomeIcon />
+                {getTranslation('modules.groups.pages.GroupDetailsPage.dashboard')}
+              </Link>
+              <Link
+                to='/groups/$groupId/exercises'
+                params={{ groupId }}
+                className='flex items-center gap-2 px-4 py-3 rounded-t-xl border border-b-0 shadow-sm z-10 relative font-medium cursor-pointer'
+                activeProps={{
+                  className: 'bg-primary text-white border-primary',
+                }}
+              >
+                <GripIcon />
+                {getTranslation('modules.groups.pages.GroupDetailsPage.exercises')}
+              </Link>
+              <Link
+                to='/groups/$groupId/students'
+                params={{ groupId }}
+                className='flex items-center gap-2 px-4 py-3 rounded-t-xl border border-b-0 shadow-sm z-10 relative font-medium cursor-pointer'
+                activeProps={{
+                  className: 'bg-primary text-white border-primary',
+                }}
               >
                 <UsersIcon />
-                Students
-              </div>
+                {getTranslation('modules.groups.pages.GroupDetailsPage.students')}
+              </Link>
             </nav>
           </div>
           <Card className='z-20 relative rounded-tl-none'>
             <CardContent>
-              <section></section>
+              <Outlet />
             </CardContent>
           </Card>
         </section>

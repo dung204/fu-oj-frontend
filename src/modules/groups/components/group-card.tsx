@@ -24,7 +24,7 @@ export function GroupCard({ group }: GroupCardProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['groups'] });
       toast.success(getTranslation('modules.groups.components.GroupCard.joinSuccess'));
-      navigate({ to: '/groups/$groupId', params: { groupId: group.id } });
+      navigate({ to: '/groups/$groupId/dashboard', params: { groupId: group.id } });
     },
   });
 
@@ -58,7 +58,7 @@ export function GroupCard({ group }: GroupCardProps) {
       </CardContent>
       <CardFooter>
         {group.joined ? (
-          <Link to='/groups/$groupId' params={{ groupId: group.id }} className='w-full'>
+          <Link to='/groups/$groupId/dashboard' params={{ groupId: group.id }} className='w-full'>
             <Button className='w-full' disabled={isJoining}>
               <EyeIcon />
               {getTranslation('modules.groups.components.GroupCard.viewGroup')}

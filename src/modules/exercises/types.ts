@@ -17,10 +17,8 @@ export const exerciseSchema = baseEntitySchema.extend({
 export type Exercise = z.infer<typeof exerciseSchema>;
 
 export const exercisesSearchParamsSchema = commonSearchParamsSchema.extend({
-  code: z.string().optional(),
-  title: z.string().optional(),
-  topicId: z.string().optional(),
-  groupId: z.string().optional(),
+  query: z.string().optional(),
+  topic: z.string().optional(),
 });
 
 export type ExercisesSearchParams = z.infer<typeof exercisesSearchParamsSchema>;

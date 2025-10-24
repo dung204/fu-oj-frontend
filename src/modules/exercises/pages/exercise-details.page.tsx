@@ -131,7 +131,7 @@ function ExerciseExtraInfo({ exercise }: ExerciseExtraInfoProps) {
           </div>
           <div className='flex gap-1.5 flex-wrap'>
             {exercise.topics.map((topic) => (
-              <Link key={`${topic.id}-link`} to='/exercises' search={{ topicId: topic.id }}>
+              <Link key={`${topic.id}-link`} to='/exercises' search={{ topic: topic.id }}>
                 <Badge>{topic.name}</Badge>
               </Link>
             ))}

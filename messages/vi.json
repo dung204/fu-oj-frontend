@@ -207,35 +207,32 @@
           "difficulty": "Độ khó",
           "acceptRate": "Tỉ lệ hoàn thành",
           "noData": "Không tìm thấy bài tập nào."
+        },
+        "ExercisesFilterForm": {
+          "fields": {
+            "query": {
+              "placeholder": "Tìm kiếm bài tập..."
+            },
+            "topic": {
+              "label": "Chủ đề",
+              "placeholder": "Chọn chủ đề..."
+            }
+          },
+          "submitButtonLabel": "Áp dụng",
+          "clearSearch": "Xóa tìm kiếm"
         }
       },
       "pages": {
         "ExercisesPage": {
           "title": "Danh sách bài tập",
           "exerciseSearch": "Tìm kiếm bài tập",
-          "exerciseSearchPlaceholder": "Tìm kiếm bài tập...",
           "topicSearchTitle": "Chủ đề",
           "topicSearchPlaceholder": "Chọn chủ đề...",
           "leaderboard": "Bảng xếp hạng",
           "leaderboardViewMore": "Xem thêm...",
           "leaderboardOrdinalNumberColumn": "STT",
           "leaderboardStudentColumn": "Sinh viên",
-          "leaderboardAcceptedColumn": "Đã hoàn thành",
-          "ExercisesPageFilter": {
-            "clearSearch": "Xóa tìm kiếm",
-            "Form": {
-              "fields": {
-                "title": {
-                  "placeholder": "Tìm kiếm bài tập..."
-                },
-                "topicId": {
-                  "label": "Chủ đề",
-                  "placeholder": "Chọn chủ đề..."
-                }
-              },
-              "submitButtonLabel": "Áp dụng"
-            }
-          }
+          "leaderboardAcceptedColumn": "Đã hoàn thành"
         }
       },
       "ExerciseDetailsPage": {
@@ -295,7 +292,7 @@
                   }
                 }
               },
-              "submitButtonLabel": "Join Group"
+              "submitButtonLabel": "Tham gia nhóm"
             }
           }
         },
@@ -304,6 +301,25 @@
           "title": "Oops! Không tìm thấy nhóm",
           "description": "Nhóm bạn đang tìm kiếm không tồn tại hoặc bạn không có quyền truy cập.",
           "backToGroupsPage": "Quay về trang Nhóm"
+        },
+        "GroupDashboardPage": {
+          "title": "Trang chủ | {groupName}"
+        },
+        "GroupDetailsPage": {
+          "dashboard": "Trang chủ",
+          "students": "Danh sách sinh viên",
+          "exercises": "Danh sách bài tập"
+        },
+        "GroupStudentsPage": {
+          "title": "Danh sách sinh viên | {groupName}",
+          "searchBoxPlaceholder": "Tìm kiếm sinh viên..."
+        },
+        "GroupExercisesPage": {
+          "title": "Danh sách bài tập | {groupName}",
+          "GroupExerciseFilterDialog": {
+            "buttonLabel": "Bộ lọc",
+            "title": "Bộ lọc bài tập"
+          }
         }
       }
     },
@@ -404,6 +420,14 @@
           "accepted": "Làm đúng",
           "submitted": "Đã nộp",
           "noData": "Bảng xếp hạng hiện đang trống."
+        },
+        "StudentsTable": {
+          "ordinalNumber": "STT",
+          "student": "Sinh viên",
+          "rollNumber": "Mã số sinh viên",
+          "accepted": "Làm đúng",
+          "submitted": "Đã nộp",
+          "noData": "Không tìm thấy sinh viên nào."
         },
         "UserProfileForm": {
           "fields": {

@@ -1,10 +1,9 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { Link, useNavigate } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import { CircleXIcon, MedalIcon, SearchIcon } from 'lucide-react';
 
 import { Button } from '@/base/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/base/components/ui/card';
-import { Form } from '@/base/components/ui/form';
 import { Input } from '@/base/components/ui/input';
 import { Select } from '@/base/components/ui/select';
 import { Skeleton } from '@/base/components/ui/skeleton';
@@ -18,17 +17,17 @@ import {
 } from '@/base/components/ui/table';
 import { Pagination, PaginationSkeleton } from '@/base/layouts/pagination';
 import { getTranslation } from '@/base/utils';
+import { ExercisesFilterForm } from '@/modules/exercises/components/exercises-filter-form';
 import {
   ExercisesTable,
   ExercisesTableSkeleton,
 } from '@/modules/exercises/components/exercises-table';
-import { ExercisesSearchParams, exercisesSearchParamsSchema } from '@/modules/exercises/types';
+import { ExercisesSearchParams } from '@/modules/exercises/types';
 import { exercisesQueryOptions } from '@/modules/exercises/utils/exercises-query-options.util';
-import { getTopicsAsyncSelectOptions } from '@/modules/topics/utils/topics-async-select-options.util';
 import { UserAvatarSkeleton } from '@/modules/users/components/user-avatar';
 
 interface ExercisesPageProps {
-  searchParams: Pick<ExercisesSearchParams, 'page' | 'title' | 'topicId'>;
+  searchParams: Pick<ExercisesSearchParams, 'page' | 'query' | 'topic'>;
 }
 
 export function ExercisesPage({ searchParams }: ExercisesPageProps) {
@@ -118,28 +117,6 @@ export function ExercisesPage({ searchParams }: ExercisesPageProps) {
 }
 
 function ExercisesPageFilter({ searchParams }: ExercisesPageProps) {
-  const navigate = useNavigate();
-
-  const applySearchParams = ({
-    title,
-    topicId,
-  }: Pick<ExercisesSearchParams, 'title' | 'topicId'>) => {
-    navigate({
-      to: '.',
-      search: {
-        title,
-        topicId,
-      },
-    });
-  };
-
-  const clearSearchParams = () => {
-    navigate({
-      to: '.',
-      search: {},
-    });
-  };
-
   return (
     <Card>
       <CardHeader>
@@ -149,45 +126,11 @@ function ExercisesPageFilter({ searchParams }: ExercisesPageProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className='flex flex-col gap-4'>
-        <Form
-          key={JSON.stringify(searchParams)}
-          schema={exercisesSearchParamsSchema}
-          i18nNamespace='modules.exercises.pages.ExercisesPage.ExercisesPageFilter.Form'
-          fields={[
-            {
-              name: 'title',
-              type: 'text',
-              render: ({ Control }) => <Control />,
-            },
-            {
-              name: 'topicId',
-              type: 'select',
-              async: true,
-              ...getTopicsAsyncSelectOptions('name'),
-            },
-          ]}
+        <ExercisesFilterForm
           defaultValues={{
-            title: searchParams.title,
-            topicId: searchParams.topicId,
+            query: searchParams.query,
+            topic: searchParams.topic,
           }}
-          renderSubmitButton={(SubmitButton) => (
-            <div className='flex justify-end gap-2 w-full'>
-              <Button type='button' variant='outline' onClick={() => clearSearchParams()}>
-                <CircleXIcon />
-                {getTranslation(
-                  'modules.exercises.pages.ExercisesPage.ExercisesPageFilter.clearSearch'
-                )}
-              </Button>
-              <SubmitButton>
-                <SearchIcon />{' '}
-                {getTranslation(
-                  'modules.exercises.pages.ExercisesPage.ExercisesPageFilter.Form.submitButtonLabel'
-                )}
-              </SubmitButton>
-            </div>
-          )}
-          onSuccessSubmit={({ title, topicId }) => applySearchParams({ title, topicId })}
-          onErrorSubmit={console.log}
         />
       </CardContent>
     </Card>
@@ -224,7 +167,7 @@ export function ExercisesPageSkeleton({ searchParams }: ExercisesPageProps) {
               placeholder={getTranslation(
                 'modules.exercises.pages.ExercisesPage.exerciseSearchPlaceholder'
               )}
-              value={searchParams.title}
+              value={searchParams.query}
               disabled
             />
             <div className='flex flex-col gap-1'>

@@ -16,7 +16,7 @@ export const Route = createFileRoute('/_authed/exercises/')({
     ],
   }),
   validateSearch: zodValidator(
-    exercisesSearchParamsSchema.pick({ page: true, title: true, topicId: true })
+    exercisesSearchParamsSchema.pick({ page: true, query: true, topic: true })
   ),
   loaderDeps: ({ search: searchParams }) => searchParams,
   loader: ({ context: { queryClient }, deps: searchParams }) => {

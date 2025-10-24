@@ -19,9 +19,13 @@ import { Route as AuthedProfileIndexRouteImport } from './routes/_authed/profile
 import { Route as AuthedLeaderboardIndexRouteImport } from './routes/_authed/leaderboard.index'
 import { Route as AuthedGroupsIndexRouteImport } from './routes/_authed/groups/index'
 import { Route as AuthedExercisesIndexRouteImport } from './routes/_authed/exercises/index'
-import { Route as AuthedGroupsGroupIdIndexRouteImport } from './routes/_authed/groups/$groupId.index'
+import { Route as AuthedGroupsGroupIdRouteImport } from './routes/_authed/groups/$groupId'
+import { Route as AuthedGroupsGroupIdIndexRouteImport } from './routes/_authed/groups/$groupId/index'
 import { Route as AuthedExercisesExerciseIdIndexRouteImport } from './routes/_authed/exercises/$exerciseId.index'
 import { Route as AuthedAdminTopicsIndexRouteImport } from './routes/_authed/_admin/topics.index'
+import { Route as AuthedGroupsGroupIdStudentsIndexRouteImport } from './routes/_authed/groups/$groupId/students.index'
+import { Route as AuthedGroupsGroupIdExercisesIndexRouteImport } from './routes/_authed/groups/$groupId/exercises.index'
+import { Route as AuthedGroupsGroupIdDashboardIndexRouteImport } from './routes/_authed/groups/$groupId/dashboard.index'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -71,11 +75,16 @@ const AuthedExercisesIndexRoute = AuthedExercisesIndexRouteImport.update({
   path: '/exercises/',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedGroupsGroupIdRoute = AuthedGroupsGroupIdRouteImport.update({
+  id: '/groups/$groupId',
+  path: '/groups/$groupId',
+  getParentRoute: () => AuthedRoute,
+} as any)
 const AuthedGroupsGroupIdIndexRoute =
   AuthedGroupsGroupIdIndexRouteImport.update({
-    id: '/groups/$groupId/',
-    path: '/groups/$groupId/',
-    getParentRoute: () => AuthedRoute,
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthedGroupsGroupIdRoute,
   } as any)
 const AuthedExercisesExerciseIdIndexRoute =
   AuthedExercisesExerciseIdIndexRouteImport.update({
@@ -88,11 +97,30 @@ const AuthedAdminTopicsIndexRoute = AuthedAdminTopicsIndexRouteImport.update({
   path: '/topics/',
   getParentRoute: () => AuthedAdminRoute,
 } as any)
+const AuthedGroupsGroupIdStudentsIndexRoute =
+  AuthedGroupsGroupIdStudentsIndexRouteImport.update({
+    id: '/students/',
+    path: '/students/',
+    getParentRoute: () => AuthedGroupsGroupIdRoute,
+  } as any)
+const AuthedGroupsGroupIdExercisesIndexRoute =
+  AuthedGroupsGroupIdExercisesIndexRouteImport.update({
+    id: '/exercises/',
+    path: '/exercises/',
+    getParentRoute: () => AuthedGroupsGroupIdRoute,
+  } as any)
+const AuthedGroupsGroupIdDashboardIndexRoute =
+  AuthedGroupsGroupIdDashboardIndexRouteImport.update({
+    id: '/dashboard/',
+    path: '/dashboard/',
+    getParentRoute: () => AuthedGroupsGroupIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/': typeof AuthedIndexRoute
+  '/groups/$groupId': typeof AuthedGroupsGroupIdRouteWithChildren
   '/exercises': typeof AuthedExercisesIndexRoute
   '/groups': typeof AuthedGroupsIndexRoute
   '/leaderboard': typeof AuthedLeaderboardIndexRoute
@@ -100,7 +128,10 @@ export interface FileRoutesByFullPath {
   '/submissions': typeof AuthedSubmissionsIndexRoute
   '/topics': typeof AuthedAdminTopicsIndexRoute
   '/exercises/$exerciseId': typeof AuthedExercisesExerciseIdIndexRoute
-  '/groups/$groupId': typeof AuthedGroupsGroupIdIndexRoute
+  '/groups/$groupId/': typeof AuthedGroupsGroupIdIndexRoute
+  '/groups/$groupId/dashboard': typeof AuthedGroupsGroupIdDashboardIndexRoute
+  '/groups/$groupId/exercises': typeof AuthedGroupsGroupIdExercisesIndexRoute
+  '/groups/$groupId/students': typeof AuthedGroupsGroupIdStudentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
@@ -114,6 +145,9 @@ export interface FileRoutesByTo {
   '/topics': typeof AuthedAdminTopicsIndexRoute
   '/exercises/$exerciseId': typeof AuthedExercisesExerciseIdIndexRoute
   '/groups/$groupId': typeof AuthedGroupsGroupIdIndexRoute
+  '/groups/$groupId/dashboard': typeof AuthedGroupsGroupIdDashboardIndexRoute
+  '/groups/$groupId/exercises': typeof AuthedGroupsGroupIdExercisesIndexRoute
+  '/groups/$groupId/students': typeof AuthedGroupsGroupIdStudentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -122,6 +156,7 @@ export interface FileRoutesById {
   '/_authed/_admin': typeof AuthedAdminRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/_authed/': typeof AuthedIndexRoute
+  '/_authed/groups/$groupId': typeof AuthedGroupsGroupIdRouteWithChildren
   '/_authed/exercises/': typeof AuthedExercisesIndexRoute
   '/_authed/groups/': typeof AuthedGroupsIndexRoute
   '/_authed/leaderboard/': typeof AuthedLeaderboardIndexRoute
@@ -130,6 +165,9 @@ export interface FileRoutesById {
   '/_authed/_admin/topics/': typeof AuthedAdminTopicsIndexRoute
   '/_authed/exercises/$exerciseId/': typeof AuthedExercisesExerciseIdIndexRoute
   '/_authed/groups/$groupId/': typeof AuthedGroupsGroupIdIndexRoute
+  '/_authed/groups/$groupId/dashboard/': typeof AuthedGroupsGroupIdDashboardIndexRoute
+  '/_authed/groups/$groupId/exercises/': typeof AuthedGroupsGroupIdExercisesIndexRoute
+  '/_authed/groups/$groupId/students/': typeof AuthedGroupsGroupIdStudentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -137,6 +175,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/auth/login'
     | '/'
+    | '/groups/$groupId'
     | '/exercises'
     | '/groups'
     | '/leaderboard'
@@ -144,7 +183,10 @@ export interface FileRouteTypes {
     | '/submissions'
     | '/topics'
     | '/exercises/$exerciseId'
-    | '/groups/$groupId'
+    | '/groups/$groupId/'
+    | '/groups/$groupId/dashboard'
+    | '/groups/$groupId/exercises'
+    | '/groups/$groupId/students'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -158,6 +200,9 @@ export interface FileRouteTypes {
     | '/topics'
     | '/exercises/$exerciseId'
     | '/groups/$groupId'
+    | '/groups/$groupId/dashboard'
+    | '/groups/$groupId/exercises'
+    | '/groups/$groupId/students'
   id:
     | '__root__'
     | '/_authed'
@@ -165,6 +210,7 @@ export interface FileRouteTypes {
     | '/_authed/_admin'
     | '/auth/login'
     | '/_authed/'
+    | '/_authed/groups/$groupId'
     | '/_authed/exercises/'
     | '/_authed/groups/'
     | '/_authed/leaderboard/'
@@ -173,6 +219,9 @@ export interface FileRouteTypes {
     | '/_authed/_admin/topics/'
     | '/_authed/exercises/$exerciseId/'
     | '/_authed/groups/$groupId/'
+    | '/_authed/groups/$groupId/dashboard/'
+    | '/_authed/groups/$groupId/exercises/'
+    | '/_authed/groups/$groupId/students/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -252,12 +301,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedExercisesIndexRouteImport
       parentRoute: typeof AuthedRoute
     }
-    '/_authed/groups/$groupId/': {
-      id: '/_authed/groups/$groupId/'
+    '/_authed/groups/$groupId': {
+      id: '/_authed/groups/$groupId'
       path: '/groups/$groupId'
       fullPath: '/groups/$groupId'
-      preLoaderRoute: typeof AuthedGroupsGroupIdIndexRouteImport
+      preLoaderRoute: typeof AuthedGroupsGroupIdRouteImport
       parentRoute: typeof AuthedRoute
+    }
+    '/_authed/groups/$groupId/': {
+      id: '/_authed/groups/$groupId/'
+      path: '/'
+      fullPath: '/groups/$groupId/'
+      preLoaderRoute: typeof AuthedGroupsGroupIdIndexRouteImport
+      parentRoute: typeof AuthedGroupsGroupIdRoute
     }
     '/_authed/exercises/$exerciseId/': {
       id: '/_authed/exercises/$exerciseId/'
@@ -272,6 +328,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/topics'
       preLoaderRoute: typeof AuthedAdminTopicsIndexRouteImport
       parentRoute: typeof AuthedAdminRoute
+    }
+    '/_authed/groups/$groupId/students/': {
+      id: '/_authed/groups/$groupId/students/'
+      path: '/students'
+      fullPath: '/groups/$groupId/students'
+      preLoaderRoute: typeof AuthedGroupsGroupIdStudentsIndexRouteImport
+      parentRoute: typeof AuthedGroupsGroupIdRoute
+    }
+    '/_authed/groups/$groupId/exercises/': {
+      id: '/_authed/groups/$groupId/exercises/'
+      path: '/exercises'
+      fullPath: '/groups/$groupId/exercises'
+      preLoaderRoute: typeof AuthedGroupsGroupIdExercisesIndexRouteImport
+      parentRoute: typeof AuthedGroupsGroupIdRoute
+    }
+    '/_authed/groups/$groupId/dashboard/': {
+      id: '/_authed/groups/$groupId/dashboard/'
+      path: '/dashboard'
+      fullPath: '/groups/$groupId/dashboard'
+      preLoaderRoute: typeof AuthedGroupsGroupIdDashboardIndexRouteImport
+      parentRoute: typeof AuthedGroupsGroupIdRoute
     }
   }
 }
@@ -288,28 +365,47 @@ const AuthedAdminRouteWithChildren = AuthedAdminRoute._addFileChildren(
   AuthedAdminRouteChildren,
 )
 
+interface AuthedGroupsGroupIdRouteChildren {
+  AuthedGroupsGroupIdIndexRoute: typeof AuthedGroupsGroupIdIndexRoute
+  AuthedGroupsGroupIdDashboardIndexRoute: typeof AuthedGroupsGroupIdDashboardIndexRoute
+  AuthedGroupsGroupIdExercisesIndexRoute: typeof AuthedGroupsGroupIdExercisesIndexRoute
+  AuthedGroupsGroupIdStudentsIndexRoute: typeof AuthedGroupsGroupIdStudentsIndexRoute
+}
+
+const AuthedGroupsGroupIdRouteChildren: AuthedGroupsGroupIdRouteChildren = {
+  AuthedGroupsGroupIdIndexRoute: AuthedGroupsGroupIdIndexRoute,
+  AuthedGroupsGroupIdDashboardIndexRoute:
+    AuthedGroupsGroupIdDashboardIndexRoute,
+  AuthedGroupsGroupIdExercisesIndexRoute:
+    AuthedGroupsGroupIdExercisesIndexRoute,
+  AuthedGroupsGroupIdStudentsIndexRoute: AuthedGroupsGroupIdStudentsIndexRoute,
+}
+
+const AuthedGroupsGroupIdRouteWithChildren =
+  AuthedGroupsGroupIdRoute._addFileChildren(AuthedGroupsGroupIdRouteChildren)
+
 interface AuthedRouteChildren {
   AuthedAdminRoute: typeof AuthedAdminRouteWithChildren
   AuthedIndexRoute: typeof AuthedIndexRoute
+  AuthedGroupsGroupIdRoute: typeof AuthedGroupsGroupIdRouteWithChildren
   AuthedExercisesIndexRoute: typeof AuthedExercisesIndexRoute
   AuthedGroupsIndexRoute: typeof AuthedGroupsIndexRoute
   AuthedLeaderboardIndexRoute: typeof AuthedLeaderboardIndexRoute
   AuthedProfileIndexRoute: typeof AuthedProfileIndexRoute
   AuthedSubmissionsIndexRoute: typeof AuthedSubmissionsIndexRoute
   AuthedExercisesExerciseIdIndexRoute: typeof AuthedExercisesExerciseIdIndexRoute
-  AuthedGroupsGroupIdIndexRoute: typeof AuthedGroupsGroupIdIndexRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedAdminRoute: AuthedAdminRouteWithChildren,
   AuthedIndexRoute: AuthedIndexRoute,
+  AuthedGroupsGroupIdRoute: AuthedGroupsGroupIdRouteWithChildren,
   AuthedExercisesIndexRoute: AuthedExercisesIndexRoute,
   AuthedGroupsIndexRoute: AuthedGroupsIndexRoute,
   AuthedLeaderboardIndexRoute: AuthedLeaderboardIndexRoute,
   AuthedProfileIndexRoute: AuthedProfileIndexRoute,
   AuthedSubmissionsIndexRoute: AuthedSubmissionsIndexRoute,
   AuthedExercisesExerciseIdIndexRoute: AuthedExercisesExerciseIdIndexRoute,
-  AuthedGroupsGroupIdIndexRoute: AuthedGroupsGroupIdIndexRoute,
 }
 
 const AuthedRouteWithChildren =

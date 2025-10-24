@@ -1,11 +1,12 @@
 import z from 'zod';
 
 import { imagePayloadSchema } from '@/base/components/ui/image-uploader';
-import { baseEntitySchema } from '@/base/types';
+import { baseEntitySchema, commonSearchParamsSchema } from '@/base/types';
 
 import { Role } from '../auth/enums/role.enum';
 
 export const userSchema = baseEntitySchema.extend({
+  rollNumber: z.string().nullable(),
   email: z.email(),
   role: z.enum(Role),
   firstName: z.string().nullable(),
@@ -27,3 +28,9 @@ export const updateUserSchema = z.object({
 });
 
 export type UpdateUserSchema = z.infer<typeof updateUserSchema>;
+
+export const studentsSearchParamsSchema = commonSearchParamsSchema.extend({
+  query: z.string().optional(),
+});
+
+export type StudentsSearchParams = z.infer<typeof studentsSearchParamsSchema>;

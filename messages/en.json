@@ -122,81 +122,6 @@
         }
       }
     },
-    "posts": {
-      "components": {
-        "PostCard": {
-          "deleted": "Deleted",
-          "public": "Public",
-          "private": "Private",
-          "postedBy": "Posted by",
-          "postedAt": "Posted"
-        },
-        "PostForm": {
-          "fields": {
-            "title": {
-              "label": "Title",
-              "placeholder": "Post title",
-              "errors": {
-                "too_small": "Title can not be blank"
-              }
-            },
-            "content": {
-              "label": "Content",
-              "placeholder": "Post content",
-              "errors": {
-                "too_small": "Content can not be blank"
-              }
-            },
-            "isPublic": {
-              "label": "Public",
-              "description": "If checked, this post will be visible to everyone. Otherwise, only you can see it."
-            }
-          }
-        },
-        "PostSearchBox": {
-          "placeholder": "Search posts by title..."
-        }
-      },
-      "pages": {
-        "EditPostPage": {
-          "title": "Edit Post",
-          "postFormSubmitButtonLabel": "Save Changes"
-        },
-        "NewPostPage": {
-          "title": "New Post",
-          "postFormSubmitButtonLabel": "Create Post",
-          "CanNotCreatePostDialog": {
-            "title": "You can not create posts",
-            "message": "Please go to \"Update Profile\" to fill out your first name & last name before creating a post",
-            "backToHomeButtonLabel": "Back to Home",
-            "goToUpdateProfileButtonLabel": "Go to Update Profile"
-          }
-        },
-        "MyPostsPage": {
-          "title": "Showing your posts"
-        },
-        "PostDetailsPage": {
-          "setToPublic": "Set to Public",
-          "setToPublicNotification": "Post is now public",
-          "setToPrivate": "Set to Private",
-          "setToPrivateNotification": "Post is now private",
-          "editPost": "Edit",
-          "deletePost": "Delete",
-          "deleteSuccessNotification": "Post deleted successfully",
-          "restorePost": "Restore",
-          "restoreSuccessNotification": "Post restored successfully",
-          "postedBy": "Posted by",
-          "postedAt": "Posted"
-        },
-        "PostNotFoundPage": {
-          "title": "Oops! Not Available"
-        },
-        "PublicPostsPage": {
-          "title": "Showing all public posts",
-          "matchingTitle": ", matching \"{title}\""
-        }
-      }
-    },
     "exercises": {
       "components": {
         "ExercisesTable": {
@@ -206,35 +131,32 @@
           "difficulty": "Difficulty",
           "acceptRate": "Accept Rate",
           "noData": "No exercises found."
+        },
+        "ExercisesFilterForm": {
+          "fields": {
+            "query": {
+              "placeholder": "Search exercises..."
+            },
+            "topic": {
+              "label": "Topic",
+              "placeholder": "Select topic..."
+            }
+          },
+          "submitButtonLabel": "Apply",
+          "clearSearch": "Clear search"
         }
       },
       "pages": {
         "ExercisesPage": {
           "title": "Exercises",
           "exerciseSearch": "Exercise Search",
-          "exerciseSearchPlaceholder": "Search exercises...",
           "topicSearchTitle": "Topic",
           "topicSearchPlaceholder": "Select topics...",
           "leaderboard": "Leaderboard",
           "leaderboardViewMore": "View more...",
           "leaderboardOrdinalNumberColumn": "#",
           "leaderboardStudentColumn": "Student",
-          "leaderboardAcceptedColumn": "Accepted",
-          "ExercisesPageFilter": {
-            "clearSearch": "Clear search",
-            "Form": {
-              "fields": {
-                "title": {
-                  "placeholder": "Search exercises..."
-                },
-                "topicId": {
-                  "label": "Topic",
-                  "placeholder": "Select topic..."
-                }
-              },
-              "submitButtonLabel": "Apply"
-            }
-          }
+          "leaderboardAcceptedColumn": "Accepted"
         }
       },
       "ExerciseDetailsPage": {
@@ -312,6 +234,25 @@
           "title": "Oops! Group Not Found",
           "description": "The group you are looking for does not exist or you do not have permission to access it.",
           "backToGroupsPage": "Back to Groups page"
+        },
+        "GroupDetailsPage": {
+          "dashboard": "Dashboard",
+          "students": "Students",
+          "exercises": "Exercises"
+        },
+        "GroupDashboardPage": {
+          "title": "Dashboard | {groupName}"
+        },
+        "GroupStudentsPage": {
+          "title": "Students | {groupName}",
+          "searchBoxPlaceholder": "Search students..."
+        },
+        "GroupExercisesPage": {
+          "title": "Exercises | {groupName}",
+          "GroupExerciseFilterDialog": {
+            "buttonLabel": "Filter",
+            "title": "Filter Exercises"
+          }
         }
       }
     },
@@ -413,6 +354,14 @@
           "accepted": "Accepted",
           "submitted": "Submitted",
           "noData": "Leaderboard is currently empty."
+        },
+        "StudentsTable": {
+          "ordinalNumber": "#",
+          "student": "Student",
+          "rollNumber": "Roll Number",
+          "accepted": "Accepted",
+          "submitted": "Submitted",
+          "noData": "No students found."
         },
         "UserProfileForm": {
           "fields": {
