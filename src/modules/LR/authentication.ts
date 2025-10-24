@@ -4,7 +4,6 @@ import axios from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
 import { toast } from 'sonner';
 
-import { globalStore } from '@/base/components/global/globalStore';
 import { env } from '@/base/lib';
 
 import { setTokensToCookie } from '../auth/utils/set-tokens-to-cookie.util';
@@ -64,7 +63,6 @@ class Authentication {
         this.isAuthenticated = true;
         toast.success('Đăng nhập thành công');
         window.location.href = '/';
-        globalStore.setLROpen(false);
       });
     } catch (error: any) {
       toast.error('Lỗi rồi này!');
@@ -103,8 +101,7 @@ class Authentication {
     }
   }
 
-  logout(openLR?: boolean) {
-    if (openLR) globalStore.setLROpen(true);
+  logout() {
     localStorage.removeItem(AUTH_TOKEN_KEY);
     sessionStorage.removeItem(AUTH_TOKEN_KEY);
     delete axios.defaults.headers.common.Authorization;

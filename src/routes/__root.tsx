@@ -6,15 +6,12 @@ import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanst
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { ReactNode, useEffect } from 'react';
 
+import { GlobalComponent } from '@/base/components/global/GlobalComponent';
 import { Toaster } from '@/base/components/ui/toaster';
+import * as http from '@/base/lib/httpRequest';
 import { setupAxiosInterceptors } from '@/base/lib/httpRequest';
 import appCss from '@/base/styles/globals.css?url';
 import { getTokensFromCookie } from '@/modules/auth/utils/get-tokens-from-cookie.util';
-import 'antd/dist/reset.css';
-
-import { GlobalComponent } from '@/base/components/global/GlobalComponent';
-import * as http from '@/base/lib/httpRequest';
-// import authentication from '@/modules/LR/authentication';
 import { authentication } from '@/modules/LR/authentication';
 
 setupAxiosInterceptors(() => {

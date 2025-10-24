@@ -7,6 +7,7 @@ export const privateRoutes = [
   '/leaderboard/*path',
   '/profile',
   '/admin/*path',
+  '/groups/*path',
 ];
 
 export function checkIsPrivateRoute(route: string) {
