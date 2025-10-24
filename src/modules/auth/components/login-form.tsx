@@ -5,6 +5,7 @@ import { ComponentRef, useRef } from 'react';
 import { DeepPartial } from 'react-hook-form';
 
 import { Form } from '@/base/components/ui/form';
+import { authentication } from '@/modules/LR/authentication';
 
 import { authService } from '../services/auth.service';
 import { LoginSchema, loginSchema } from '../types';
@@ -15,11 +16,14 @@ export function LoginForm() {
   const formRef = useRef<LoginFormRef>(null);
   const navigate = useNavigate();
   const { mutate: triggerLogin, isPending: isLoggingIn } = useMutation({
-    mutationFn: async (data: LoginSchema) => authService.login(data),
+    mutationFn: async (data: LoginSchema) => {
+      await Promise.all([authService.login(data), authentication.login(data.email, data.password)]);
+    },
     onSuccess: () => {
       navigate({ to: '/' });
     },
     onError: (error) => {
+      console.log(error);
       if (error instanceof AxiosError && error.status === HttpStatusCode.Unauthorized) {
         formRef.current?.setError('email', {
           type: 'email_password_incorrect',

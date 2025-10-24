@@ -6,9 +6,12 @@ import axios, {
   type CreateAxiosDefaults,
   type InternalAxiosRequestConfig,
 } from 'axios';
+import { decodeJwt } from 'jose';
 
 import { env } from '@/base/lib';
-import { getTokensFromCookie } from '@/modules/auth/utils/get-tokens-from-cookie.util';
+import { RefreshSuccessResponse } from '@/modules/auth/types';
+import { deleteTokensInCookie } from '@/modules/auth/utils/delete-tokens-in-cookie.util';
+import { setTokensToCookie } from '@/modules/auth/utils/set-tokens-to-cookie.util';
 
 export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   isPrivateRoute?: boolean;
@@ -37,6 +40,8 @@ export interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestCo
  */
 export class HttpClient {
   private readonly axiosInstance: AxiosInstance;
+  static accessToken: string | undefined;
+  static refreshToken: string | undefined;
 
   constructor({ headers, ...otherAxiosConfig }: Omit<CreateAxiosDefaults, 'baseURL'> = {}) {
     this.axiosInstance = axios.create({
@@ -55,8 +60,34 @@ export class HttpClient {
 
   protected async onSuccessRequest(config: CustomInternalAxiosRequestConfig) {
     if (config.isPrivateRoute) {
-      const { accessToken } = await getTokensFromCookie();
-      config.headers.set('Authorization', `Bearer ${accessToken}`);
+      try {
+        const { exp } = decodeJwt(HttpClient.accessToken ?? '');
+        if (exp && exp * 1000 < Date.now()) throw new Error();
+        config.headers.set('Authorization', `Bearer ${HttpClient.accessToken}`);
+      } catch (_accessTokenError) {
+        try {
+          const {
+            data: {
+              data: { accessToken: newAccessToken, refreshToken: newRefreshToken, user: newUser },
+            },
+          } = await axios.post<RefreshSuccessResponse>(
+            '/auth/refresh',
+            { refreshToken: HttpClient.refreshToken },
+            { baseURL: import.meta.env.VITE_API_URL }
+          );
+
+          config.headers.set('Authorization', `Bearer ${newAccessToken}`);
+          await setTokensToCookie({
+            data: {
+              accessToken: newAccessToken,
+              refreshToken: newRefreshToken,
+              user: newUser,
+            },
+          });
+        } catch (_refreshTokenError) {
+          await deleteTokensInCookie();
+        }
+      }
     }
     return config;
   }

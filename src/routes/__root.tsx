@@ -6,9 +6,19 @@ import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanst
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { ReactNode } from 'react';
 
+import { GlobalComponent } from '@/base/components/global/GlobalComponent';
 import { Toaster } from '@/base/components/ui/toaster';
+import { HttpClient } from '@/base/lib';
+import { setupAxiosInterceptors } from '@/base/lib/httpRequest';
 import appCss from '@/base/styles/globals.css?url';
 import { getTokensFromCookie } from '@/modules/auth/utils/get-tokens-from-cookie.util';
+
+setupAxiosInterceptors(() => {
+  console.log('Token expired');
+  localStorage.removeItem('authenticationToken');
+  sessionStorage.removeItem('authenticationToken');
+  window.location.href = '/';
+});
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -69,7 +79,11 @@ export const Route = createRootRouteWithContext<{
     ],
   }),
   beforeLoad: async () => {
-    return await getTokensFromCookie();
+    const payload = await getTokensFromCookie();
+    HttpClient.accessToken = payload.accessToken;
+    HttpClient.refreshToken = payload.refreshToken;
+
+    return payload;
   },
   component: RootComponent,
 });
@@ -90,6 +104,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       </head>
       <body className='overflow-y-hidden'>
         {children}
+        <GlobalComponent />
         <Toaster richColors position='top-right' />
         <TanStackRouterDevtools position='bottom-left' />
         <ReactQueryDevtools initialIsOpen={false} />
