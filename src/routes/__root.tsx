@@ -74,6 +74,7 @@ export const Route = createRootRouteWithContext<{
   beforeLoad: async () => {
     const payload = await getTokensFromCookie();
     HttpClient.accessToken = payload.accessToken;
+    HttpClient.refreshToken = payload.refreshToken;
 
     return payload;
   },
