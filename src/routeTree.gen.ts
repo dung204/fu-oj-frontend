@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
-import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthedAdminRouteImport } from './routes/_authed/_admin'
 import { Route as AuthedSubmissionsIndexRouteImport } from './routes/_authed/submissions.index'
@@ -36,11 +35,6 @@ const AuthedIndexRoute = AuthedIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthedRoute,
-} as any)
-const AuthRegisterRoute = AuthRegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => AuthRoute,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
@@ -91,7 +85,6 @@ const AuthedAdminTopicsIndexRoute = AuthedAdminTopicsIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
   '/': typeof AuthedIndexRoute
   '/exercises': typeof AuthedExercisesIndexRoute
   '/groups': typeof AuthedGroupsIndexRoute
@@ -104,7 +97,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
   '/': typeof AuthedIndexRoute
   '/exercises': typeof AuthedExercisesIndexRoute
   '/groups': typeof AuthedGroupsIndexRoute
@@ -120,7 +112,6 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteWithChildren
   '/_authed/_admin': typeof AuthedAdminRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
   '/_authed/': typeof AuthedIndexRoute
   '/_authed/exercises/': typeof AuthedExercisesIndexRoute
   '/_authed/groups/': typeof AuthedGroupsIndexRoute
@@ -135,7 +126,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/auth'
     | '/auth/login'
-    | '/auth/register'
     | '/'
     | '/exercises'
     | '/groups'
@@ -148,7 +138,6 @@ export interface FileRouteTypes {
   to:
     | '/auth'
     | '/auth/login'
-    | '/auth/register'
     | '/'
     | '/exercises'
     | '/groups'
@@ -163,7 +152,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authed/_admin'
     | '/auth/login'
-    | '/auth/register'
     | '/_authed/'
     | '/_authed/exercises/'
     | '/_authed/groups/'
@@ -201,13 +189,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AuthedIndexRouteImport
       parentRoute: typeof AuthedRoute
-    }
-    '/auth/register': {
-      id: '/auth/register'
-      path: '/register'
-      fullPath: '/auth/register'
-      preLoaderRoute: typeof AuthRegisterRouteImport
-      parentRoute: typeof AuthRoute
     }
     '/auth/login': {
       id: '/auth/login'
@@ -314,12 +295,10 @@ const AuthedRouteWithChildren =
 
 interface AuthRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
-  AuthRegisterRoute: typeof AuthRegisterRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
-  AuthRegisterRoute: AuthRegisterRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)

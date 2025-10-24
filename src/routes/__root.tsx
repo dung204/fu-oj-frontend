@@ -4,15 +4,14 @@ import { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 
 import { GlobalComponent } from '@/base/components/global/GlobalComponent';
 import { Toaster } from '@/base/components/ui/toaster';
-import * as http from '@/base/lib/httpRequest';
+import { HttpClient } from '@/base/lib';
 import { setupAxiosInterceptors } from '@/base/lib/httpRequest';
 import appCss from '@/base/styles/globals.css?url';
 import { getTokensFromCookie } from '@/modules/auth/utils/get-tokens-from-cookie.util';
-import { authentication } from '@/modules/LR/authentication';
 
 setupAxiosInterceptors(() => {
   console.log('Token expired');
@@ -73,7 +72,10 @@ export const Route = createRootRouteWithContext<{
     ],
   }),
   beforeLoad: async () => {
-    return await getTokensFromCookie();
+    const payload = await getTokensFromCookie();
+    HttpClient.accessToken = payload.accessToken;
+
+    return payload;
   },
   component: RootComponent,
 });
@@ -87,15 +89,6 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
-  useEffect(() => {
-    authentication.getAccount();
-
-    http.post('/auth/register', {
-      email: 'admin@gmail.com',
-      password: '123456',
-    });
-  }, []);
-
   return (
     <html lang='en'>
       <head>

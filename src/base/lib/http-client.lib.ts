@@ -8,7 +8,6 @@ import axios, {
 } from 'axios';
 
 import { env } from '@/base/lib';
-import { getTokensFromCookie } from '@/modules/auth/utils/get-tokens-from-cookie.util';
 
 export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   isPrivateRoute?: boolean;
@@ -37,6 +36,7 @@ export interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestCo
  */
 export class HttpClient {
   private readonly axiosInstance: AxiosInstance;
+  static readonly accessToken: string | undefined;
 
   constructor({ headers, ...otherAxiosConfig }: Omit<CreateAxiosDefaults, 'baseURL'> = {}) {
     this.axiosInstance = axios.create({
@@ -55,8 +55,7 @@ export class HttpClient {
 
   protected async onSuccessRequest(config: CustomInternalAxiosRequestConfig) {
     if (config.isPrivateRoute) {
-      const { accessToken } = await getTokensFromCookie();
-      config.headers.set('Authorization', `Bearer ${accessToken}`);
+      config.headers.set('Authorization', `Bearer ${HttpClient.accessToken}`);
     }
     return config;
   }
