@@ -54,8 +54,11 @@ export class HttpClient {
       ...otherAxiosConfig,
     });
 
-    this.axiosInstance.interceptors.request.use(this.onSuccessRequest);
-    this.axiosInstance.interceptors.response.use(this.onSuccessResponse, this.onResponseFailed);
+    this.axiosInstance.interceptors.request.use(this.onSuccessRequest.bind(this));
+    this.axiosInstance.interceptors.response.use(
+      this.onSuccessResponse,
+      this.onResponseFailed.bind(this)
+    );
   }
 
   protected async onSuccessRequest(config: CustomInternalAxiosRequestConfig) {

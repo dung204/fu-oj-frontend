@@ -6,19 +6,20 @@ import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanst
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { ReactNode } from 'react';
 
-import { GlobalComponent } from '@/base/components/global/GlobalComponent';
+// import { GlobalComponent } from '@/base/components/global/GlobalComponent';
 import { Toaster } from '@/base/components/ui/toaster';
 import { HttpClient } from '@/base/lib';
-import { setupAxiosInterceptors } from '@/base/lib/httpRequest';
+// import { setupAxiosInterceptors } from '@/base/lib/httpRequest';
 import appCss from '@/base/styles/globals.css?url';
+import { AuthProvider } from '@/modules/auth/providers/auth.provider';
 import { getTokensFromCookie } from '@/modules/auth/utils/get-tokens-from-cookie.util';
 
-setupAxiosInterceptors(() => {
-  console.log('Token expired');
-  localStorage.removeItem('authenticationToken');
-  sessionStorage.removeItem('authenticationToken');
-  window.location.href = '/';
-});
+// setupAxiosInterceptors(() => {
+//   console.log('Token expired');
+//   localStorage.removeItem('authenticationToken');
+//   sessionStorage.removeItem('authenticationToken');
+//   window.location.href = '/';
+// });
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -71,7 +72,8 @@ export const Route = createRootRouteWithContext<{
       },
     ],
   }),
-  beforeLoad: async () => {
+  beforeLoad: async ({ location }) => {
+    console.log(location);
     const payload = await getTokensFromCookie();
     HttpClient.accessToken = payload.accessToken;
     HttpClient.refreshToken = payload.refreshToken;
@@ -90,14 +92,16 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
+  const { accessToken, refreshToken } = Route.useRouteContext();
+
   return (
     <html lang='en'>
       <head>
         <HeadContent />
       </head>
       <body className='overflow-y-hidden'>
-        {children}
-        <GlobalComponent />
+        <AuthProvider tokens={{ accessToken, refreshToken }}>{children}</AuthProvider>
+        {/* <GlobalComponent /> */}
         <Toaster richColors position='top-right' />
         <TanStackRouterDevtools position='bottom-left' />
         <ReactQueryDevtools initialIsOpen={false} />
