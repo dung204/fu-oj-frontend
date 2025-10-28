@@ -31,6 +31,12 @@
         },
         "BackButton": {
           "label": "Quay lại"
+        },
+        "Select": {
+          "search": "Tìm kiếm..."
+        },
+        "AsyncSelect": {
+          "search": "Tìm kiếm..."
         }
       }
     },
@@ -326,6 +332,20 @@
           "input": "Đầu vào (stdin)",
           "yourOutput": "Đầu ra của bạn",
           "hiddenTestCase": "Test case ẩn"
+        },
+        "SubmissionsFilterForm": {
+          "fields": {
+            "status": {
+              "label": "Kết quả",
+              "placeholder": "Chọn kết quả..."
+            },
+            "languageCode": {
+              "label": "Ngôn ngữ",
+              "placeholder": "Chọn ngôn ngữ..."
+            }
+          },
+          "submitButtonLabel": "Áp dụng",
+          "clearFilter": "Xóa bộ lọc"
         }
       },
       "pages": {
@@ -339,13 +359,14 @@
           "clearFilter": "Xóa bộ lọc",
           "applyFilter": "Áp dụng",
           "explanationOfResults": "Giải thích kết quả",
-          "accepted": "Accepted - Kết quả đúng",
-          "wrongAnswer": "Wrong Answer - Kết quả sai",
-          "timeLimitExceeded": "Time Limit Exceeded - Quá giới hạn thời gian",
-          "memoryLimitExceeded": "Memory Limit Exceeded - Quá giới hạn bộ nhớ",
-          "runtimeError": "Runtime Error - Lỗi thực thi",
-          "invalidReturn": "Invalid Return - Giá trị trả về không hợp lệ",
-          "compilationError": "Compilation Error - Lỗi biên dịch",
+          "ACCEPTED": "Accepted - Kết quả đúng",
+          "WRONG_ANSWER": "Wrong Answer - Kết quả sai",
+          "TIME_LIMIT_EXCEEDED": "Time Limit Exceeded - Quá giới hạn thời gian",
+          "MEMORY_LIMIT_EXCEEDED": "Memory Limit Exceeded - Quá giới hạn bộ nhớ",
+          "RUNTIME_ERROR": "Runtime Error - Lỗi thực thi",
+          "RETURN_ERROR": "Return Error - Lỗi trả về",
+          "INVALID_RETURN": "Invalid Return - Giá trị trả về không hợp lệ",
+          "COMPILATION_ERROR": "Compilation Error - Lỗi biên dịch",
           "statistics": "Thống kê"
         }
       }

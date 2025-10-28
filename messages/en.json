@@ -31,6 +31,12 @@
         },
         "BackButton": {
           "label": "Back"
+        },
+        "Select": {
+          "search": "Search..."
+        },
+        "AsyncSelect": {
+          "search": "Search..."
         }
       }
     },
@@ -335,6 +341,20 @@
           "yourOutput": "Your Output",
           "expectedOutput": "Expected Output",
           "hiddenTestCase": "This test case is hidden"
+        },
+        "SubmissionsFilterForm": {
+          "fields": {
+            "status": {
+              "label": "Result",
+              "placeholder": "Select results..."
+            },
+            "languageCode": {
+              "label": "Language",
+              "placeholder": "Select languages..."
+            }
+          },
+          "submitButtonLabel": "Apply",
+          "clearFilter": "Clear filter"
         }
       },
       "pages": {
@@ -348,13 +368,14 @@
           "clearFilter": "Clear filter",
           "applyFilter": "Apply",
           "explanationOfResults": "Explanation of Results",
-          "accepted": "Accepted",
-          "wrongAnswer": "Wrong Answer",
-          "timeLimitExceeded": "Time Limit Exceeded",
-          "memoryLimitExceeded": "Memory Limit Exceeded",
-          "runtimeError": "Runtime Error",
-          "invalidReturn": "Invalid Return",
-          "compilationError": "Compilation Error",
+          "ACCEPTED": "Accepted",
+          "WRONG_ANSWER": "Wrong Answer",
+          "TIME_LIMIT_EXCEEDED": "Time Limit Exceeded",
+          "MEMORY_LIMIT_EXCEEDED": "Memory Limit Exceeded",
+          "RUNTIME_ERROR": "Runtime Error",
+          "RETURN_ERROR": "Return Error",
+          "INVALID_RETURN": "Invalid Return",
+          "COMPILATION_ERROR": "Compilation Error",
           "statistics": "Statistics"
         }
       }

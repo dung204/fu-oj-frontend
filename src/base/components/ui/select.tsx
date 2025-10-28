@@ -14,6 +14,7 @@ import {
 } from '@/base/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/base/components/ui/popover';
 import { cn } from '@/base/lib';
+import { getTranslation } from '@/base/utils';
 
 export type SelectOption = {
   value: any;
@@ -46,24 +47,13 @@ type SelectProps = {
   clearable?: boolean;
   /** Allow searching through options */
   searchable?: boolean;
-} & (
-  | {
-      /** Allow the select to select multiple values */
-      multiple?: false;
-      /** Currently selected value */
-      value?: any;
-      /** Callback when selection changes */
-      onChange?: (value: any | undefined) => void;
-    }
-  | {
-      /** Allow the select to select multiple values */
-      multiple: true;
-      /** Currently selected values */
-      value?: any[];
-      /** Callback when selection changes */
-      onChange?: (value: any[]) => void;
-    }
-);
+  /** Allow the select to select multiple values */
+  multiple?: boolean;
+  /** Currently selected values */
+  value?: any[];
+  /** Callback when selection changes */
+  onChange?: (value: any[]) => void;
+};
 
 export function Select({
   options,
@@ -82,25 +72,11 @@ export function Select({
   multiple,
 }: SelectProps) {
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(() => {
-    if (value && !multiple) {
-      return value;
-    }
-    return undefined;
-  });
   const [selectedValues, setSelectedValues] = useState(() => {
     if (value && multiple) {
       return value as any[];
     }
     return [];
-  });
-  const [selectedOption, setSelectedOption] = useState<SelectOption | undefined>(() => {
-    if (value && !multiple) {
-      const selected = options.find(
-        (option) => JSON.stringify(option.value) === JSON.stringify(value)
-      );
-      return selected;
-    }
   });
   const [selectedOptions, setSelectedOptions] = useState<SelectOption[]>(() => {
     if (value && multiple) {
@@ -117,41 +93,44 @@ export function Select({
   const id = useId();
 
   const handleSelect = (currentValue: string) => {
-    if (!multiple) {
-      const newValue =
-        clearable && currentValue === JSON.stringify(selectedValue)
-          ? undefined
-          : JSON.parse(currentValue);
-      setSelectedValue(newValue);
-      setSelectedOption(
-        options.find((option) => JSON.stringify(option.value) === JSON.stringify(newValue))
-      );
-      setSearchTerm('');
-      onChange?.(newValue);
-      setOpen(false);
-      return;
+    let newValues: any[];
+
+    if (clearable && selectedValues.map((val) => JSON.stringify(val)).includes(currentValue)) {
+      newValues = selectedValues.filter((val) => JSON.stringify(val) !== currentValue);
+    } else if (!multiple) {
+      newValues = [JSON.parse(currentValue)];
+    } else {
+      newValues = [...selectedValues, JSON.parse(currentValue)];
     }
 
-    const newValues =
-      clearable && selectedValues.map((val) => JSON.stringify(val)).includes(currentValue)
-        ? selectedValues.filter((val) => val !== currentValue)
-        : [...selectedValues, JSON.parse(currentValue)];
+    let newOptions: SelectOption[];
+
+    if (clearable && selectedOptions.some((opt) => JSON.stringify(opt.value) === currentValue)) {
+      newOptions = selectedOptions.filter((opt) => JSON.stringify(opt.value) !== currentValue);
+    } else if (!multiple) {
+      newOptions = [
+        options.find((opt) => JSON.stringify(opt.value) === currentValue) ?? {
+          value: JSON.parse(currentValue),
+          label: currentValue,
+        },
+      ];
+    } else {
+      newOptions = [
+        ...selectedOptions,
+        options.find((opt) => JSON.stringify(opt.value) === currentValue) ?? {
+          value: JSON.parse(currentValue),
+          label: currentValue,
+        },
+      ];
+    }
+
     setSelectedValues(newValues);
-
-    setSelectedOptions(
-      clearable && selectedOptions.some((opt) => JSON.stringify(opt.value) === currentValue)
-        ? selectedOptions.filter((opt) => JSON.stringify(opt.value) !== currentValue)
-        : [
-            ...selectedOptions,
-            options.find((opt) => JSON.stringify(opt.value) === currentValue) ?? {
-              value: JSON.parse(currentValue),
-              label: currentValue,
-            },
-          ]
-    );
-
+    setSelectedOptions(newOptions);
     setSearchTerm('');
     onChange?.(newValues);
+    if (!multiple) {
+      setOpen(false);
+    }
   };
 
   return (
@@ -163,24 +142,23 @@ export function Select({
           role='combobox'
           aria-expanded={open}
           className={cn(
-            'w-full justify-between truncate',
+            'w-full justify-between gap-2 flex',
             disabled && 'cursor-not-allowed opacity-50',
             {
-              'text-muted-foreground':
-                (multiple && selectedValues.length === 0) || (!multiple && !selectedValue),
+              'text-muted-foreground': selectedValues.length === 0,
             },
             triggerClassName
           )}
           disabled={disabled}
         >
-          <SelectTriggerContent
-            getDisplayValue={getDisplayValue}
-            multiple={!!multiple}
-            placeholder={placeholder}
-            selectedOption={selectedOption}
-            selectedOptions={selectedOptions}
-          />
-          <ChevronsUpDown className='opacity-50' />
+          <div className='truncate text-left'>
+            <SelectTriggerContent
+              getDisplayValue={getDisplayValue}
+              placeholder={placeholder}
+              selectedOptions={selectedOptions}
+            />
+          </div>
+          <ChevronsUpDown className='opacity-50 shrink-0' />
         </Button>
       </PopoverTrigger>
       <PopoverContent
@@ -190,7 +168,7 @@ export function Select({
           {searchable && (
             <div className='relative w-full border-b'>
               <CommandInput
-                placeholder={`Search...`}
+                placeholder={getTranslation('base.components.ui.Select.search')}
                 value={searchTerm}
                 onValueChange={(value) => {
                   setSearchTerm(value);
@@ -218,13 +196,9 @@ export function Select({
                     {!renderOption ? option.label : renderOption(option)}
                     <CheckIcon
                       className={cn('ml-auto h-3 w-3 opacity-0', {
-                        'opacity-100':
-                          (!multiple &&
-                            JSON.stringify(selectedValue) === JSON.stringify(option.value)) ||
-                          (multiple &&
-                            selectedValues
-                              .map((val) => JSON.stringify(val))
-                              .includes(JSON.stringify(option.value))),
+                        'opacity-100': selectedValues
+                          .map((val) => JSON.stringify(val))
+                          .includes(JSON.stringify(option.value)),
                       })}
                     />
                   </CommandItem>
@@ -238,20 +212,15 @@ export function Select({
 }
 
 interface SelectTriggerContentProps
-  extends Required<Pick<SelectProps, 'multiple' | 'getDisplayValue' | 'placeholder'>> {
-  selectedOption: SelectOption | undefined;
+  extends Required<Pick<SelectProps, 'getDisplayValue' | 'placeholder'>> {
   selectedOptions: SelectOption[];
 }
 
 function SelectTriggerContent({
-  multiple,
   getDisplayValue,
   placeholder,
-  selectedOption,
   selectedOptions,
 }: SelectTriggerContentProps) {
-  if (!multiple) return selectedOption ? getDisplayValue(selectedOption) : placeholder;
-
   if (selectedOptions.length === 0) return placeholder;
 
   if (selectedOptions.length === 1) return <span>{getDisplayValue(selectedOptions[0])}</span>;
@@ -265,8 +234,8 @@ function SelectTriggerContent({
 
   return (
     <span>
-      {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}, and{' '}
-      {selectedOptions.length - 2} more...
+      {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}, +
+      {selectedOptions.length - 2}...
     </span>
   );
 }

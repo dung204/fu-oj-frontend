@@ -16,6 +16,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/base/components/ui/po
 import { useDebounce } from '@/base/hooks';
 import { cn } from '@/base/lib';
 import type { SuccessResponse } from '@/base/types';
+import { getTranslation } from '@/base/utils';
 
 import { LoadingIndicator } from './loading-indicator';
 
@@ -50,11 +51,18 @@ export type AsyncSelectProps<T> = {
   noResultsMessage?: string;
   /** Allow clearing the selection */
   clearable?: boolean;
+  /** Allow the select to select multiple values */
+  multiple?: boolean;
+  /** Currently selected values */
+  value?: string[];
+  /** Callback when selection changes */
+  onChange?: (value: string[]) => void;
 } & Omit<
   UseInfiniteQueryOptions<
     SuccessResponse<T[]>,
     Error,
     InfiniteData<SuccessResponse<T[]>>,
+    SuccessResponse<T[]>,
     unknown[],
     number
   >,
@@ -64,25 +72,7 @@ export type AsyncSelectProps<T> = {
   | 'getNextPageParam'
   | 'getPreviousPageParam'
   | 'initialData'
-> &
-  (
-    | {
-        /** Allow the select to select multiple values */
-        multiple?: false;
-        /** Currently selected value */
-        value?: string;
-        /** Callback when selection changes */
-        onChange?: (value: string) => void;
-      }
-    | {
-        /** Allow the select to select multiple values */
-        multiple: true;
-        /** Currently selected values */
-        value?: string[];
-        /** Callback when selection changes */
-        onChange?: (value: string[]) => void;
-      }
-  );
+>;
 
 export function AsyncSelect<T>({
   queryKey,
@@ -103,7 +93,6 @@ export function AsyncSelect<T>({
   multiple,
   value,
   onChange,
-  enabled,
   ...useInfiniteQueryOptions
 }: AsyncSelectProps<T>) {
   const { inView, ref } = useInView();
@@ -136,27 +125,11 @@ export function AsyncSelect<T>({
 
   const options: T[] = res?.pages.flatMap((p) => p.data) || [];
 
-  const [selectedValue, setSelectedValue] = useState(() => {
-    if (value && !multiple) {
-      return value as string;
-    }
-    return null;
-  });
-
   const [selectedValues, setSelectedValues] = useState(() => {
     if (value && multiple) {
       return value as string[];
     }
     return [];
-  });
-
-  const [selectedOption, setSelectedOption] = useState<T | null>(() => {
-    if (value && !multiple) {
-      const selected = options.find((opt) => getOptionValue(opt) === value);
-      return selected || null;
-    }
-
-    return null;
   });
 
   const [selectedOptions, setSelectedOptions] = useState<T[]>(() => {
@@ -174,27 +147,34 @@ export function AsyncSelect<T>({
   }, [inView, isFetchingNextPage, fetchNextPage]);
 
   const handleSelect = (currentValue: string) => {
-    if (!multiple) {
-      const newValue = clearable && currentValue === selectedValue ? '' : currentValue;
-      setSelectedValue(newValue);
-      setSelectedOption(options.find((option) => getOptionValue(option) === newValue) || null);
-      onChange?.(newValue);
-      setOpen(false);
-      return;
+    let newValues: string[];
+
+    if (clearable && selectedValues.includes(currentValue)) {
+      newValues = selectedValues.filter((val) => val !== currentValue);
+    } else if (!multiple) {
+      newValues = [currentValue];
+    } else {
+      newValues = [...selectedValues, currentValue];
     }
 
-    const newValues =
-      clearable && selectedValues.includes(currentValue)
-        ? selectedValues.filter((val) => val !== currentValue)
-        : [...selectedValues, currentValue];
+    let newOptions: T[];
+
+    if (clearable && selectedOptions.some((opt) => getOptionValue(opt) === currentValue)) {
+      newOptions = selectedOptions.filter((opt) => getOptionValue(opt) !== currentValue);
+    } else if (!multiple) {
+      newOptions = [options.find((opt) => getOptionValue(opt) === currentValue)!];
+    } else {
+      newOptions = [
+        ...selectedOptions,
+        options.find((opt) => getOptionValue(opt) === currentValue)!,
+      ];
+    }
+
     setSelectedValues(newValues);
-
-    setSelectedOptions(
-      clearable && selectedOptions.some((opt) => getOptionValue(opt) === currentValue)
-        ? selectedOptions.filter((opt) => getOptionValue(opt) !== currentValue)
-        : [...selectedOptions, options.find((opt) => getOptionValue(opt) === currentValue)!]
-    );
-
+    setSelectedOptions(newOptions);
+    if (!multiple) {
+      setOpen(false);
+    }
     onChange?.(newValues);
   };
 
@@ -213,10 +193,8 @@ export function AsyncSelect<T>({
           disabled={disabled}
         >
           <AsyncSelectTriggerContent<T>
-            multiple={!!multiple}
             getDisplayValue={getDisplayValue}
             placeholder={placeholder}
-            selectedOption={selectedOption}
             selectedOptions={selectedOptions}
           />
           <ChevronsUpDown className='opacity-50' size={10} />
@@ -226,7 +204,7 @@ export function AsyncSelect<T>({
         <Command shouldFilter={false}>
           <div className='relative w-full border-b'>
             <CommandInput
-              placeholder={`Tìm kiếm ${label.toLowerCase()}...`}
+              placeholder={getTranslation('base.components.ui.AsyncSelect.search')}
               value={searchTerm}
               onValueChange={setSearchTerm}
             />
@@ -258,9 +236,7 @@ export function AsyncSelect<T>({
                     {renderOption(option)}
                     <Check
                       className={cn('ml-auto h-3 w-3 opacity-0', {
-                        'opacity-100':
-                          (!multiple && selectedValue === getOptionValue(option)) ||
-                          (multiple && selectedValues.includes(getOptionValue(option))),
+                        'opacity-100': selectedValues.includes(getOptionValue(option)),
                       })}
                     />
                   </CommandItem>
@@ -278,20 +254,15 @@ export function AsyncSelect<T>({
 }
 
 interface AsyncSelectTriggerContentProps<T>
-  extends Pick<AsyncSelectProps<T>, 'multiple' | 'getDisplayValue' | 'placeholder'> {
-  selectedOption: T | null;
+  extends Pick<AsyncSelectProps<T>, 'getDisplayValue' | 'placeholder'> {
   selectedOptions: T[];
 }
 
 function AsyncSelectTriggerContent<T>({
-  multiple,
   getDisplayValue,
   placeholder,
-  selectedOption,
   selectedOptions,
 }: AsyncSelectTriggerContentProps<T>) {
-  if (!multiple) return selectedOption ? getDisplayValue(selectedOption) : placeholder;
-
   if (selectedOptions.length === 0) return placeholder;
 
   if (selectedOptions.length === 1) return <span>{getDisplayValue(selectedOptions[0])}</span>;
@@ -305,8 +276,8 @@ function AsyncSelectTriggerContent<T>({
 
   return (
     <span>
-      {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}, and{' '}
-      {selectedOptions.length - 2} more...
+      {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}, +
+      {selectedOptions.length - 2}...
     </span>
   );
 }
