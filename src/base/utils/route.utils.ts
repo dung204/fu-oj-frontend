@@ -3,7 +3,7 @@ import { pathToRegexp } from 'path-to-regexp';
 export const privateRoutes = [
   '/user{/*path}',
   '/exercises{/*path}',
-  '/submissions/{*path}',
+  '/submissions{/*path}',
   '/leaderboard{/*path}',
   '/profile',
   '/admin{/*path}',
