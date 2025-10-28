@@ -919,19 +919,22 @@ function AsyncSelectFormControl({
   formField: Extract<FormFieldSpec, { type: 'select'; async: true }>;
 }) {
   const form = useFormContext();
+  const {
+    field: { value, onChange },
+  } = useController({
+    name: formField.name,
+    control: form.control,
+  });
   const { error, i18nNamespace } = useFormField();
 
   return (
     <AsyncSelect
       {...formField}
-      value={form.getValues(formField.name)}
-      onChange={(value: string | string[]) => {
-        form.setValue(formField.name, value, {
-          shouldDirty: true,
-          shouldTouch: true,
-          shouldValidate: true,
-        });
-        formField.onChange?.(value);
+      value={formField.multiple ? value : value?.[0]}
+      onChange={(value) => {
+        const val = formField.multiple ? value : value?.[0];
+        onChange(val);
+        formField.onChange?.(val);
       }}
       placeholder={
         formField.placeholder ??
@@ -956,19 +959,19 @@ function SelectFormControl({
   formField: Extract<FormFieldSpec, { type: 'select'; async?: false }>;
 }) {
   const form = useFormContext();
+  const {
+    field: { value, onChange },
+  } = useController({
+    name: formField.name,
+    control: form.control,
+  });
   const { error, i18nNamespace } = useFormField();
 
   return (
     <Select
       {...formField}
-      value={form.getValues(formField.name)}
-      onChange={(value: string | string[]) =>
-        form.setValue(formField.name, value, {
-          shouldDirty: true,
-          shouldTouch: true,
-          shouldValidate: true,
-        })
-      }
+      value={formField.multiple ? value : value?.[0]}
+      onChange={(value) => onChange(formField.multiple ? value : value?.[0])}
       placeholder={
         formField.placeholder ??
         getTranslation(`${i18nNamespace}.fields.${formField.name}.placeholder`)
