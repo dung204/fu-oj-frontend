@@ -286,6 +286,7 @@
           "time": "Time",
           "memory": "Memory",
           "language": "Language",
+          "seeDetailsTitle": "See details",
           "noData": "No submissions found."
         },
         "SubmissionsChart": {
@@ -332,18 +333,21 @@
           },
           "submitButtonLabel": "Apply",
           "clearFilter": "Clear filter"
+        },
+        "SubmissionDetailsDialog": {
+          "submissionTime": "Submission Time",
+          "student": "Student",
+          "result": "Result",
+          "passedTestCasesOverTotalTestCases": "Passed test cases / Total test case",
+          "language": "Language"
         }
       },
       "pages": {
         "SubmissionsPage": {
           "title": "Submissions",
+          "titleForExercise": "for",
+          "titleOfStudent": "of",
           "submissionsFilter": "Submissions Filter",
-          "submissionsResultFilterTitle": "Result",
-          "submissionsResultFilterPlaceholder": "Select results...",
-          "submissionsLanguageFilterTitle": "Language",
-          "submissionsLanguageFilterPlaceholder": "Select languages...",
-          "clearFilter": "Clear filter",
-          "applyFilter": "Apply",
           "explanationOfResults": "Explanation of Results",
           "ACCEPTED": "Accepted",
           "WRONG_ANSWER": "Wrong Answer",

@@ -1,11 +1,12 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { ChartPieIcon, CircleXIcon, CodeXmlIcon, FilterIcon } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
+import { ChartPieIcon, CodeXmlIcon, FilterIcon } from 'lucide-react';
 import { CSSProperties } from 'react';
 
-import { Button } from '@/base/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/base/components/ui/card';
 import { Pagination, PaginationSkeleton } from '@/base/layouts/pagination';
 import { getTranslation } from '@/base/utils';
+import { Exercise } from '@/modules/exercises/types';
 import { SubmissionsChart } from '@/modules/submissions/components/submissions-chart';
 import { SubmissionsFilterForm } from '@/modules/submissions/components/submissions-filter-form';
 import {
@@ -19,9 +20,10 @@ import { submissionsQueryOptions } from '@/modules/submissions/utils/submissions
 
 interface SubmissionsPageProps {
   searchParams: SubmissionsSearchParams;
+  exercise: Exercise | undefined;
 }
 
-export function SubmissionsPage({ searchParams }: SubmissionsPageProps) {
+export function SubmissionsPage({ searchParams, exercise }: SubmissionsPageProps) {
   const {
     data: {
       data: submissions,
@@ -32,9 +34,7 @@ export function SubmissionsPage({ searchParams }: SubmissionsPageProps) {
   return (
     <div className='grid gap-4 grid-cols-4'>
       <section className='col-span-3 flex flex-col gap-4'>
-        <h1 className='text-2xl'>
-          {getTranslation('modules.submissions.pages.SubmissionsPage.title')}
-        </h1>
+        <h1 className='text-2xl'>{getTitle({ exercise })}</h1>
         <hr className='border-b border-border' />
         <Card>
           <CardContent>
@@ -105,13 +105,11 @@ export function SubmissionsPage({ searchParams }: SubmissionsPageProps) {
   );
 }
 
-export function SubmissionsPageSkeleton({ searchParams }: SubmissionsPageProps) {
+export function SubmissionsPageSkeleton({ searchParams, exercise }: SubmissionsPageProps) {
   return (
     <div className='grid gap-4 grid-cols-4'>
       <section className='col-span-3 flex flex-col gap-4'>
-        <h1 className='text-2xl'>
-          {getTranslation('modules.submissions.pages.SubmissionsPage.title')}
-        </h1>
+        <h1 className='text-2xl'>{getTitle({ exercise })}</h1>
         <hr className='border-b border-border' />
         <Card>
           <CardContent>
@@ -139,16 +137,6 @@ export function SubmissionsPageSkeleton({ searchParams }: SubmissionsPageProps) 
               }}
             />
           </CardContent>
-          <CardFooter className='justify-end gap-2'>
-            <Button type='button' variant='outline' disabled>
-              <CircleXIcon />
-              {getTranslation('modules.submissions.pages.SubmissionsPage.clearFilter')}
-            </Button>
-            <Button type='button' disabled>
-              <FilterIcon />{' '}
-              {getTranslation('modules.submissions.pages.SubmissionsPage.applyFilter')}
-            </Button>
-          </CardFooter>
         </Card>
         <Card>
           <CardHeader>
@@ -176,5 +164,25 @@ export function SubmissionsPageSkeleton({ searchParams }: SubmissionsPageProps) 
         </Card>
       </section>
     </div>
+  );
+}
+
+function getTitle({ exercise }: { exercise: Exercise | undefined }) {
+  return (
+    <span>
+      {getTranslation('modules.submissions.pages.SubmissionsPage.title')}{' '}
+      {exercise && (
+        <>
+          {getTranslation('modules.submissions.pages.SubmissionsPage.titleForExercise')}{' '}
+          <Link
+            to='/exercises/$exerciseId'
+            params={{ exerciseId: exercise.id }}
+            className='text-primary hover:underline focus-visible:underline'
+          >
+            {exercise.title}
+          </Link>
+        </>
+      )}
+    </span>
   );
 }

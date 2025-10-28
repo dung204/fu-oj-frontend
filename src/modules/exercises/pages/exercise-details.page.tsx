@@ -93,14 +93,18 @@ export function ExerciseDetailsPage({ exerciseId }: ExerciseDetailsPageProps) {
       </section>
       <section className='col-span-1 flex flex-col gap-4'>
         <ExerciseExtraInfo exercise={exercise} />
-        <Button>
-          <ListChecks />
-          {getTranslation('modules.exercises.ExerciseDetailsPage.allSubmissions')}
-        </Button>
-        <Button variant='success'>
-          <Trophy />
-          {getTranslation('modules.exercises.ExerciseDetailsPage.bestSubmissions')}
-        </Button>
+        <Link to='/submissions' search={{ exercise: exercise.id }} className='w-full'>
+          <Button className='w-full'>
+            <ListChecks />
+            {getTranslation('modules.exercises.ExerciseDetailsPage.allSubmissions')}
+          </Button>
+        </Link>
+        <Link to='/submissions' search={{ exercise: exercise.id }} className='w-full'>
+          <Button variant='success' className='w-full'>
+            <Trophy />
+            {getTranslation('modules.exercises.ExerciseDetailsPage.bestSubmissions')}
+          </Button>
+        </Link>
       </section>
     </div>
   );
@@ -162,7 +166,7 @@ export function ExerciseDetailsPageSkeleton() {
       <section className='col-span-3 flex flex-col gap-4'>
         <div className='flex items-center justify-between'>
           <h1 className='text-2xl'>
-            <Skeleton className='w-[20ch] h-[1lh]' />
+            <Skeleton className='w-[20ch] h-lh' />
           </h1>
           <div className='flex gap-4'>
             <Button variant='error' disabled>
@@ -180,20 +184,20 @@ export function ExerciseDetailsPageSkeleton() {
           <CardContent className='flex gap-4 flex-col'>
             <article className='prose max-w-none'>
               <p>
-                <Skeleton className='w-full h-[1lh]' />
+                <Skeleton className='w-full h-lh' />
               </p>
               <h3 className='text-accent1'>
                 {getTranslation('modules.exercises.ExerciseDetailsPage.inputRequirements')}
               </h3>
               <ul>
                 <li>
-                  <Skeleton className='h-[1lh] w-[20ch]' />
+                  <Skeleton className='h-lh w-[20ch]' />
                 </li>
                 <li>
-                  <Skeleton className='h-[1lh] w-[33ch]' />
+                  <Skeleton className='h-lh w-[33ch]' />
                 </li>
                 <li>
-                  <Skeleton className='h-[1lh] w-[28ch]' />
+                  <Skeleton className='h-lh w-[28ch]' />
                 </li>
               </ul>
               <h3 className='text-accent1'>
@@ -201,7 +205,7 @@ export function ExerciseDetailsPageSkeleton() {
               </h3>
               <ul>
                 <li>
-                  <Skeleton className='h-[1lh] w-[28ch]' />
+                  <Skeleton className='h-lh w-[28ch]' />
                 </li>
               </ul>
             </article>
@@ -235,7 +239,7 @@ function ExerciseExtraInfoSkeleton() {
           <div className='flex items-center gap-1.5'>
             <UserAvatarSkeleton className='size-6' />
             <span className='font-medium'>
-              <Skeleton className='h-[1lh] w-[10ch]' />
+              <Skeleton className='h-lh w-[10ch]' />
             </span>
           </div>
         </div>
@@ -246,16 +250,16 @@ function ExerciseExtraInfoSkeleton() {
           </div>
           <div className='flex gap-1.5 flex-wrap'>
             <div className='text-xs'>
-              <Skeleton className='w-[5ch] h-[1lh]' />
+              <Skeleton className='w-[5ch] h-lh' />
             </div>
             <div className='text-xs'>
-              <Skeleton className='w-[8ch] h-[1lh]' />
+              <Skeleton className='w-[8ch] h-lh' />
             </div>
             <div className='text-xs'>
-              <Skeleton className='w-[3ch] h-[1lh]' />
+              <Skeleton className='w-[3ch] h-lh' />
             </div>
             <div className='text-xs'>
-              <Skeleton className='w-[12ch] h-[1lh]' />
+              <Skeleton className='w-[12ch] h-lh' />
             </div>
           </div>
         </div>
@@ -265,7 +269,7 @@ function ExerciseExtraInfoSkeleton() {
             {getTranslation('modules.exercises.ExerciseDetailsPage.timeLimit')}
           </div>
           <span className='font-medium'>
-            <Skeleton className='w-[4ch] h-[1lh]' />
+            <Skeleton className='w-[4ch] h-lh' />
           </span>
         </div>
         <div className='flex items-center gap-1'>
@@ -274,7 +278,7 @@ function ExerciseExtraInfoSkeleton() {
             {getTranslation('modules.exercises.ExerciseDetailsPage.memoryLimit')}
           </div>
           <span className='font-medium'>
-            <Skeleton className='w-[5ch] h-[1lh]' />
+            <Skeleton className='w-[5ch] h-lh' />
           </span>
         </div>
       </CardContent>

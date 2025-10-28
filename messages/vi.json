@@ -353,6 +353,7 @@
           "time": "Thời gian",
           "memory": "Bộ nhớ",
           "language": "Ngôn ngữ",
+          "seeDetailsTitle": "Xem chi tiết",
           "noData": "Không tìm thấy bài nộp nào."
         },
         "SubmissionsChart": {
@@ -398,18 +399,21 @@
           },
           "submitButtonLabel": "Áp dụng",
           "clearFilter": "Xóa bộ lọc"
+        },
+        "SubmissionDetailsDialog": {
+          "submissionTime": "Thời gian nộp",
+          "student": "Sinh viên",
+          "result": "Kết quả",
+          "passedTestCasesOverTotalTestCases": "Số test case đúng / Tổng số test case",
+          "language": "Ngôn ngữ"
         }
       },
       "pages": {
         "SubmissionsPage": {
           "title": "Các bài nộp",
+          "titleForExercise": "cho bài",
+          "titleOfStudent": "của sinh viên",
           "submissionsFilter": "Bộ lọc bài nộp",
-          "submissionsResultFilterTitle": "Kết quả",
-          "submissionsResultFilterPlaceholder": "Chọn kết quả...",
-          "submissionsLanguageFilterTitle": "Ngôn ngữ",
-          "submissionsLanguageFilterPlaceholder": "Chọn ngôn ngữ...",
-          "clearFilter": "Xóa bộ lọc",
-          "applyFilter": "Áp dụng",
           "explanationOfResults": "Giải thích kết quả",
           "ACCEPTED": "Accepted - Kết quả đúng",
           "WRONG_ANSWER": "Wrong Answer - Kết quả sai",

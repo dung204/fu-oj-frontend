@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
-import { ListChecksIcon } from 'lucide-react';
+import { EyeIcon, ListChecksIcon } from 'lucide-react';
+import { useState } from 'react';
 
 import { Button } from '@/base/components/ui/button';
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from '@/base/components/ui/empty';
@@ -17,94 +18,123 @@ import {
 import { formatDateTimeOfCurrentLocale, getTranslation } from '@/base/utils';
 import { formatMemory, formatNumberToCurrentLocale } from '@/base/utils/number.utils';
 import { VerdictBadge } from '@/modules/submissions/components/verdict-badge';
-import { verdicts } from '@/modules/submissions/constants/verdicts.constant';
 import { Submission } from '@/modules/submissions/types';
 import { UserAvatar } from '@/modules/users/components/user-avatar';
+
+import { verdicts } from '../constants/verdicts.constant';
+
+import { SubmissionDetailsDialog } from './submission-details-dialog';
 
 interface SubmissionsTableProps {
   submissions: Submission[];
 }
 
 export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
+  const [submission, setSubmission] = useState<Submission>();
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+
   return (
-    <Table className='overflow-hidden rounded-lg'>
-      <TableHeader>
-        <TableRow className='bg-primary/20 hover:bg-primary/30 transition-colors'>
-          <TableHead>
-            {getTranslation('modules.submissions.components.SubmissionsTable.submissionTime')}
-          </TableHead>
-          <TableHead>
-            {getTranslation('modules.submissions.components.SubmissionsTable.student')}
-          </TableHead>
-          <TableHead>
-            {getTranslation('modules.submissions.components.SubmissionsTable.result')}
-          </TableHead>
-          <TableHead>
-            {getTranslation('modules.submissions.components.SubmissionsTable.exercise')}
-          </TableHead>
-          <TableHead>
-            {getTranslation('modules.submissions.components.SubmissionsTable.time')}
-          </TableHead>
-          <TableHead>
-            {getTranslation('modules.submissions.components.SubmissionsTable.memory')}
-          </TableHead>
-          <TableHead>
-            {getTranslation('modules.submissions.components.SubmissionsTable.language')}
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {/* TODO: Render the submissions data */}
-        {submissions.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={7}>
-              <SubmissionsTableEmpty />
-            </TableCell>
+    <>
+      <Table className='overflow-hidden rounded-lg'>
+        <TableHeader>
+          <TableRow className='bg-primary/20 hover:bg-primary/30 transition-colors'>
+            <TableHead>
+              {getTranslation('modules.submissions.components.SubmissionsTable.submissionTime')}
+            </TableHead>
+            <TableHead>
+              {getTranslation('modules.submissions.components.SubmissionsTable.student')}
+            </TableHead>
+            <TableHead>
+              {getTranslation('modules.submissions.components.SubmissionsTable.result')}
+            </TableHead>
+            <TableHead>
+              {getTranslation('modules.submissions.components.SubmissionsTable.exercise')}
+            </TableHead>
+            <TableHead>
+              {getTranslation('modules.submissions.components.SubmissionsTable.time')}
+            </TableHead>
+            <TableHead>
+              {getTranslation('modules.submissions.components.SubmissionsTable.memory')}
+            </TableHead>
+            <TableHead>
+              {getTranslation('modules.submissions.components.SubmissionsTable.language')}
+            </TableHead>
+            <TableHead></TableHead>
           </TableRow>
-        ) : (
-          submissions.map((submission) => (
-            <TableRow key={submission.id}>
-              <TableCell>{formatDateTimeOfCurrentLocale(submission.createdTimestamp)}</TableCell>
-              <TableCell>
-                <div className='flex items-center gap-2'>
-                  <UserAvatar user={submission.user} />
-                  <span className='font-medium'>
-                    {submission.user.firstName} {submission.user.lastName} -{' '}
-                    {submission.user.rollNumber}
-                  </span>
-                </div>
-              </TableCell>
-              <TableCell>
-                {['IN_QUEUE', 'PROCESSING'].includes(submission.verdict) ? (
-                  <LoadingIndicator />
-                ) : (
-                  <VerdictBadge verdict={submission.verdict as keyof typeof verdicts} />
-                )}
-              </TableCell>
-              <TableCell>
-                <Link to='/exercises/$exerciseId' params={{ exerciseId: submission.exercise.id }}>
-                  <Button variant='link' className='p-0! size-max font-normal'>
-                    {submission.exercise.title}
-                  </Button>
-                </Link>
-              </TableCell>
-              <TableCell>
-                {submission.time
-                  ? `${formatNumberToCurrentLocale(Number(submission.time))} s`
-                  : '--'}
-              </TableCell>
-              <TableCell>
-                {submission.memory ? formatMemory(Number(submission.memory)) : '--'}
-              </TableCell>
-              <TableCell>
-                {programmingLanguages.find((lang) => lang.id === Number(submission.languageCode))
-                  ?.name || 'Unknown'}
+        </TableHeader>
+        <TableBody>
+          {/* TODO: Render the submissions data */}
+          {submissions.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={7}>
+                <SubmissionsTableEmpty />
               </TableCell>
             </TableRow>
-          ))
-        )}
-      </TableBody>
-    </Table>
+          ) : (
+            submissions.map((submission) => (
+              <TableRow key={submission.id}>
+                <TableCell>{formatDateTimeOfCurrentLocale(submission.createdTimestamp)}</TableCell>
+                <TableCell>
+                  <div className='flex items-center gap-2'>
+                    <UserAvatar user={submission.user} />
+                    <span className='font-medium'>
+                      {submission.user.firstName} {submission.user.lastName} -{' '}
+                      {submission.user.rollNumber}
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {['IN_QUEUE', 'PROCESSING'].includes(submission.verdict) ? (
+                    <LoadingIndicator />
+                  ) : (
+                    <VerdictBadge verdict={submission.verdict as keyof typeof verdicts} />
+                  )}
+                </TableCell>
+                <TableCell>
+                  <Link to='/exercises/$exerciseId' params={{ exerciseId: submission.exercise.id }}>
+                    <Button variant='link' className='p-0! size-max font-normal'>
+                      {submission.exercise.title}
+                    </Button>
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  {submission.time
+                    ? `${formatNumberToCurrentLocale(Number(submission.time))} s`
+                    : '--'}
+                </TableCell>
+                <TableCell>
+                  {submission.memory ? formatMemory(Number(submission.memory)) : '--'}
+                </TableCell>
+                <TableCell>
+                  {programmingLanguages.find((lang) => lang.id === Number(submission.languageCode))
+                    ?.name || 'Unknown'}
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    title={getTranslation(
+                      'modules.submissions.components.SubmissionsTable.seeDetailsTitle'
+                    )}
+                    onClick={() => {
+                      setSubmission(submission);
+                      setDetailsDialogOpen(true);
+                    }}
+                  >
+                    <EyeIcon />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
+      <SubmissionDetailsDialog
+        submission={submission}
+        open={detailsDialogOpen}
+        onOpenChange={setDetailsDialogOpen}
+      />
+    </>
   );
 }
 
@@ -149,6 +179,7 @@ export function SubmissionsTableSkeleton() {
           <TableHead>
             {getTranslation('modules.submissions.components.SubmissionsTable.language')}
           </TableHead>
+          <TableHead></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -175,6 +206,11 @@ export function SubmissionsTableSkeleton() {
             </TableCell>
             <TableCell>
               <Skeleton className='h-lh w-[8ch]' />
+            </TableCell>
+            <TableCell>
+              <Button variant='ghost' size='icon' disabled>
+                <EyeIcon />
+              </Button>
             </TableCell>
           </TableRow>
         ))}

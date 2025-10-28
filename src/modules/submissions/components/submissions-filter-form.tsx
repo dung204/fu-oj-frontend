@@ -1,5 +1,5 @@
 import { useNavigate } from '@tanstack/react-router';
-import { CircleXIcon, SearchIcon } from 'lucide-react';
+import { CircleXIcon, FilterIcon } from 'lucide-react';
 import { DeepPartial } from 'react-hook-form';
 
 import { Button } from '@/base/components/ui/button';
@@ -31,10 +31,11 @@ export function SubmissionsFilterForm({ onSuccessSubmit, ...props }: Submissions
   }: Pick<SubmissionsSearchParams, 'status' | 'languageCode'>) => {
     navigate({
       to: '.',
-      search: {
+      search: (old) => ({
+        ...old,
         status,
         languageCode,
-      },
+      }),
     });
   };
 
@@ -42,7 +43,10 @@ export function SubmissionsFilterForm({ onSuccessSubmit, ...props }: Submissions
     props.onClearSearch?.();
     navigate({
       to: '.',
-      search: {},
+      search: (old) => {
+        const { status: _, languageCode: __, ...others } = old;
+        return others;
+      },
     });
   };
 
@@ -96,7 +100,7 @@ export function SubmissionsFilterForm({ onSuccessSubmit, ...props }: Submissions
             {getTranslation('modules.submissions.components.SubmissionsFilterForm.clearFilter')}
           </Button>
           <SubmitButton>
-            <SearchIcon />{' '}
+            <FilterIcon />{' '}
             {getTranslation(
               'modules.submissions.components.SubmissionsFilterForm.submitButtonLabel'
             )}
