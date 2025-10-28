@@ -1,3 +1,4 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Label, Pie, PieChart } from 'recharts';
 
 import {
@@ -7,49 +8,39 @@ import {
   ChartTooltipContent,
 } from '@/base/components/ui/chart';
 import { getTranslation } from '@/base/utils';
+import { verdicts } from '@/modules/submissions/constants/verdicts.constant';
+import { SubmissionsSearchParams } from '@/modules/submissions/types';
+import { submissionStatisticsQueryOptions } from '@/modules/submissions/utils/submission-statistics-query-options.util';
 
-const chartData = [
-  { result: 'ac', submissions: 200, fill: 'var(--color-ac)' },
-  { result: 'wa', submissions: 200, fill: 'var(--color-wa)' },
-  { result: 'tle', submissions: 200, fill: 'var(--color-tle)' },
-  { result: 'mle', submissions: 200, fill: 'var(--color-mle)' },
-  { result: 'rte', submissions: 200, fill: 'var(--color-rte)' },
-  { result: 'ir', submissions: 200, fill: 'var(--color-ir)' },
-  { result: 'ce', submissions: 200, fill: 'var(--color-ce)' },
-];
+const chartConfig = Object.fromEntries(
+  Object.values(verdicts)
+    .slice(2)
+    .map((key) => [
+      key.shortName.toLowerCase(),
+      {
+        label: key.shortName,
+        color: key.color,
+      },
+    ])
+) as ChartConfig;
 
-const chartConfig = {
-  ac: {
-    label: 'AC',
-    color: 'var(--success)',
-  },
-  wa: {
-    label: 'WA',
-    color: 'var(--error)',
-  },
-  tle: {
-    label: 'TLE',
-    color: 'rgb(255, 165, 0)', // orange
-  },
-  mle: {
-    label: 'MLE',
-    color: 'rgb(255, 0, 0)', // red
-  },
-  rte: {
-    label: 'RTE',
-    color: 'rgb(128, 0, 128)', // purple
-  },
-  ir: {
-    label: 'IR',
-    color: 'rgb(0, 0, 255)', // blue
-  },
-  ce: {
-    label: 'CE',
-    color: 'rgb(0, 0, 0)',
-  },
-} satisfies ChartConfig;
+interface SubmissionsChartProps {
+  searchParams: Omit<SubmissionsSearchParams, 'page' | 'pageSize' | 'order'>;
+}
 
-export function SubmissionsChart() {
+export function SubmissionsChart({ searchParams }: SubmissionsChartProps) {
+  const {
+    data: {
+      data: { totalCount, ...statuses },
+    },
+  } = useSuspenseQuery(submissionStatisticsQueryOptions(searchParams));
+
+  const chartData = Object.entries(statuses).map(([status, count]) => ({
+    result: verdicts[status as keyof typeof verdicts].shortName.toLowerCase(),
+    submissions: count,
+    fill: `var(--color-${verdicts[status].shortName.toLowerCase()})`,
+  }));
+
   return (
     <ChartContainer config={chartConfig} className='mx-auto aspect-square max-h-[250px]'>
       <PieChart>
@@ -71,7 +62,7 @@ export function SubmissionsChart() {
                       y={viewBox.cy}
                       className='fill-foreground text-3xl font-bold'
                     >
-                      0
+                      {totalCount}
                     </tspan>
                     <tspan
                       x={viewBox.cx}

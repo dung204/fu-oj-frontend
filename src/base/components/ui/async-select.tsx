@@ -183,18 +183,20 @@ export function AsyncSelect<T>({
           role='combobox'
           aria-expanded={open}
           className={cn(
-            'w-full justify-between',
+            'w-full justify-between flex min-w-0',
             disabled && 'cursor-not-allowed opacity-50',
             triggerClassName
           )}
           disabled={disabled}
         >
-          <AsyncSelectTriggerContent<T>
-            getDisplayValue={getDisplayValue}
-            placeholder={placeholder}
-            selectedOptions={selectedOptions}
-          />
-          <ChevronsUpDown className='opacity-50' size={10} />
+          <div className='truncate text-left'>
+            <AsyncSelectTriggerContent<T>
+              getDisplayValue={getDisplayValue}
+              placeholder={placeholder}
+              selectedOptions={selectedOptions}
+            />
+          </div>
+          <ChevronsUpDown className='opacity-50 shrink-0' size={10} />
         </Button>
       </PopoverTrigger>
       <PopoverContent className={cn('w-(--radix-popover-trigger-width) p-0', className)}>
@@ -262,21 +264,7 @@ function AsyncSelectTriggerContent<T>({
 }: AsyncSelectTriggerContentProps<T>) {
   if (selectedOptions.length === 0) return placeholder;
 
-  if (selectedOptions.length === 1) return <span>{getDisplayValue(selectedOptions[0])}</span>;
-
-  if (selectedOptions.length === 2)
-    return (
-      <span>
-        {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}
-      </span>
-    );
-
-  return (
-    <span>
-      {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}, +
-      {selectedOptions.length - 2}...
-    </span>
-  );
+  return <span>{selectedOptions.map(getDisplayValue).join(', ')}</span>;
 }
 
 function DefaultLoadingSkeleton() {

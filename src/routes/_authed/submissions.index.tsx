@@ -25,7 +25,7 @@ function RouteComponent() {
   const searchParams = Route.useSearch();
 
   return (
-    <Suspense fallback={<SubmissionsPageSkeleton />}>
+    <Suspense fallback={<SubmissionsPageSkeleton searchParams={searchParams} />}>
       <SubmissionsPage searchParams={searchParams} />
     </Suspense>
   );

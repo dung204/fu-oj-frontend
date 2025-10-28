@@ -32,17 +32,20 @@ export const setTokensToCookie = createServerFn()
       path: '/',
       sameSite: 'lax',
       secure: true,
+      maxAge: 31536000,
     });
     setCookie('refreshToken', data.refreshToken, {
       httpOnly: true,
       path: '/',
       sameSite: 'lax',
       secure: true,
+      maxAge: 31536000,
     });
     setCookie('user', encodeURIComponent(JSON.stringify(data.user)), {
       httpOnly: true,
       path: '/',
       sameSite: 'lax',
       secure: true,
+      maxAge: 31536000,
     });
   });

@@ -92,11 +92,11 @@ export function ExercisesPage({ searchParams }: ExercisesPageProps) {
                     <TableCell>
                       <div className='flex items-center gap-2'>
                         <UserAvatarSkeleton />
-                        <Skeleton className='h-[1lh] w-[15ch]' />
+                        <Skeleton className='h-lh w-[15ch]' />
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Skeleton className='h-[1lh] w-[3ch]' />
+                      <Skeleton className='h-lh w-[3ch]' />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -220,11 +220,11 @@ export function ExercisesPageSkeleton({ searchParams }: ExercisesPageProps) {
                     <TableCell>
                       <div className='flex items-center gap-2'>
                         <UserAvatarSkeleton />
-                        <Skeleton className='h-[1lh] w-[15ch]' />
+                        <Skeleton className='h-lh w-[15ch]' />
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Skeleton className='h-[1lh] w-[3ch]' />
+                      <Skeleton className='h-lh w-[3ch]' />
                     </TableCell>
                   </TableRow>
                 ))}

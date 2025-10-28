@@ -142,7 +142,7 @@ export function Select({
           role='combobox'
           aria-expanded={open}
           className={cn(
-            'w-full justify-between gap-2 flex',
+            'w-full justify-between flex min-w-0',
             disabled && 'cursor-not-allowed opacity-50',
             {
               'text-muted-foreground': selectedValues.length === 0,
@@ -223,19 +223,5 @@ function SelectTriggerContent({
 }: SelectTriggerContentProps) {
   if (selectedOptions.length === 0) return placeholder;
 
-  if (selectedOptions.length === 1) return <span>{getDisplayValue(selectedOptions[0])}</span>;
-
-  if (selectedOptions.length === 2)
-    return (
-      <span>
-        {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}
-      </span>
-    );
-
-  return (
-    <span>
-      {getDisplayValue(selectedOptions[0])}, {getDisplayValue(selectedOptions[1])}, +
-      {selectedOptions.length - 2}...
-    </span>
-  );
+  return <span>{selectedOptions.map(getDisplayValue).join(', ')}</span>;
 }

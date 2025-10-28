@@ -5,6 +5,7 @@ import {
   RunCodePayload,
   RunCodeResult,
   Submission,
+  SubmissionStatistics,
   SubmissionsSearchParams,
   submissionSchema,
 } from '@/modules/submissions/types';
@@ -30,12 +31,22 @@ class SubmissionsService extends HttpClient {
     });
   }
 
-  public submitCode({ turnstileToken, ...payload }: CreateSubmissionPayload) {
+  public submitCode(payload: CreateSubmissionPayload) {
     return this.post<SuccessResponse<Submission>>('/submissions', payload, {
       isPrivateRoute: true,
-      headers: {
-        'cf-turnstile-response': turnstileToken,
-      },
+      // TODO: Uncomment this when Turnstile is back
+      // headers: {
+      //   'cf-turnstile-response': turnstileToken,
+      // },
+    });
+  }
+
+  public async getSubmissionStatistics(
+    params: Omit<SubmissionsSearchParams, 'page' | 'pageSize' | 'order'>
+  ) {
+    return this.get<SuccessResponse<SubmissionStatistics>>('/submissions/statistics', {
+      params,
+      isPrivateRoute: true,
     });
   }
 }

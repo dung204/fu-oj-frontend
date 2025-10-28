@@ -52,8 +52,20 @@ export function formatRelativeTime(date: Date, locales?: Intl.LocalesArgument) {
   return new Intl.RelativeTimeFormat(locales, { style: 'long' }).format(smallestRelativeTime, unit);
 }
 
-export function formatDateTimeOfCurrentLocale(date: Date, options?: Intl.DateTimeFormatOptions) {
+export function formatDateTimeOfCurrentLocale(date: Date) {
   const locale = getLocale();
 
-  return Intl.DateTimeFormat(locale, options).format(date);
+  const datePart = new Intl.DateTimeFormat(locale, {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).format(date);
+
+  const timePart = new Intl.DateTimeFormat(locale, {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  }).format(date);
+
+  return `${datePart}, ${timePart}`;
 }

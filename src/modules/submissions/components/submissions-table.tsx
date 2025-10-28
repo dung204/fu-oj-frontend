@@ -1,6 +1,10 @@
+import { Link } from '@tanstack/react-router';
 import { ListChecksIcon } from 'lucide-react';
 
+import { Button } from '@/base/components/ui/button';
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from '@/base/components/ui/empty';
+import { LoadingIndicator } from '@/base/components/ui/loading-indicator';
+import { programmingLanguages } from '@/base/components/ui/programming-language-select';
 import { Skeleton } from '@/base/components/ui/skeleton';
 import {
   Table,
@@ -11,7 +15,11 @@ import {
   TableRow,
 } from '@/base/components/ui/table';
 import { formatDateTimeOfCurrentLocale, getTranslation } from '@/base/utils';
+import { formatMemory, formatNumberToCurrentLocale } from '@/base/utils/number.utils';
+import { VerdictBadge } from '@/modules/submissions/components/verdict-badge';
+import { verdicts } from '@/modules/submissions/constants/verdicts.constant';
 import { Submission } from '@/modules/submissions/types';
+import { UserAvatar } from '@/modules/users/components/user-avatar';
 
 interface SubmissionsTableProps {
   submissions: Submission[];
@@ -58,13 +66,40 @@ export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
             <TableRow key={submission.id}>
               <TableCell>{formatDateTimeOfCurrentLocale(submission.createdTimestamp)}</TableCell>
               <TableCell>
-                {submission.user.firstName} {submission.user.lastName}
+                <div className='flex items-center gap-2'>
+                  <UserAvatar user={submission.user} />
+                  <span className='font-medium'>
+                    {submission.user.firstName} {submission.user.lastName} -{' '}
+                    {submission.user.rollNumber}
+                  </span>
+                </div>
               </TableCell>
-              <TableCell>{submission.verdict}</TableCell>
-              <TableCell>{submission.exercise.title}</TableCell>
-              <TableCell>{submission.time}</TableCell>
-              <TableCell>{submission.memory}</TableCell>
-              <TableCell>{submission.language}</TableCell>
+              <TableCell>
+                {['IN_QUEUE', 'PROCESSING'].includes(submission.verdict) ? (
+                  <LoadingIndicator />
+                ) : (
+                  <VerdictBadge verdict={submission.verdict as keyof typeof verdicts} />
+                )}
+              </TableCell>
+              <TableCell>
+                <Link to='/exercises/$exerciseId' params={{ exerciseId: submission.exercise.id }}>
+                  <Button variant='link' className='p-0! size-max font-normal'>
+                    {submission.exercise.title}
+                  </Button>
+                </Link>
+              </TableCell>
+              <TableCell>
+                {submission.time
+                  ? `${formatNumberToCurrentLocale(Number(submission.time))} s`
+                  : '--'}
+              </TableCell>
+              <TableCell>
+                {submission.memory ? formatMemory(Number(submission.memory)) : '--'}
+              </TableCell>
+              <TableCell>
+                {programmingLanguages.find((lang) => lang.id === Number(submission.languageCode))
+                  ?.name || 'Unknown'}
+              </TableCell>
             </TableRow>
           ))
         )}
@@ -121,25 +156,25 @@ export function SubmissionsTableSkeleton() {
           // biome-ignore lint/suspicious/noArrayIndexKey: index is fine here, it's static list
           <TableRow key={`exercise-skeleton-${index}`}>
             <TableCell>
-              <Skeleton className='h-[1lh] w-[10ch]' />
+              <Skeleton className='h-lh w-[10ch]' />
             </TableCell>
             <TableCell>
-              <Skeleton className='h-[1lh] w-[20ch]' />
+              <Skeleton className='h-lh w-[20ch]' />
             </TableCell>
             <TableCell>
-              <Skeleton className='h-[1lh] w-[4ch]' />
+              <Skeleton className='h-lh w-[4ch]' />
             </TableCell>
             <TableCell>
-              <Skeleton className='h-[1lh] w-[20ch]' />
+              <Skeleton className='h-lh w-[20ch]' />
             </TableCell>
             <TableCell>
-              <Skeleton className='h-[1lh] w-[5ch]' />
+              <Skeleton className='h-lh w-[5ch]' />
             </TableCell>
             <TableCell>
-              <Skeleton className='h-[1lh] w-[5ch]' />
+              <Skeleton className='h-lh w-[5ch]' />
             </TableCell>
             <TableCell>
-              <Skeleton className='h-[1lh] w-[8ch]' />
+              <Skeleton className='h-lh w-[8ch]' />
             </TableCell>
           </TableRow>
         ))}

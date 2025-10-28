@@ -1,6 +1,5 @@
 import CodeEditor from '@monaco-editor/react';
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError, HttpStatusCode } from 'axios';
 import { MoonIcon, PlayIcon, SendIcon, SunIcon } from 'lucide-react';
 import { RefObject, useRef, useState } from 'react';
 
@@ -52,15 +51,6 @@ export function ExerciseSubmission({ ref, exercise }: ExerciseSubmissionProps) {
         runCodeResultRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
     },
-    onError: (error) => {
-      if (error instanceof AxiosError && error.status === HttpStatusCode.Forbidden) {
-        submissionFormRef.current?.setError('turnstileToken', {
-          message: getTranslation(
-            'modules.submissions.components.ExerciseSubmission.Form.fields.turnstileToken.errors.too_small'
-          ),
-        });
-      }
-    },
   });
 
   const { mutate: triggerSubmitCode, isPending: isSubmittingCode } = useMutation({
@@ -75,15 +65,16 @@ export function ExerciseSubmission({ ref, exercise }: ExerciseSubmissionProps) {
         submissionResultRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
     },
-    onError: (error) => {
-      if (error instanceof AxiosError && error.status === HttpStatusCode.Forbidden) {
-        submissionFormRef.current?.setError('turnstileToken', {
-          message: getTranslation(
-            'modules.submissions.components.ExerciseSubmission.Form.fields.turnstileToken.errors.too_small'
-          ),
-        });
-      }
-    },
+    // TODO: Enable when turnstile is back
+    // onError: (error) => {
+    // if (error instanceof AxiosError && error.status === HttpStatusCode.Forbidden) {
+    //   submissionFormRef.current?.setError('turnstileToken', {
+    //     message: getTranslation(
+    //       'modules.submissions.components.ExerciseSubmission.Form.fields.turnstileToken.errors.too_small'
+    //     ),
+    //   });
+    // }
+    // },
   });
 
   const handleRunCode = async () => {
@@ -133,11 +124,12 @@ export function ExerciseSubmission({ ref, exercise }: ExerciseSubmissionProps) {
                 </>
               ),
             },
-            {
-              name: 'turnstileToken',
-              type: 'turnstile',
-              className: 'px-6',
-            },
+            // TODO: Enable when turnstile is back
+            // {
+            //   name: 'turnstileToken',
+            //   type: 'turnstile',
+            //   className: 'px-6',
+            // },
           ]}
           defaultValues={{
             sourceCode: '// code here\n',
@@ -157,9 +149,11 @@ export function ExerciseSubmission({ ref, exercise }: ExerciseSubmissionProps) {
             {theme === 'light' ? <SunIcon /> : <MoonIcon />}
           </Button>
           <ProgrammingLanguageSelect
+            multiple={false}
+            clearable={false}
             triggerClassName='w-60'
-            value={selectedLang}
-            onChange={(lang) => {
+            value={[selectedLang]}
+            onChange={([lang]) => {
               submissionFormRef.current?.setValue('languageCode', lang.id.toString());
               setSelectedLang(lang);
             }}

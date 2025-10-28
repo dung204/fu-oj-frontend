@@ -1,16 +1,19 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { ChartPieIcon, CircleXIcon, CodeXmlIcon, FilterIcon } from 'lucide-react';
+import { CSSProperties } from 'react';
 
 import { Button } from '@/base/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/base/components/ui/card';
-import { Select } from '@/base/components/ui/select';
 import { Pagination, PaginationSkeleton } from '@/base/layouts/pagination';
 import { getTranslation } from '@/base/utils';
 import { SubmissionsChart } from '@/modules/submissions/components/submissions-chart';
+import { SubmissionsFilterForm } from '@/modules/submissions/components/submissions-filter-form';
 import {
   SubmissionsTable,
   SubmissionsTableSkeleton,
 } from '@/modules/submissions/components/submissions-table';
+import { VerdictBadge } from '@/modules/submissions/components/verdict-badge';
+import { verdicts } from '@/modules/submissions/constants/verdicts.constant';
 import { SubmissionsSearchParams } from '@/modules/submissions/types';
 import { submissionsQueryOptions } from '@/modules/submissions/utils/submissions-query-options.util';
 
@@ -51,57 +54,28 @@ export function SubmissionsPage({ searchParams }: SubmissionsPageProps) {
             </CardTitle>
           </CardHeader>
           <CardContent className='flex flex-col gap-4'>
-            <div className='flex flex-col gap-1'>
-              <p className='text-sm'>
-                {getTranslation(
-                  'modules.submissions.pages.SubmissionsPage.submissionsResultFilterTitle'
-                )}
-              </p>
-              {/* TODO: replace the below Select with AsyncSelect when the topics API is ready */}
-              <Select
-                options={[]}
-                placeholder={getTranslation(
-                  'modules.submissions.pages.SubmissionsPage.submissionsResultFilterPlaceholder'
-                )}
-              />
-            </div>
-            <div className='flex flex-col gap-1'>
-              <p className='text-sm'>
-                {getTranslation(
-                  'modules.submissions.pages.SubmissionsPage.submissionsLanguageFilterTitle'
-                )}
-              </p>
-              {/* TODO: replace the below Select with AsyncSelect when the topics API is ready */}
-              <Select
-                options={[]}
-                placeholder={getTranslation(
-                  'modules.submissions.pages.SubmissionsPage.submissionsLanguageFilterPlaceholder'
-                )}
-              />
-            </div>
-          </CardContent>
-          <CardFooter className='justify-end gap-2'>
-            <Button type='button' variant='outline'>
-              <CircleXIcon />
-              {getTranslation('modules.submissions.pages.SubmissionsPage.clearFilter')}
-            </Button>
-            <Button type='button'>
-              <FilterIcon />{' '}
-              {getTranslation('modules.submissions.pages.SubmissionsPage.applyFilter')}
-            </Button>
-          </CardFooter>
-        </Card>
-        <Card className='gap-0'>
-          <CardHeader>
-            <CardTitle className='flex items-center gap-2'>
-              <ChartPieIcon className='size-4' />
-              {getTranslation('modules.submissions.pages.SubmissionsPage.statistics')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className='flex-1'>
-            <SubmissionsChart />
+            <SubmissionsFilterForm
+              key={JSON.stringify(searchParams)}
+              defaultValues={{
+                status: searchParams.status,
+                languageCode: searchParams.languageCode,
+              }}
+            />
           </CardContent>
         </Card>
+        {submissions.length > 0 && (
+          <Card className='gap-0'>
+            <CardHeader>
+              <CardTitle className='flex items-center gap-2'>
+                <ChartPieIcon className='size-4' />
+                {getTranslation('modules.submissions.pages.SubmissionsPage.statistics')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className='flex-1'>
+              <SubmissionsChart searchParams={searchParams} />
+            </CardContent>
+          </Card>
+        )}
         <Card>
           <CardHeader>
             <CardTitle className='flex items-center gap-2'>
@@ -110,27 +84,20 @@ export function SubmissionsPage({ searchParams }: SubmissionsPageProps) {
             </CardTitle>
           </CardHeader>
           <CardContent className='flex flex-col gap-4'>
-            <p className='text-success text-sm'>
-              AC: {getTranslation('modules.submissions.pages.SubmissionsPage.accepted')}
-            </p>
-            <p className='text-error text-sm'>
-              WA: {getTranslation('modules.submissions.pages.SubmissionsPage.wrongAnswer')}
-            </p>
-            <p className='text-error text-sm'>
-              TLE: {getTranslation('modules.submissions.pages.SubmissionsPage.timeLimitExceeded')}
-            </p>
-            <p className='text-error text-sm'>
-              MLE: {getTranslation('modules.submissions.pages.SubmissionsPage.memoryLimitExceeded')}
-            </p>
-            <p className='text-error text-sm'>
-              RTE: {getTranslation('modules.submissions.pages.SubmissionsPage.runtimeError')}
-            </p>
-            <p className='text-error text-sm'>
-              IR: {getTranslation('modules.submissions.pages.SubmissionsPage.invalidReturn')}
-            </p>
-            <p className='text-sm'>
-              CE: {getTranslation('modules.submissions.pages.SubmissionsPage.compilationError')}
-            </p>
+            {Object.entries(verdicts)
+              .slice(2)
+              .map(([verdict, { id, color }]) => (
+                <div key={`verdict-${id}`} className='flex items-center gap-2'>
+                  <VerdictBadge verdict={verdict as keyof typeof verdicts} />
+                  <span
+                    key={`verdict-${id}`}
+                    className='text-(--verdict-color)'
+                    style={{ '--verdict-color': color } as CSSProperties}
+                  >
+                    {getTranslation(`modules.submissions.pages.SubmissionsPage.${verdict}`)}
+                  </span>
+                </div>
+              ))}
           </CardContent>
         </Card>
       </section>
@@ -138,7 +105,7 @@ export function SubmissionsPage({ searchParams }: SubmissionsPageProps) {
   );
 }
 
-export function SubmissionsPageSkeleton() {
+export function SubmissionsPageSkeleton({ searchParams }: SubmissionsPageProps) {
   return (
     <div className='grid gap-4 grid-cols-4'>
       <section className='col-span-3 flex flex-col gap-4'>
@@ -164,36 +131,13 @@ export function SubmissionsPageSkeleton() {
             </CardTitle>
           </CardHeader>
           <CardContent className='flex flex-col gap-4'>
-            <div className='flex flex-col gap-1'>
-              <p className='text-sm'>
-                {getTranslation(
-                  'modules.submissions.pages.SubmissionsPage.submissionsResultFilterTitle'
-                )}
-              </p>
-              {/* TODO: replace the below Select with AsyncSelect when the topics API is ready */}
-              <Select
-                options={[]}
-                placeholder={getTranslation(
-                  'modules.submissions.pages.SubmissionsPage.submissionsResultFilterPlaceholder'
-                )}
-                disabled
-              />
-            </div>
-            <div className='flex flex-col gap-1'>
-              <p className='text-sm'>
-                {getTranslation(
-                  'modules.submissions.pages.SubmissionsPage.submissionsLanguageFilterTitle'
-                )}
-              </p>
-              {/* TODO: replace the below Select with AsyncSelect when the topics API is ready */}
-              <Select
-                options={[]}
-                placeholder={getTranslation(
-                  'modules.submissions.pages.SubmissionsPage.submissionsLanguageFilterPlaceholder'
-                )}
-                disabled
-              />
-            </div>
+            <SubmissionsFilterForm
+              key={JSON.stringify(searchParams)}
+              defaultValues={{
+                status: searchParams.status,
+                languageCode: searchParams.languageCode,
+              }}
+            />
           </CardContent>
           <CardFooter className='justify-end gap-2'>
             <Button type='button' variant='outline' disabled>
@@ -206,17 +150,6 @@ export function SubmissionsPageSkeleton() {
             </Button>
           </CardFooter>
         </Card>
-        <Card className='gap-0'>
-          <CardHeader>
-            <CardTitle className='flex items-center gap-2'>
-              <ChartPieIcon className='size-4' />
-              {getTranslation('modules.submissions.pages.SubmissionsPage.statistics')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className='flex-1'>
-            <SubmissionsChart />
-          </CardContent>
-        </Card>
         <Card>
           <CardHeader>
             <CardTitle className='flex items-center gap-2'>
@@ -225,27 +158,20 @@ export function SubmissionsPageSkeleton() {
             </CardTitle>
           </CardHeader>
           <CardContent className='flex flex-col gap-4'>
-            <p className='text-success text-sm'>
-              AC: {getTranslation('modules.submissions.pages.SubmissionsPage.accepted')}
-            </p>
-            <p className='text-error text-sm'>
-              WA: {getTranslation('modules.submissions.pages.SubmissionsPage.wrongAnswer')}
-            </p>
-            <p className='text-error text-sm'>
-              TLE: {getTranslation('modules.submissions.pages.SubmissionsPage.timeLimitExceeded')}
-            </p>
-            <p className='text-error text-sm'>
-              MLE: {getTranslation('modules.submissions.pages.SubmissionsPage.memoryLimitExceeded')}
-            </p>
-            <p className='text-error text-sm'>
-              RTE: {getTranslation('modules.submissions.pages.SubmissionsPage.runtimeError')}
-            </p>
-            <p className='text-error text-sm'>
-              IR: {getTranslation('modules.submissions.pages.SubmissionsPage.invalidReturn')}
-            </p>
-            <p className='text-sm'>
-              CE: {getTranslation('modules.submissions.pages.SubmissionsPage.compilationError')}
-            </p>
+            {Object.entries(verdicts)
+              .slice(2)
+              .map(([verdict, { id, color }]) => (
+                <div key={`verdict-${id}`} className='flex items-center gap-2'>
+                  <VerdictBadge verdict={verdict as keyof typeof verdicts} />
+                  <span
+                    key={`verdict-${id}`}
+                    className='text-(--verdict-color)'
+                    style={{ '--verdict-color': color } as CSSProperties}
+                  >
+                    {getTranslation(`modules.submissions.pages.SubmissionsPage.${verdict}`)}
+                  </span>
+                </div>
+              ))}
           </CardContent>
         </Card>
       </section>

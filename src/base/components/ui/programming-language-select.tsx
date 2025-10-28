@@ -296,25 +296,18 @@ export const programmingLanguages: ProgrammingLanguage[] = [
   },
 ];
 
-interface ProgrammingLanguageSelectProps
-  extends Omit<
-    Extract<ComponentProps<typeof Select>, { multiple?: false }>,
-    'multiple' | 'clearable' | 'options' | 'value' | 'onChange'
-  > {
-  value?: ProgrammingLanguage;
-  onChange?: (lang: ProgrammingLanguage) => void;
+interface ProgrammingLanguageSelectProps extends Omit<ComponentProps<typeof Select>, 'options'> {
+  value?: ProgrammingLanguage[];
+  onChange?: (lang: ProgrammingLanguage[]) => void;
 }
 
-export function ProgrammingLanguageSelect({ value, ...props }: ProgrammingLanguageSelectProps) {
+export function ProgrammingLanguageSelect(props: ProgrammingLanguageSelectProps) {
   return (
     <Select
-      multiple={false}
-      clearable={false}
       options={programmingLanguages.map((lang) => ({
         value: lang,
         label: lang.name,
       }))}
-      value={value ?? programmingLanguages[0]}
       {...props}
     />
   );
